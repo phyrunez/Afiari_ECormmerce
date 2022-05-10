@@ -380,7 +380,7 @@ function Cart() {
                 : `CHECK OUT: ${
                     cartItems?.length === 0
                       ? 0
-                      : `${currency[0]} ` + formatCurrency(cartTotal)
+                      : `${currency?.[0]} ` + formatCurrency(cartTotal)
                   }`}
               {/* CHECK OUT : {isLogged_in ? item.currency : 'NGN'}
               {isLogged_in ? cart?.cart?.[0]?.total_cost : ''} */}
