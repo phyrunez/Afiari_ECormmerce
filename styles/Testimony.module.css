@@ -1,0 +1,39 @@
+.testimony_details {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 238px;
+  height: 59px;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 39px;
+  text-align: center;
+
+  color: #3a3a3a;
+  margin-top: 1rem;
+}
+
+.arrow {
+  cursor: pointer;
+}
+
+.top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+
+  padding: 1rem;
+}
+.star {
+  width: 100%;
+}
+.p {
+  width: 200px;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 10px;
+  text-align: center;
+  color: #3a3a3a;
+}

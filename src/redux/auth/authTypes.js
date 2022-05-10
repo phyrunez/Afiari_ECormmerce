@@ -1,0 +1,9 @@
+export const AUTH_LOADING = 'AUTH_LOADING';
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+export const LOGIN_FAILED = 'LOGIN_FAILED';
+export const SIGNUP_SUCCESS = 'SIGN_UP';
+export const SIGNUP_FAILED = 'SIGNUP_FAILED';
+export const LOGOUT = 'LOGOUT';
+export const USER_INPUT = 'USER_INPUT';
+export const GET_CURRENT_USER = 'GET_CURRENT_USER';
+export const SELECTED_COUNTRY = 'SELECTED_COUNTRY';
