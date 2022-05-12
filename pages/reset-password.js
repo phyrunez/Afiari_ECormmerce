@@ -1,10 +1,16 @@
 import { Box } from '@mui/system';
 import React from 'react';
+import { useSelector } from 'react-redux';
 import AuthenticationPages from '../components/AuthenticationPages';
 import { ButtonBig as Button } from '../src/shared-components/Button';
 import { Input } from '../src/shared-components/InputComponent';
 
 const ResetPassword = () => {
+  const { isLogged_in, country, loading } = useSelector((state) => state.auth);
+
+  if (loading) {
+    return <Spinner />;
+  }
   return (
     <Box
       sx={{
