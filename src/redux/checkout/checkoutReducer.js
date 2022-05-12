@@ -12,7 +12,6 @@ const emptyUserAddress = {
 };
 
 const initialState = {
-  public_key: '',
   loading: false,
   country: '08d9c086-88ab-40d7-8029-e7df4efadc60',
   selectedPayment: '',
@@ -24,10 +23,14 @@ const initialState = {
   payment_method: [],
   address_info: '',
   user_address: [],
+  public_key: '',
   ...emptyUserAddress,
   init_payment: [],
+  init_result: [],
   order_number: [],
   selectedAddress: {},
+  verify_payment: '',
+  place_order: [],
 };
 
 const reducer = (state = initialState, action) => {
@@ -81,12 +84,23 @@ const reducer = (state = initialState, action) => {
     case CheckoutTypes?.INITIALIZE_PAYMENT:
       return {
         ...state,
-        init_payment: action.payload,
+        init_payment: action.payload.init_payment,
+        init_result: action.payload.init_result,
+      };
+    case CheckoutTypes?.VERIFY_PAYMENT:
+      return {
+        ...state,
+        verify_payment: action.payload,
       };
     case CheckoutTypes?.ORDER_NUMBER:
       return {
         ...state,
         order_number: action.payload,
+      };
+    case CheckoutTypes?.PLACE_ORDER:
+      return {
+        ...state,
+        place_order: action.payload,
       };
 
     default:

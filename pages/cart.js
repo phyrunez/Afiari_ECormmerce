@@ -23,23 +23,15 @@ import {
 } from '../src/redux/checkout/checkoutAction';
 import { useCart } from 'react-use-cart';
 import { formatCurrency } from '../src/utils/utils';
-import LoginPopUp from '../src/page-components/loginPopUp';
 
 function Cart() {
-  const { isLogged_in, country } = useSelector((state) => state.auth);
+  const { isLogged_in, country, public_key, loading } = useSelector(
+    (state) => state.auth
+  );
 
   const [showLogin, setShowLogin] = useState(false);
 
   const { cart } = useSelector((state) => state.cart);
-
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(getCart());
-  }, [dispatch, getCart]);
-
-  const router = useRouter();
-
   const {
     isEmpty,
     totalUniqueItems,
@@ -52,9 +44,22 @@ function Cart() {
     emptyCart,
   } = useCart();
 
+  // const [disableCheckoutBtn, setDisableCheckoutBtn] = useState(true);
+
+  const dispatch = useDispatch();
+
   const cartItems = isLogged_in ? cart?.cart?.[0]?.cart_items : items;
 
-  const currency = cartItems.map((item) => item?.currency);
+  const disableCheckoutBtn =
+    !cartItems || cartItems?.length === 0 ? true : false;
+
+  useEffect(() => {
+    dispatch(getCart());
+  }, [dispatch, getCart]);
+
+  const router = useRouter();
+
+  const currency = cartItems?.map((item) => item?.currency);
 
   // const [cartItems, setCartItems] = useState([]);
 
@@ -72,16 +77,19 @@ function Cart() {
   };
 
   const onClick = () => {
-    dispatch(publicKey());
-
     if (isLogged_in) {
+      dispatch(publicKey());
       dispatch(getOrderNumber(country));
+
       router.push('/checkout');
     } else {
       toast.error('You need to be logged in');
       router.push('/login');
     }
   };
+  if (loading) {
+    return <Spinner />;
+  }
 
   return (
     <Box
@@ -95,7 +103,7 @@ function Cart() {
     >
       <Navbar />
 
-      {showLogin && (
+      {/* {showLogin && (
         <>
           <Box
             sx={{
@@ -111,14 +119,14 @@ function Cart() {
           ></Box>
           <LoginPopUp />
         </>
-      )}
+      )} */}
 
       <Box
         sx={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          padding: '3rem 0rem',
+          padding: '3rem 3rem',
         }}
       >
         <Box
@@ -157,7 +165,7 @@ function Cart() {
               Your Cart
             </Typography>
           </Divider>
-          {!cartItems || cartItems.length === 0 ? (
+          {!cartItems || cartItems?.length === 0 ? (
             <Box
               sx={{
                 display: 'flex',
@@ -171,7 +179,14 @@ function Cart() {
                 marginTop: '21px',
               }}
             >
-              <h1>Cart is empty</h1>
+              <Typography
+                variant="p"
+                sx={{
+                  fontSize: '14px',
+                }}
+              >
+                Cart is empty
+              </Typography>
             </Box>
           ) : (
             <Box
@@ -368,6 +383,7 @@ function Cart() {
                   backgroundColor: '#0a3d30',
                 },
               }}
+              disabled={disableCheckoutBtn}
               onClick={onClick}
             >
               {isLogged_in

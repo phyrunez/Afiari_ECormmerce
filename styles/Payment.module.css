@@ -1,0 +1,10 @@
+.payment__img__star {
+  width: 30px;
+  height: 30px;
+}
+@media (max-width: 600px) {
+  .payment__img__star {
+    width: 11.97px;
+    height: 11.97px;
+  }
+}

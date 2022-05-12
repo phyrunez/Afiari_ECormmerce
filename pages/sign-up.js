@@ -24,7 +24,7 @@ const SignUp = () => {
 
   const dispatch = useDispatch();
 
-  const { email, firstName, lastName, password } = useSelector(
+  const { email, firstName, lastName, password, loading } = useSelector(
     (state) => state.auth
   );
   const router = useRouter();
@@ -62,6 +62,10 @@ const SignUp = () => {
       dispatch(signUpUser(userData, router));
     }
   };
+
+  if (loading) {
+    return <Spinner />;
+  }
   return (
     <>
       <Box

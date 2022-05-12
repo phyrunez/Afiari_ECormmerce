@@ -7,4 +7,7 @@ export const appRoutes = {
   FORGOT: '/forgot-password',
   RESET: '/reset-password',
   CART: '/cart',
+  PROFILE: '/profile',
+  PAYMENTCOMPLETE: '/payment-complete',
+  THANKYOU: '/thank-you',
 };

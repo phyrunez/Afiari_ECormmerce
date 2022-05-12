@@ -30,7 +30,7 @@ import {
 function Shop() {
   const { categories } = useSelector((state) => state.general);
 
-  const { country } = useSelector((state) => state.auth);
+  const { country, loading } = useSelector((state) => state.auth);
 
   const [selectedOption, setSelectedOption] = useState(null);
 
@@ -126,6 +126,11 @@ function Shop() {
     dispatch(getProductsByCategory(country, selectedOption.id));
     dispatch(setSelectedCategory(selectedOption.value));
   };
+
+  if (loading) {
+    return <Spinner />;
+  }
+
   return (
     <Box
       sx={{

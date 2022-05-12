@@ -42,6 +42,9 @@ const CartComponent = () => {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
+  const disableCheckoutBtn =
+    !cartItems || cartItems?.length === 0 ? true : false;
+
   return (
     <Box
       sx={{
@@ -49,9 +52,9 @@ const CartComponent = () => {
         flexDirection: 'column',
         // padding: '53px 83px',
         height: 'auto',
-        width: '30%',
+        width: '70%',
         marginBottom: '2rem',
-        border: '1px solid red',
+        // border: '1px solid red',
       }}
     >
       <Divider
@@ -78,7 +81,7 @@ const CartComponent = () => {
           Your Cart
         </Typography>
       </Divider>
-      {!cartItems || cartItems.length === 0 ? (
+      {!cartItems || cartItems?.length === 0 ? (
         <Box
           sx={{
             display: 'flex',
@@ -92,20 +95,27 @@ const CartComponent = () => {
             marginTop: '21px',
           }}
         >
-          <h1>Cart is empty</h1>
+          <Typography
+            variant="p"
+            sx={{
+              fontSize: '14px',
+            }}
+          >
+            Cart is empty
+          </Typography>
         </Box>
       ) : (
         <Box
           sx={{
             display: 'flex',
             flexDirection: 'column',
-            padding: { xs: '1rem', md: '53px 83px' },
+            padding: '1rem',
             height: '300px',
             overflowX: 'hidden',
-            // width: '30%',
+            width: '100%',
             marginBottom: '2rem',
-            marginTop: '3rem',
-            // border: "1px solid red",
+            marginTop: '1rem',
+            // border: '1px solid red',
           }}
         >
           {cartItems?.map((item, i) => (
@@ -115,13 +125,13 @@ const CartComponent = () => {
                 display: 'flex',
                 justifyContent: 'space-evenly',
                 alignItems: 'center',
-                width: '298px',
-                height: '99px',
+                width: '100%',
+                height: '136px',
                 background: '#FFFFFF',
                 border: '0.45702px solid rgba(0, 0, 0, 0.6)',
                 borderBottomRightRadius: ' 11.4255px',
                 borderTopLeftRadius: ' 11.4255px',
-
+                padding: '1rem',
                 marginTop: '21px',
               }}
             >
@@ -131,9 +141,7 @@ const CartComponent = () => {
                   alt="product"
                   width={59}
                   height={59}
-                  style={{
-                    borderRadius: '100% !important',
-                  }}
+                  className={styles.cart_img}
                 />
               ) : (
                 <Image
@@ -141,9 +149,7 @@ const CartComponent = () => {
                   alt="product"
                   width={59}
                   height={59}
-                  style={{
-                    borderRadius: '100% !important',
-                  }}
+                  className={styles.cart_img}
                 />
               )}
 
@@ -223,8 +229,8 @@ const CartComponent = () => {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            width: '215px',
-            height: '29px',
+            width: '267px',
+            height: '40px',
             background: '#0A503D',
             borderRadius: '0px 0px 22.851px 22.851px',
             fontWeight: '600',
@@ -238,6 +244,7 @@ const CartComponent = () => {
               backgroundColor: '#0a3d30',
             },
           }}
+          disabled={disableCheckoutBtn}
           onClick={() => {
             setLoading(true);
             if (isLogged_in) {

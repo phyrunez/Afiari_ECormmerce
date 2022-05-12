@@ -78,16 +78,24 @@ const ProductCategory = () => {
       >
         {categories.map((item) => (
           <ListItem
-            button
             sx={{
-              background: selected === item.id ? '#0A503D' : '#fff',
-              color: selected === item.id ? '#fff' : '#3a3a3a',
+              cursor: 'pointer',
+              background: '#fff',
+              color: selected === item.id ? '#0A503D' : '#3a3a3a',
+              // fontWeight: selected === item.id ? '800' : 'normal',
+              // fontSize: selected === item.id ? '20rem' : '30px',
               '&:hover': {
-                backgroundColor: '#0a3d30',
-                color: '#fff',
+                backgroundColor: '#fff',
+                color: selected === item.id ? '#0A503D' : '#3a3a3a',
+                transform: 'scale(2rem)',
+                fontSize: '40px',
               },
             }}
-            className={styles.shop__filter__list}
+            className={
+              selected === item.id
+                ? styles.shop__filter__list__active
+                : styles.shop__filter__list
+            }
             key={item.id}
             onClick={() => {
               setSelected(item.id);
@@ -97,58 +105,15 @@ const ProductCategory = () => {
           >
             <ListItemText
               primary={item.item_value}
-              classes={{ primary: styles.shop__filter__list }}
+              classes={{
+                primary:
+                  selected === item.id
+                    ? styles.shop__filter__list__active
+                    : styles.shop__filter__list,
+              }}
             />
           </ListItem>
         ))}
-        {/* <Link href="/">
-          <ListItem button className={styles.shop__filter__list}>
-            <ListItemText
-              primary="Fresh Food"
-              classes={{ primary: styles.shop__filter__list }}
-            />
-          </ListItem>
-        </Link>
-        <Link href="/">
-          <ListItem button className={styles.shop__filter__list}>
-            <ListItemText
-              primary="Frozen Food"
-              classes={{ primary: styles.shop__filter__list }}
-            />
-          </ListItem>
-        </Link>
-        <Link href="/">
-          <ListItem button className={styles.shop__filter__list}>
-            <ListItemText
-              primary="Tubers"
-              classes={{ primary: styles.shop__filter__list }}
-            />
-          </ListItem>
-        </Link>
-        <Link href="/">
-          <ListItem button className={styles.shop__filter__list}>
-            <ListItemText
-              primary="Vegetables"
-              classes={{ primary: styles.shop__filter__list }}
-            />
-          </ListItem>
-        </Link>
-        <Link href="/">
-          <ListItem button className={styles.shop__filter__list}>
-            <ListItemText
-              primary="Grains"
-              classes={{ primary: styles.shop__filter__list }}
-            />
-          </ListItem>
-        </Link>
-        <Link href="/">
-          <ListItem button className={styles.shop__filter__list}>
-            <ListItemText
-              primary="Spices"
-              classes={{ primary: styles.shop__filter__list }}
-            />
-          </ListItem>
-        </Link> */}
       </List>
     </Box>
   );
