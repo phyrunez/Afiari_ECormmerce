@@ -23,6 +23,7 @@ function PaymentComplete() {
   return (
     <Box
       sx={{
+        position: 'relative',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -59,20 +60,29 @@ function PaymentComplete() {
       >
         <Box
           sx={{
-            display: { xs: 'none', md: 'flex' },
+            display: { xs: 'none', lg: 'flex' },
           }}
         >
           <img src="/rate_us_illustration.svg" alt="illustration" />
         </Box>
-        <Box>
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: { xs: 'center', lg: 'flex-start' },
+            justifyContent: { xs: 'center', lg: 'flex-start' },
+            flexDirection: 'column',
+          }}
+        >
           <Typography
             variant="h1"
             sx={{
               fontStyle: 'normal',
               fontWeight: '700',
-              fontSize: '16px',
+              fontSize: { xs: '16px', md: '25px' },
               lineHeight: '22px',
               color: '#3A3A3A',
+              //   textAlign: { xs: 'center', lg: 'justify' },
+              marginBottom: { xs: '5px', md: '2rem' },
             }}
           >
             THANK YOU FOR SHOPPING WITH US
@@ -82,9 +92,10 @@ function PaymentComplete() {
             sx={{
               fontStyle: 'normal',
               fontWeight: '300',
-              fontSize: '12px',
+              fontSize: { xs: '12px', md: '25px' },
               lineHeight: '14px',
               color: ' #3A3A3A',
+              //   textAlign: { xs: 'center', lg: 'justify' },
             }}
           >
             Your food items will be with you in a few hours
@@ -178,7 +189,7 @@ function PaymentComplete() {
                   backgroundColor="#fff"
                   border=" 0.399062px solid #0A503D"
                   borderRadius="15.5331px"
-                  fontSize="8px"
+                  fontSize="16px"
                   fontWeight="400"
                   color="#3a3a3a"
                   onClick={handleModal}
@@ -221,7 +232,7 @@ function PaymentComplete() {
                       src="/blackStar.svg"
                       alt="star"
                       key={i}
-                      className={styles.payment__img__star}
+                      className={styles.payment__img__star_two}
                     />
                   ))}
                 </Box>

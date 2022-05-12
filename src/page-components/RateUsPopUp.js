@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Button, Divider, IconButton, Typography } from '@mui/material';
 import { ButtonSmall } from '../shared-components/Button';
+import styles from '../../styles/Payment.module.css';
 
 function RateUsPopUp() {
+  const [starClicked, setStarClicked] = useState(false);
+  const [itemClicked, setItemClicked] = useState('');
   return (
     <Box
       sx={{
@@ -13,8 +16,8 @@ function RateUsPopUp() {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        width: { xs: '100%', sm: '331px', md: ' 697px' },
-        height: '302px',
+        width: { xs: '331px', md: ' 697px' },
+        height: { xs: '302px', md: '546px' },
         background: '#FFFFFF',
         boxShadow: ' 0px 2.76557px 11.0623px rgba(0, 0, 0, 0.25)',
         borderRadius: '13.8278px',
@@ -27,7 +30,7 @@ function RateUsPopUp() {
           fontWeight: '400',
           fontSize: { xs: '16px', md: '31px' },
           lineHeight: '22px',
-          marginBottom: '19px',
+          marginBottom: { xs: '19px', md: '39px' },
           color: '#000',
         }}
       >
@@ -42,11 +45,26 @@ function RateUsPopUp() {
           width: '100%',
           padding: '16px 0px',
           border: '1px solid rgba(0, 0, 0, 0.3)',
-          marginBottom: '16px',
+          marginBottom: { xs: '16px', md: '29px' },
         }}
       >
         {[1, 2, 3, 4, 5].map((item, i) => (
-          <img src="/blackStar.svg" alt="star" key={i} width={21} height={25} />
+          <img
+            src={
+              starClicked && itemClicked === item
+                ? '/blackStar.svg'
+                : '/whiteStar.svg'
+            }
+            alt="star"
+            key={i}
+            width={46}
+            height={46}
+            className={styles.payment__img__star_popup}
+            onClick={() => {
+              setStarClicked(!starClicked);
+              setItemClicked(item);
+            }}
+          />
         ))}
       </Box>
 
@@ -80,29 +98,31 @@ function RateUsPopUp() {
       <input
         type="text"
         placeholder="Enter your comment here"
-        style={{
-          width: '238.87px',
-          height: '36.51px',
+        // style={{
+        //   width: '503px',
+        //   height: '66px',
 
-          background: ' #FFFFFF',
-          border: '0.553114px solid rgba(0, 0, 0, 0.3)',
-          borderRadius: '8.2967px',
-          marginBottom: '16px',
-          outline: 'none',
-          paddingLeft: '1rem',
-        }}
+        //   background: ' #FFFFFF',
+        //   border: '0.553114px solid rgba(0, 0, 0, 0.3)',
+        //   borderRadius: '8.2967px',
+        //   marginBottom: '16px',
+        //   outline: 'none',
+        //   paddingLeft: '1rem',
+        // }}
+        className={styles.payment__review_input}
       />
 
       <ButtonSmall
         text="POST"
-        width="73px"
-        height="30px"
+        width="123px"
+        height="53.72px"
         backgroundColor="#0A503D"
         border=" 0.399062px solid #0A503D"
         borderRadius="21.5331px"
         fontSize="8px"
         fontWeight="400"
         color="#fff"
+        className={styles.payment__review__btn__popup}
       />
     </Box>
   );

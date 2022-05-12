@@ -109,6 +109,10 @@ const API_ROUTES = {
     route: 'Orders/place-order',
     method: 'POST',
   },
+  testimony: {
+    route: 'Testimony/save',
+    method: 'POST',
+  },
 };
 
 const authToken = 'Afiari_access';

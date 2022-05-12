@@ -2,9 +2,46 @@
   width: 30px;
   height: 30px;
 }
-@media (max-width: 600px) {
+
+.payment__img__star_two {
+  width: 30px;
+  height: 30px;
+}
+
+.payment__review_input {
+  width: 503px;
+  height: 66px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  border-radius: 15px;
+  margin-bottom: 29px;
+  outline: none;
+  padding-left: 1rem;
+}
+
+@media (max-width: 899px) {
   .payment__img__star {
     width: 11.97px;
     height: 11.97px;
+  }
+  .payment__img__star_two {
+    width: 9px;
+    height: 9px;
+  }
+
+  .payment__img__star_popup {
+    width: 21px;
+    height: 25px;
+  }
+
+  .payment__review_input {
+    width: 238.87px;
+    height: 36.51px;
+
+    margin-bottom: 16px;
+  }
+  .payment__review__btn__popup {
+    width: 73px;
+    height: 30px;
   }
 }
