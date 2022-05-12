@@ -51,8 +51,6 @@ export const publicKey = () => async (dispatch) => {
       isFormData: false,
     });
 
-    console.log(result?.result?.[0]?.public_key);
-
     if (result.status === true) {
       dispatch(setIsLoading(false));
       dispatch({
@@ -77,7 +75,6 @@ export const getPaymentOptions = () => async (dispatch) => {
       needToken: false,
       isFormData: false,
     });
-    console.log(result.result);
 
     if (result.status === true) {
       dispatch(setIsLoading(false));
@@ -104,7 +101,6 @@ export const addAddress = (address) => async (dispatch) => {
       isFormData: false,
       body: { ...address },
     });
-    console.log(result);
 
     if (result.status === true) {
       dispatch(setIsLoading(false));
@@ -129,7 +125,6 @@ export const getAddress = () => async (dispatch) => {
       method: API_ROUTES?.getAddress?.method,
       needToken: true,
     });
-    console.log(result.result);
 
     if (result.status === true) {
       dispatch(setIsLoading(false));
@@ -155,16 +150,24 @@ export const initializePayment = (orderNumber) => async (dispatch) => {
       body: { orderNumber: orderNumber },
     });
 
-    console.log(response);
-    console.log(orderNumber);
-
     if (response?.status === true) {
       dispatch({
         type: CheckoutTypes?.INITIALIZE_PAYMENT,
         payload: {
-          payload: response?.result,
+          init_payment: response?.result,
+          init_result: response?.status,
         },
       });
+
+      dispatch(setIsLoading(true));
+      const result = await httpRequest({
+        url: API_ROUTES?.verifyPayment?.route + response?.[0]?.reference,
+        method: API_ROUTES?.verifyPayment?.method,
+        needToken: true,
+      });
+
+      console.log(result);
+      console.log(response?.[0]?.reference);
     }
   } catch (error) {
     console.log(error);
@@ -181,13 +184,64 @@ export const getOrderNumber = (country_id) => async (dispatch) => {
       needToken: true,
       isFormData: false,
     });
-    console.log(result?.result);
+
+    console.log(result);
 
     if (result.status === true) {
       dispatch(setIsLoading(false));
       dispatch({
         type: CheckoutTypes?.ORDER_NUMBER,
         payload: result?.result,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const verifyPayment = (ref) => async (dispatch) => {
+  try {
+    dispatch(setIsLoading(true));
+    const response = await httpRequest({
+      url: API_ROUTES?.verifyPayment?.route + ref,
+      method: API_ROUTES?.verifyPayment?.method,
+      needToken: true,
+    });
+
+    console.log(response);
+    console.log(ref);
+
+    if (response?.status === true) {
+      dispatch({
+        type: CheckoutTypes?.VERIFY_PAYMENT,
+        payload: response?.status,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const placeOrder = (data) => async (dispatch) => {
+  try {
+    dispatch(setIsLoading(true));
+    const response = await httpRequest({
+      url: API_ROUTES?.placeOrder?.route,
+      method: API_ROUTES?.placeOrder?.method,
+      needToken: true,
+      body: {
+        paymentType: data.paymentType,
+        shippingAddress: data.shippingAddress,
+        masterRecordId: data.masterRecordId,
+      },
+    });
+
+    console.log(response);
+    console.log(data);
+
+    if (response?.status === true) {
+      dispatch({
+        type: CheckoutTypes?.PLACE_ORDER,
+        payload: response?.result,
       });
     }
   } catch (error) {

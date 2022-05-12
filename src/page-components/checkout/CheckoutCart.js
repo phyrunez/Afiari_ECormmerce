@@ -1,5 +1,5 @@
 import { Delete } from '@mui/icons-material';
-import { Divider, IconButton, Typography } from '@mui/material';
+import { Button, Divider, IconButton, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useEffect } from 'react';
 import {
@@ -14,6 +14,9 @@ import { useCart } from 'react-use-cart';
 import {
   getOrderNumber,
   initializePayment,
+  placeOrder,
+  processPayment,
+  verifyPayment,
 } from '../../redux/checkout/checkoutAction';
 import { formatCurrency } from '../../utils/utils';
 import {
@@ -21,6 +24,8 @@ import {
   getCart,
   handleDelete,
 } from '../../redux/cart/cartAction';
+import { usePaystackPayment } from 'react-paystack';
+import { toast } from 'react-toastify';
 
 function CheckoutCart({ handleCheckOut }) {
   const { cart } = useSelector((state) => state.cart);
@@ -35,7 +40,18 @@ function CheckoutCart({ handleCheckOut }) {
     removeItem,
     emptyCart,
   } = useCart();
-  const { init_payment, order_number } = useSelector((state) => state.checkout);
+
+  const {
+    init_payment,
+    order_number,
+    public_key,
+    verify_payment,
+    payment_meter,
+    selectedPhod,
+    selectedPayment,
+    selectedAddress,
+    init_result,
+  } = useSelector((state) => state.checkout);
 
   const { api_error, country, email, password, loading, isLogged_in } =
     useSelector((state) => state?.auth);
@@ -43,13 +59,68 @@ function CheckoutCart({ handleCheckOut }) {
   const dispatch = useDispatch();
   const orderNumber = order_number?.[0]?.order_number;
 
+  const totalAmount = order_number?.[0]?.total_cost;
+
+  const finalAmount = +totalAmount?.replace(/,/g, '') * 100;
+
+  const config = {
+    reference: init_payment?.[0]?.reference,
+    email: email,
+    amount: finalAmount,
+    publicKey: public_key,
+  };
+
+  // you can call this function anything
+  const onSuccess = (reference) => {
+    console.log(reference);
+    dispatch(verifyPayment(config.reference));
+    if (verify_payment === true) {
+      const data = {
+        paymentType: selectedPayment,
+        shippingAddress: selectedAddress.id,
+        masterRecordId: order_number?.[0]?.order_master_id,
+      };
+      dispatch(placeOrder(data));
+      console.log(data);
+    }
+  };
+
+  const onClose = () => {
+    toast.error('Order Cancel');
+  };
+  const initializePayments = usePaystackPayment(config);
+
+  const handleOrder = async () => {
+    dispatch(initializePayment(orderNumber));
+
+    const f = await init_result;
+
+    if (f === true) {
+      dispatch(verifyPayment(config.reference));
+
+      const d = await verify_payment;
+
+      if (d === true) {
+        const data = {
+          paymentType: selectedPayment,
+          shippingAddress: selectedAddress.id,
+          masterRecordId: order_number?.[0]?.order_master_id,
+        };
+        dispatch(placeOrder(data));
+        console.log(data);
+      }
+    }
+    initializePayments(onSuccess, onClose);
+  };
+
   useEffect(() => {
     dispatch(getCart());
   }, [dispatch]);
 
-  const handleOrder = async () => {
-    dispatch(initializePayment(orderNumber));
-  };
+  console.log(orderNumber);
+  console.log(verify_payment);
+  console.log(selectedAddress.id);
+  console.log(init_payment);
 
   return (
     <>
@@ -61,7 +132,7 @@ function CheckoutCart({ handleCheckOut }) {
         <Box
           sx={{
             padding: { md: '0px 58px' },
-            display: 'flex',
+            display: { xs: 'none', md: 'flex' },
             flexDirection: 'column',
             alignItems: { xs: 'center', lg: 'flex-start' },
             justifyContent: { xs: 'center', md: 'flex-start' },
@@ -152,6 +223,7 @@ function CheckoutCart({ handleCheckOut }) {
 
         <Divider
           sx={{
+            display: { xs: 'none', md: 'flex' },
             border: '1px solid rgba(0, 0, 0, 0.2)',
             marginTop: '46px',
           }}
@@ -191,6 +263,7 @@ function CheckoutCart({ handleCheckOut }) {
 
         <Divider
           sx={{
+            // display: { xs: 'none', md: 'flex' },
             border: '1px solid rgba(0, 0, 0, 0.2)',
             marginTop: '46px',
           }}
@@ -207,30 +280,33 @@ function CheckoutCart({ handleCheckOut }) {
           }}
           onClick={handleOrder}
         >
-          <Typography
+          <Button
             variant="h4"
             sx={{
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
-              width: '515px',
-              height: '79px',
+              width: { xs: '263', md: '515px' },
+              height: { xs: '40px', md: '79px' },
               background: '#0A503D',
-              borderRadius: '0px 0px 61.8375px 61.8375px',
+              borderRadius: {
+                xs: '0px 0px 31.5402px 31.5402px',
+                md: '0px 0px 61.8375px 61.8375px',
+              },
               fontWeight: '600',
-              fontSize: ' 25px',
+              fontSize: { xs: '12px', md: ' 25px' },
               lineHeight: ' 19px',
               textAlign: 'center',
               letterSpacing: ' 0.04em',
               cursor: 'pointer',
               color: ' #FFFFFF',
             }}
-            onclick={handleOrder}
+            onClick={handleOrder}
           >
             PLACE ORDER:
             {`${cart?.cart?.[0]?.currency} ` +
               cart?.cart?.[0]?.charged_total_cost}
-          </Typography>
+          </Button>
         </Box>
       </Box>
     </>

@@ -6,8 +6,14 @@ import Image from 'next/image';
 
 import { ButtonBig as Button } from '../src/shared-components/Button';
 import AuthenticationPages from '../components/AuthenticationPages';
+import { useSelector } from 'react-redux';
 
 const MailConfirmation = () => {
+  const { isLogged_in, country, loading } = useSelector((state) => state.auth);
+
+  if (loading) {
+    return <Spinner />;
+  }
   return (
     <Box
       sx={{

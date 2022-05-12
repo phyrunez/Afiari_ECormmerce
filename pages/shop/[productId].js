@@ -23,7 +23,7 @@ import { formatCurrency, getNumber } from '../../src/utils/utils';
 
 function ProductDetail() {
   const { singleProduct: product } = useSelector((state) => state.general);
-  const { country, isLogged_in } = useSelector((state) => state.auth);
+  const { country, isLogged_in, loading } = useSelector((state) => state.auth);
   // const { cart } = useSelector((state) => state.cart);
   const { addItem, items } = useCart();
 
@@ -109,6 +109,10 @@ function ProductDetail() {
   // };
 
   // console.log(product);
+
+  if (loading) {
+    return <Spinner />;
+  }
 
   return (
     <Box>

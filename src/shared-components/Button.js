@@ -20,6 +20,7 @@ export const ButtonSmall = ({
   onClick,
   href,
   isLoading = false,
+  className,
 }) => {
   return (
     <Button
@@ -41,6 +42,7 @@ export const ButtonSmall = ({
         },
       }}
       href={href}
+      className={className}
     >
       {/* {href ? (
         <Link href={href}>{text}</Link>

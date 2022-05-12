@@ -101,6 +101,18 @@ const API_ROUTES = {
     route: 'Transaction/paystack/initialize-payment',
     method: 'POST',
   },
+  verifyPayment: {
+    route: 'Transaction/paystack/verify-payment/',
+    method: 'GET',
+  },
+  placeOrder: {
+    route: 'Orders/place-order',
+    method: 'POST',
+  },
+  testimony: {
+    route: 'Testimony/save',
+    method: 'POST',
+  },
 };
 
 const authToken = 'Afiari_access';

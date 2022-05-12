@@ -13,7 +13,7 @@ import { addMultipleCart, getCart } from '../redux/cart/cartAction';
 import { useCart } from 'react-use-cart';
 
 function AuthProvider({ children }) {
-  const { isLogged_in, country } = useSelector((state) => state.auth);
+  const { isLogged_in, country, loading } = useSelector((state) => state.auth);
 
   const dispatch = useDispatch();
 
@@ -28,6 +28,8 @@ function AuthProvider({ children }) {
         method: API_ROUTES.userInfo.method,
         needToken: true,
       });
+
+      console.log(result);
 
       if (result?.status === true) {
         dispatch({
