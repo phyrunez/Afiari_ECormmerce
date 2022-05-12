@@ -26,6 +26,7 @@ import {
   getProductsByCategory,
   setSelectedCategory,
 } from '../../src/redux/general/generalAction';
+import Spinner from '../../components/Spinner';
 
 function Shop() {
   const { categories } = useSelector((state) => state.general);

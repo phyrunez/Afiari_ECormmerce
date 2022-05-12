@@ -3,6 +3,7 @@ import { IconButton, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
+import Spinner from '../components/Spinner';
 import Footer from '../src/page-components/Footer';
 import RateUsPopUp from '../src/page-components/RateUsPopUp';
 import { ButtonSmall } from '../src/shared-components/Button';
@@ -250,6 +251,7 @@ function PaymentComplete() {
                       alignItems: 'center',
                       justifyContent: 'center',
                     }}
+                    key={i}
                   >
                     <Typography
                       variant="p"
