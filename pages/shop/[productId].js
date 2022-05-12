@@ -20,6 +20,7 @@ import {
 
 import { useCart } from 'react-use-cart';
 import { formatCurrency, getNumber } from '../../src/utils/utils';
+import Spinner from '../../components/Spinner';
 
 function ProductDetail() {
   const { singleProduct: product } = useSelector((state) => state.general);
@@ -42,7 +43,7 @@ function ProductDetail() {
     }, 1000);
 
     return () => clearTimeout(timeout);
-  }, [dispatch, getSingleProduct]);
+  }, [dispatch, id, country]);
 
   const products = () => {
     const newData = product.map((prod, index) => {

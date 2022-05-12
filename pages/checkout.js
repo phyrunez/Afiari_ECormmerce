@@ -14,6 +14,7 @@ import { Delete } from '@mui/icons-material';
 import { handleDelete } from '../src/redux/cart/cartAction';
 import { useCart } from 'react-use-cart';
 import { useDispatch, useSelector } from 'react-redux';
+import Spinner from '../components/Spinner';
 
 function Checkout() {
   const [showModal, setShowModal] = useState(false);

@@ -23,6 +23,7 @@ import {
 } from '../src/redux/checkout/checkoutAction';
 import { useCart } from 'react-use-cart';
 import { formatCurrency } from '../src/utils/utils';
+import Spinner from '../components/Spinner';
 
 function Cart() {
   const { isLogged_in, country, public_key, loading } = useSelector(
@@ -55,7 +56,7 @@ function Cart() {
 
   useEffect(() => {
     dispatch(getCart());
-  }, [dispatch, getCart]);
+  }, [dispatch]);
 
   const router = useRouter();
 

@@ -1,6 +1,7 @@
 import { Box, Typography } from '@mui/material';
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import Spinner from '../components/Spinner';
 import Footer from '../src/page-components/Footer';
 import Navbar from '../src/shared-components/navbar/Navbar';
 

@@ -14,6 +14,7 @@ import { useRouter } from 'next/router';
 import { VisibilityOff, Visibility } from '@mui/icons-material';
 import { toast } from 'react-toastify';
 import { signUpUser, handleUserInput } from '../src/redux/auth/authAction';
+import Spinner from '../components/Spinner';
 
 const SignUp = () => {
   const [checked, setChecked] = useState(false);

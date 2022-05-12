@@ -300,6 +300,9 @@ function CheckoutCart({ handleCheckOut }) {
               letterSpacing: ' 0.04em',
               cursor: 'pointer',
               color: ' #FFFFFF',
+              '&:hover': {
+                backgroundColor: '#0a3d30',
+              },
             }}
             onClick={handleOrder}
           >
