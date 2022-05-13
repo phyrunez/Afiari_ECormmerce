@@ -32,6 +32,7 @@ export const logInUser = (user, router, path) => async (dispatch) => {
       body: { ...user },
     });
     console.log(result);
+    console.log(path);
 
     if (result.status === true) {
       dispatch(setIsLoading(false));
@@ -45,17 +46,11 @@ export const logInUser = (user, router, path) => async (dispatch) => {
       JSON.stringify(
         localStorage.setItem(refreshToken, result?.result[0]?.refresh_token)
       );
-
-      // router.push(path);
-      if (
-        window.history.length > 1 &&
-        document.referrer.indexOf(window.location.host) !== -1
-      ) {
-        router.back();
+      if (router?.query?.from !== undefined) {
+        router.push(router?.query?.from);
       } else {
-        router.replace('/shop');
+        router.push('/shop');
       }
-      // router.back();
     } else {
       dispatch(setIsLoading(false));
       dispatch({

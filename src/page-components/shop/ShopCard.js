@@ -6,7 +6,7 @@ import { ButtonSmall } from '../../shared-components/Button';
 import styles from '../../../styles/Shop.module.css';
 import leftArrow from '../../../public/leftArrow.svg';
 import rightArrow from '../../../public/rightArrow.svg';
-
+import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   getGeneralMarket,
@@ -36,6 +36,8 @@ const ShopCard = () => {
   const { page_size, number_of_pages, page_index, total_count } = metaData;
 
   const dispatch = useDispatch();
+
+  const router = useRouter();
 
   const [pageNumber, setPageNumber] = useState(1);
 
@@ -169,6 +171,7 @@ const ShopCard = () => {
               // marginTop: '29px',
               width: '100%',
               padding: '29px 16px',
+              cursor: 'pointer',
             }}
           >
             <Box
@@ -184,34 +187,37 @@ const ShopCard = () => {
                 padding: '1rem 1rem',
               }}
             >
-              <Link href={`/shop/${item.id}`}>
-                <Box
-                  sx={{
-                    height: '100%',
-                  }}
-                >
-                  {item?.images[0]?.image_url ? (
-                    <Image
-                      key={item?.images[0]?.id}
-                      loader={() => item?.images[0]?.image_url}
-                      src={item?.images[0]?.image_url}
-                      alt="product"
-                      width={222}
-                      height={140}
-                      className={styles.product_img}
-                      unoptimized={true}
-                    />
-                  ) : (
-                    <Image
-                      src="/fish.png"
-                      alt="product"
-                      width={50}
-                      height={50}
-                      className={styles.product_img}
-                    />
-                  )}
-                </Box>
-              </Link>
+              {/* <Link href={`/shop/${item.id}`}> */}
+              <Box
+                sx={{
+                  height: '100%',
+                }}
+                onClick={() => {
+                  router.push(`/shop/${item.id}`);
+                }}
+              >
+                {item?.images[0]?.image_url ? (
+                  <Image
+                    key={item?.images[0]?.id}
+                    loader={() => item?.images[0]?.image_url}
+                    src={item?.images[0]?.image_url}
+                    alt="product"
+                    width={222}
+                    height={140}
+                    className={styles.product_img}
+                    unoptimized={true}
+                  />
+                ) : (
+                  <Image
+                    src="/fish.png"
+                    alt="product"
+                    width={50}
+                    height={50}
+                    className={styles.product_img}
+                  />
+                )}
+              </Box>
+              {/* </Link> */}
 
               <Box
                 component="div"
@@ -225,41 +231,44 @@ const ShopCard = () => {
                   padding: '0 1rem',
                 }}
               >
-                <Link href={`/shop/${item.id}`}>
-                  <Box
+                {/* <Link href={`/shop/${item.id}`}> */}
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'flex-start',
+                  }}
+                  onClick={() => {
+                    router.push(`/shop/${item.id}`);
+                  }}
+                >
+                  <Typography
+                    variant="p"
+                    className={styles.cart_product_details}
+                  >
+                    {item.name}
+                  </Typography>
+                  <Typography
+                    variant="p"
+                    className={styles.cart_product_details}
                     sx={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'flex-start',
+                      fontWeight: '400',
+                      marginBottom: { xs: '10px', md: '30px' },
                     }}
                   >
-                    <Typography
-                      variant="p"
-                      className={styles.cart_product_details}
-                    >
-                      {item.name}
-                    </Typography>
-                    <Typography
-                      variant="p"
-                      className={styles.cart_product_details}
-                      sx={{
-                        fontWeight: '400',
-                        marginBottom: { xs: '10px', md: '30px' },
-                      }}
-                    >
-                      {item.description}
-                    </Typography>
-                    <Typography
-                      variant="p"
-                      className={styles.cart_product_details}
-                      sx={{
-                        marginBottom: { xs: '0px', md: '13px' },
-                      }}
-                    >
-                      NGN {formatCurrency(item?.price)}
-                    </Typography>
-                  </Box>
-                </Link>
+                    {item.description}
+                  </Typography>
+                  <Typography
+                    variant="p"
+                    className={styles.cart_product_details}
+                    sx={{
+                      marginBottom: { xs: '0px', md: '13px' },
+                    }}
+                  >
+                    NGN {formatCurrency(item?.price)}
+                  </Typography>
+                </Box>
+                {/* </Link> */}
 
                 <Box
                   component="div"

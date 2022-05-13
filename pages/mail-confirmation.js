@@ -1,6 +1,8 @@
 import { Box } from '@mui/system';
 import React from 'react';
+import { useSelector } from 'react-redux';
 import AuthenticationPages from '../components/AuthenticationPages';
+import Spinner from '../components/Spinner';
 
 const MailConfirmation = () => {
   return (

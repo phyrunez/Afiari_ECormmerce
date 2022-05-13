@@ -18,9 +18,23 @@
 
 .shop__filter__list {
   /* text-decoration: underline; */
-  font-size: normal;
   font-weight: 400;
-  font-size: 14px;
+  font-size: 16px;
+  line-height: 15px;
+  text-align: center;
+  transition: all 0.2s ease-in-out;
+}
+
+.shop__filter__list:hover {
+  background-color: #fff;
+  color: #0a503d;
+  transform: scale(1);
+  font-weight: bold;
+}
+
+.shop__filter__list__active {
+  font-weight: bold;
+  font-size: 15px;
   line-height: 15px;
   text-align: center;
 }

@@ -6,6 +6,8 @@ import Image from 'next/image';
 
 import { ButtonBig as Button } from '../src/shared-components/Button';
 import AuthenticationPages from '../components/AuthenticationPages';
+import { useSelector } from 'react-redux';
+import Spinner from '../components/Spinner';
 
 const MailConfirmation = () => {
   return (

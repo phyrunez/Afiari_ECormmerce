@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { appRoutes } from './appRoutes';
-import { useRouter } from 'next/router';
+
 const isBrowser = () => typeof window !== 'undefined';
 
 const ProtectedRoutes = ({ router, children }) => {
@@ -16,13 +16,22 @@ const ProtectedRoutes = ({ router, children }) => {
     appRoutes.SHOP,
     appRoutes.PRODUCT,
     appRoutes.CART,
+    // appRoutes.PROFILE,
+    appRoutes.PAYMENTCOMPLETE,
+    appRoutes.THANKYOU,
   ];
 
   const pathIsProtected = unProtectedRoutes.indexOf(router.pathname) === -1;
 
   useEffect(() => {
     if (!isLogged_in && pathIsProtected && isBrowser()) {
-      router.push(appRoutes.LOGIN);
+      router.push({
+        pathname: appRoutes.LOGIN,
+        query: {
+          from: router.pathname,
+        },
+      });
+      // router.push()
     }
   }, [isLogged_in, pathIsProtected, appRoutes, isBrowser]);
 
@@ -30,3 +39,28 @@ const ProtectedRoutes = ({ router, children }) => {
 };
 
 export default ProtectedRoutes;
+
+// const withAuth = (Component) => {
+//   const Auth = (props) => {
+//     // Login data added to props via redux-store (or use react context for example)
+//     const { isLogged_in } = useSelector((state) => state?.auth);
+
+//     // If user is not logged in, return login component
+//     if (!isLogged_in) {
+//       // Router.push(appRoutes.LOGIN);
+//       return <Login />;
+//     }
+
+//     // If user is logged in, return original component
+//     return <Component {...props} />;
+//   };
+
+//   // Copy getInitial props so it will run as well
+//   if (Component.getInitialProps) {
+//     Auth.getInitialProps = Component.getInitialProps;
+//   }
+
+//   return Auth;
+// };
+
+// export default withAuth;

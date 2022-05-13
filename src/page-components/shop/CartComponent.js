@@ -39,19 +39,24 @@ const CartComponent = () => {
 
   const cartItems = isLogged_in ? cart?.cart?.[0]?.cart_items : items;
 
+  const currency = cartItems?.map((item) => item?.currency);
+
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
+
+  const disableCheckoutBtn =
+    !cartItems || cartItems?.length === 0 ? true : false;
 
   return (
     <Box
       sx={{
         display: { lg: 'flex', xs: 'none' },
         flexDirection: 'column',
-        padding: '53px 83px',
+        // padding: '53px 83px',
         height: 'auto',
-        width: '30%',
+        width: '70%',
         marginBottom: '2rem',
-        // border: "1px solid red",
+        // border: '1px solid red',
       }}
     >
       <Divider
@@ -78,96 +83,131 @@ const CartComponent = () => {
           Your Cart
         </Typography>
       </Divider>
-      {cartItems.map((item, i) => (
+      {!cartItems || cartItems?.length === 0 ? (
         <Box
-          key={i}
           sx={{
             display: 'flex',
             justifyContent: 'space-evenly',
             alignItems: 'center',
-            width: '298px',
-            height: '99px',
+            width: { md: '472px', xs: '100%' },
+            height: '136px',
             background: '#FFFFFF',
-            border: '0.45702px solid rgba(0, 0, 0, 0.6)',
-            borderBottomRightRadius: ' 11.4255px',
-            borderTopLeftRadius: ' 11.4255px',
 
+            padding: '1rem',
             marginTop: '21px',
           }}
         >
-          {!isLogged_in ? (
-            <Image
-              src={item?.images[0]?.image_url}
-              alt="product"
-              width={59}
-              height={59}
-              style={{
-                borderRadius: '100% !important',
-              }}
-            />
-          ) : (
-            <Image
-              src={item?.product_image}
-              alt="product"
-              width={59}
-              height={59}
-              style={{
-                borderRadius: '100% !important',
-              }}
-            />
-          )}
-
-          <Box
+          <Typography
+            variant="p"
             sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'flex-start',
+              fontSize: '14px',
             }}
           >
-            <Typography className={styles.cart_details} variant="p">
-              {/* Red Pepper(Shombo) */}
-              {isLogged_in ? item.product_name : item?.name}
-            </Typography>
-            <Typography className={styles.cart_details} variant="p">
-              {isLogged_in
-                ? `${cart?.cart?.[0]?.currency} ` + item.unit_price
-                : item?.currency}
-              {!isLogged_in && formatCurrency(item?.price)}
-            </Typography>
-          </Box>
-          <Box>
-            <IconButton
-              onClick={() => {
-                const data = {
-                  id: item.id,
-                  country: country,
-                };
-                isLogged_in
-                  ? dispatch(handleDelete(data))
-                  : removeItem(item?.id);
+            Cart is empty
+          </Typography>
+        </Box>
+      ) : (
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            padding: '1rem',
+            height: '300px',
+            overflowX: 'hidden',
+            width: '100%',
+            marginBottom: '2rem',
+            marginTop: '1rem',
+            // border: '1px solid red',
+          }}
+        >
+          {cartItems?.map((item, i) => (
+            <Box
+              key={i}
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-evenly',
+                alignItems: 'center',
+                width: '100%',
+                height: '136px',
+                background: '#FFFFFF',
+                border: '0.45702px solid rgba(0, 0, 0, 0.6)',
+                borderBottomRightRadius: ' 11.4255px',
+                borderTopLeftRadius: ' 11.4255px',
+                padding: '1rem',
+                marginTop: '21px',
               }}
             >
-              <Delete />
-            </IconButton>
-          </Box>
-          <AddAndRemoveCartButton
-            width="70px"
-            height="35px"
-            borderRadius="22px"
-            fontSize="12px"
-            backgroundColor="#fff"
-            border=" 0.458333px solid #3A3A3A"
-            text={item?.quantity}
-            item={item}
-            isLogged_in={isLogged_in}
-            country={country}
-            cartId={item.id}
-            quantity={item.quantity}
-            prodId={item.product_id}
-            dispatch={dispatch}
-          />
+              {!isLogged_in ? (
+                <Image
+                  src={item?.images[0]?.image_url}
+                  alt="product"
+                  width={59}
+                  height={59}
+                  className={styles.cart_img}
+                />
+              ) : (
+                <Image
+                  src={item?.product_image}
+                  alt="product"
+                  width={59}
+                  height={59}
+                  className={styles.cart_img}
+                />
+              )}
+
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'flex-start',
+                }}
+              >
+                <Typography className={styles.cart_details} variant="p">
+                  {/* Red Pepper(Shombo) */}
+                  {isLogged_in ? item.product_name : item?.name}
+                </Typography>
+                <Typography className={styles.cart_details} variant="p">
+                  {isLogged_in
+                    ? `${cart?.cart?.[0]?.currency} ` + item.unit_price
+                    : item?.currency}
+                  {!isLogged_in && formatCurrency(item?.price)}
+                </Typography>
+              </Box>
+              <Box>
+                <IconButton
+                  onClick={() => {
+                    const data = {
+                      id: item.id,
+                      country: country,
+                    };
+                    isLogged_in
+                      ? dispatch(handleDelete(data))
+                      : removeItem(item?.id);
+                  }}
+                >
+                  <Delete />
+                </IconButton>
+              </Box>
+              <AddAndRemoveCartButton
+                width="70px"
+                height="35px"
+                borderRadius="22px"
+                fontSize="12px"
+                backgroundColor="#fff"
+                border=" 0.458333px solid #3A3A3A"
+                text={item?.quantity}
+                item={item}
+                isLogged_in={isLogged_in}
+                country={country}
+                cartId={item.id}
+                quantity={item.quantity}
+                prodId={item.product_id}
+                dispatch={dispatch}
+              />
+            </Box>
+          ))}
         </Box>
-      ))}
+      )}
 
       <Divider
         sx={{
@@ -191,8 +231,8 @@ const CartComponent = () => {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            width: '215px',
-            height: '29px',
+            width: '267px',
+            height: '40px',
             background: '#0A503D',
             borderRadius: '0px 0px 22.851px 22.851px',
             fontWeight: '600',
@@ -206,6 +246,7 @@ const CartComponent = () => {
               backgroundColor: '#0a3d30',
             },
           }}
+          disabled={disableCheckoutBtn}
           onClick={() => {
             setLoading(true);
             if (isLogged_in) {
@@ -233,7 +274,7 @@ const CartComponent = () => {
             `CHECK OUT: ${
               cartItems?.length === 0
                 ? 0
-                : `${currency[0]} ` + formatCurrency(cartTotal)
+                : `${currency?.[0]} ` + formatCurrency(cartTotal)
             }`
           )}
         </Button>

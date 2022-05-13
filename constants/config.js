@@ -93,6 +93,15 @@ const API_ROUTES = {
     route: 'Shopping/my/checkout?service_country=',
     method: 'POST',
   },
+  shopping_history: {
+    route: 'Customer/shopping/history/get',
+    method: 'GET',
+  },
+  updateAddress: {
+    route: 'Customer/my/address/update',
+    method: 'PUT',
+  },
+
   getPublicKey: {
     route: 'Transaction/paystack/public-key',
     method: 'GET',
@@ -100,6 +109,22 @@ const API_ROUTES = {
   initializePayment: {
     route: 'Transaction/paystack/initialize-payment',
     method: 'POST',
+  },
+  verifyPayment: {
+    route: 'Transaction/paystack/verify-payment/',
+    method: 'GET',
+  },
+  placeOrder: {
+    route: 'Orders/place-order',
+    method: 'POST',
+  },
+  testimony: {
+    route: 'Testimony/save',
+    method: 'POST',
+  },
+  getTestimony: {
+    route: 'Testimony',
+    method: 'GET',
   },
 };
 

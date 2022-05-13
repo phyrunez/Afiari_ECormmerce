@@ -20,10 +20,11 @@ import {
 
 import { useCart } from 'react-use-cart';
 import { formatCurrency, getNumber } from '../../src/utils/utils';
+import Spinner from '../../components/Spinner';
 
 function ProductDetail() {
   const { singleProduct: product } = useSelector((state) => state.general);
-  const { country, isLogged_in } = useSelector((state) => state.auth);
+  const { country, isLogged_in, loading } = useSelector((state) => state.auth);
   // const { cart } = useSelector((state) => state.cart);
   const { addItem, items } = useCart();
 
@@ -42,7 +43,7 @@ function ProductDetail() {
     }, 1000);
 
     return () => clearTimeout(timeout);
-  }, [dispatch, getSingleProduct]);
+  }, [dispatch, id, country]);
 
   const products = () => {
     const newData = product.map((prod, index) => {

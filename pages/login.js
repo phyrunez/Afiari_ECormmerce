@@ -18,14 +18,18 @@ import { VisibilityOff, Visibility } from '@mui/icons-material';
 import { toast } from 'react-toastify';
 import { logInUser, handleUserInput } from '../src/redux/auth/authAction';
 import { addMultipleCart } from '../src/redux/cart/cartAction';
+import Spinner from '../components/Spinner';
 
 const Login = () => {
   const { country, api_error, email, isLoggged_in, password, loading } =
     useSelector((state) => state.auth);
   const dispatch = useDispatch();
-  const path = '/shop';
+
   const router = useRouter();
+  const path = router.query;
+  console.log(path);
   const [showpassword, setShowpassword] = useState(false);
+
   // useEffect(() => {
   //   if (isError) {
   //     toast.error(message);

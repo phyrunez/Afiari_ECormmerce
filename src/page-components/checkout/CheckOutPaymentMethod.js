@@ -54,17 +54,17 @@ function CheckOutPaymentMethod({ handleModal }) {
           </Typography>
           <Box
             sx={{
-              display: { xs: 'grid', md: 'flex' },
+              display: { xs: 'flex', md: 'flex' },
               gridTemplateColumns: { xs: 'repeat(2, 1fr)' },
               gap: 5,
               alignItems: 'center',
-              justifyContent: 'space-between',
+              justifyContent: 'space-evenly',
               width: { xs: '100%', md: '450px', lg: '652px' },
               height: ' 231px',
               background: '#FFFFFF',
               boxShadow: ' 0px 8px 16px rgba(0, 0, 0, 0.08)',
               borderRadius: ' 15px',
-              padding: '0 37px',
+              padding: '0px 37px',
             }}
           >
             {payment_method.map((item, i) => (

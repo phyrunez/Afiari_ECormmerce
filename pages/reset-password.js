@@ -1,6 +1,8 @@
 import { Box } from '@mui/system';
 import React from 'react';
+import { useSelector } from 'react-redux';
 import AuthenticationPages from '../components/AuthenticationPages';
+import Spinner from '../components/Spinner';
 import { ButtonBig as Button } from '../src/shared-components/Button';
 import { Input } from '../src/shared-components/InputComponent';
 

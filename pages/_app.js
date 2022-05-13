@@ -34,15 +34,15 @@ function MyApp({ Component, pageProps, router }) {
       </Head>
 
       <Provider store={store}>
-        <ProtectedRoutes router={router}>
-          {/* <PersistGate loading={null} persistor={persistor}> */}
-          <CartProvider>
-            <AuthProvider>
+        {/* <PersistGate loading={null} persistor={persistor}> */}
+        <CartProvider>
+          <AuthProvider>
+            <ProtectedRoutes router={router}>
               <Component {...pageProps} />
-            </AuthProvider>
-          </CartProvider>
-          {/* </PersistGate> */}
-        </ProtectedRoutes>
+            </ProtectedRoutes>
+          </AuthProvider>
+        </CartProvider>
+        {/* </PersistGate> */}
       </Provider>
 
       <ToastContainer />

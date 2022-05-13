@@ -14,6 +14,7 @@ import { useRouter } from 'next/router';
 import { VisibilityOff, Visibility } from '@mui/icons-material';
 import { toast } from 'react-toastify';
 import { signUpUser, handleUserInput } from '../src/redux/auth/authAction';
+import Spinner from '../components/Spinner';
 
 const SignUp = () => {
   const [checked, setChecked] = useState(false);
@@ -24,7 +25,7 @@ const SignUp = () => {
 
   const dispatch = useDispatch();
 
-  const { email, firstName, lastName, password } = useSelector(
+  const { email, firstName, lastName, password, loading } = useSelector(
     (state) => state.auth
   );
   const router = useRouter();
@@ -62,6 +63,10 @@ const SignUp = () => {
       dispatch(signUpUser(userData, router));
     }
   };
+
+  // if (loading) {
+  //   return <Spinner />;
+  // }
   return (
     <>
       <Box
