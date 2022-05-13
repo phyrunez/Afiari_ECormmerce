@@ -48,7 +48,7 @@ const Login = () => {
   const onSubmit = (e) => {
     e.preventDefault();
     if (email === '' || password === '') {
-      toast.error('message');
+      toast.error('Fields can not be empty');
     } else {
       const userData = {
         username: email,

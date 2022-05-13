@@ -66,6 +66,10 @@
   color: #000000;
 }
 
+.profile__input {
+  margin-bottom: 16px;
+}
+
 @media (max-width: 899px) {
   .profile__header {
     font-weight: 400;

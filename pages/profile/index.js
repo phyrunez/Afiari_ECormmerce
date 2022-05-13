@@ -5,6 +5,7 @@ import ShoppingHistory from '../../components/Profile/ShoppingHistory';
 import Navbar from '../../src/shared-components/navbar/Navbar';
 import Footer from '../../src/page-components/Footer';
 import { useSelector } from 'react-redux';
+import ProfileSettings from '../../components/Profile/ProfileSettings';
 
 function Profile() {
   const mo = true;
@@ -17,6 +18,8 @@ function Profile() {
         alignItems: 'center',
         justifyContent: 'center',
         padding: '0px',
+        width: '100%',
+        border: '1px solid red',
       }}
     >
       <Navbar />
@@ -29,7 +32,7 @@ function Profile() {
         }}
       >
         <ProfileSideNav />
-        <Box>{mo ? 'h1' : <ShoppingHistory />}</Box>
+        {mo ? <ProfileSettings /> : <ShoppingHistory />}
       </Box>
       <Footer />
     </Box>
