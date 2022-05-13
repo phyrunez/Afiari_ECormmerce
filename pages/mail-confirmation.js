@@ -5,11 +5,6 @@ import AuthenticationPages from '../components/AuthenticationPages';
 import Spinner from '../components/Spinner';
 
 const MailConfirmation = () => {
-  const { isLogged_in, country, loading } = useSelector((state) => state.auth);
-
-  if (loading) {
-    return <Spinner />;
-  }
   return (
     <Box
       sx={{

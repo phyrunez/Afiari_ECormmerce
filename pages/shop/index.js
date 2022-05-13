@@ -27,6 +27,7 @@ import {
   setSelectedCategory,
 } from '../../src/redux/general/generalAction';
 import Spinner from '../../components/Spinner';
+import { setIsLoading } from '../../src/redux/cart/cartAction';
 
 function Shop() {
   const { categories } = useSelector((state) => state.general);
@@ -127,10 +128,6 @@ function Shop() {
     dispatch(getProductsByCategory(country, selectedOption.id));
     dispatch(setSelectedCategory(selectedOption.value));
   };
-
-  if (loading) {
-    return <Spinner />;
-  }
 
   return (
     <Box

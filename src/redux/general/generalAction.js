@@ -2,6 +2,14 @@ import { API_ROUTES } from '../../../constants/config';
 import * as GeneralTypes from './generalTypes';
 import { httpRequest } from '../../https/http';
 
+export const handleUserInput = (name, value) => ({
+  type: GeneralTypes.USER_INPUT,
+  payload: {
+    name: name,
+    value: value,
+  },
+});
+
 export const setIsLoading = (value) => ({
   type: GeneralTypes.IS_LOADING,
   payload: value,
@@ -124,3 +132,48 @@ export const getSingleProduct =
       console.log(error);
     }
   };
+
+export const saveTestimony = (data) => async (dispatch) => {
+  try {
+    dispatch(setIsLoading(true));
+    const response = await httpRequest({
+      url: API_ROUTES?.testimony?.route,
+      method: API_ROUTES?.testimony.method,
+      needToken: true,
+      body: { ...data },
+    });
+
+    console.log(response);
+
+    if (response?.status === true) {
+      dispatch({
+        type: GeneralTypes?.SAVE__TESTIMONY,
+        payload: response,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getTestimony = () => async (dispatch) => {
+  try {
+    dispatch(setIsLoading(true));
+    const response = await httpRequest({
+      url: API_ROUTES?.getTestimony?.route,
+      method: API_ROUTES?.getTestimony.method,
+      needToken: true,
+    });
+
+    console.log(response);
+
+    if (response?.status === true) {
+      dispatch({
+        type: GeneralTypes?.GET_TESTIMONY,
+        payload: response.result,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};

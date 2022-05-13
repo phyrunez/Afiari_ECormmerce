@@ -111,10 +111,6 @@ function ProductDetail() {
 
   // console.log(product);
 
-  if (loading) {
-    return <Spinner />;
-  }
-
   return (
     <Box>
       <Navbar />

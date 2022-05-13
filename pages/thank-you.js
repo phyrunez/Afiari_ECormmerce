@@ -6,12 +6,6 @@ import Footer from '../src/page-components/Footer';
 import Navbar from '../src/shared-components/navbar/Navbar';
 
 function ThankYou() {
-  const { loading } = useSelector((state) => state.auth);
-
-  if (loading) {
-    return <Spinner />;
-  }
-
   return (
     <>
       <Navbar />

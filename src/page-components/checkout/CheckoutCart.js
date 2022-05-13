@@ -50,6 +50,7 @@ function CheckoutCart({ handleCheckOut }) {
     selectedPhod,
     selectedPayment,
     selectedAddress,
+    place_order,
     init_result,
   } = useSelector((state) => state.checkout);
 
@@ -73,16 +74,24 @@ function CheckoutCart({ handleCheckOut }) {
   // you can call this function anything
   const onSuccess = (reference) => {
     console.log(reference);
-    dispatch(verifyPayment(config.reference));
-    if (verify_payment === true) {
-      const data = {
-        paymentType: selectedPayment,
-        shippingAddress: selectedAddress.id,
-        masterRecordId: order_number?.[0]?.order_master_id,
-      };
-      dispatch(placeOrder(data));
-      console.log(data);
-    }
+    // const ref = init_payment?.[0]?.reference;
+    // const masterID = order_number?.[0]?.order_master_id;
+
+    // const verify = verify_payment;
+
+    // dispatch(verifyPayment(ref));
+
+    // if (verify === true) {
+    //   const data = {
+    //     paymentType: selectedPayment,
+    //     shippingAddress: selectedAddress.id,
+    //     masterRecordId: masterID,
+    //   };
+
+    //   dispatch(placeOrder(data));
+    //   toast.success(place_order);
+    //   console.log(data);
+    // }
   };
 
   const onClose = () => {
@@ -91,26 +100,18 @@ function CheckoutCart({ handleCheckOut }) {
   const initializePayments = usePaystackPayment(config);
 
   const handleOrder = async () => {
-    dispatch(initializePayment(orderNumber));
+    const ref = init_payment?.[0]?.reference;
+    const masterID = order_number?.[0]?.order_master_id;
 
-    const f = await init_result;
+    const verify = verify_payment;
 
-    if (f === true) {
-      dispatch(verifyPayment(config.reference));
-
-      const d = await verify_payment;
-
-      if (d === true) {
-        const data = {
-          paymentType: selectedPayment,
-          shippingAddress: selectedAddress.id,
-          masterRecordId: order_number?.[0]?.order_master_id,
-        };
-        dispatch(placeOrder(data));
-        console.log(data);
-      }
-    }
+    const data = {
+      paymentType: selectedPayment,
+      shippingAddress: selectedAddress.id,
+      masterRecordId: masterID,
+    };
     initializePayments(onSuccess, onClose);
+    dispatch(initializePayment(orderNumber, verify, masterID, ref, data));
   };
 
   useEffect(() => {

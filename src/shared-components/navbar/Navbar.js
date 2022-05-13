@@ -22,6 +22,7 @@ import { login } from '../../redux/slice/auth/AuthSlice';
 import { logout } from '../../redux/auth/authAction';
 import { useCart } from 'react-use-cart';
 import { getCart } from '../../redux/cart/cartAction';
+import { useRouter } from 'next/router';
 
 const Navbar = () => {
   const [showNav, setShowNav] = useState(false);
@@ -34,6 +35,8 @@ const Navbar = () => {
   const [cartItems, setCartItems] = useState([]);
 
   const dispatch = useDispatch();
+
+  const router = useRouter();
 
   const handleMenu = () => {
     setShowNav(true);
@@ -210,18 +213,20 @@ const Navbar = () => {
                     justifyContent: 'center',
                   }}
                 >
-                  <Typography
-                    variant="p"
-                    sx={{
-                      fontWeight: '400',
-                      fontSize: '12px',
-                      lineHeight: '18px',
-                      color: '#000000',
-                      marginBottom: '8px',
-                    }}
-                  >
-                    My profile
-                  </Typography>
+                  <Link href="/profile">
+                    <Typography
+                      variant="p"
+                      sx={{
+                        fontWeight: '400',
+                        fontSize: '12px',
+                        lineHeight: '18px',
+                        color: '#000000',
+                        marginBottom: '8px',
+                      }}
+                    >
+                      My profile
+                    </Typography>
+                  </Link>
                   <Typography
                     variant="p"
                     sx={{
@@ -443,6 +448,9 @@ const Navbar = () => {
                       width={24}
                       height={24}
                       alt="profile"
+                      onClick={() => {
+                        router.push('/profile');
+                      }}
                     />
                     {show === false ? (
                       <Image
@@ -476,20 +484,24 @@ const Navbar = () => {
                           flexDirection: 'column',
                           alignItems: 'center',
                           justifyContent: 'center',
+                          zIndex: '2000000000000',
                         }}
                       >
-                        <Typography
-                          variant="p"
-                          sx={{
-                            fontWeight: '400',
-                            fontSize: '12px',
-                            lineHeight: '18px',
-                            color: '#000000',
-                            marginBottom: '8px',
-                          }}
-                        >
-                          My profile
-                        </Typography>
+                        <Link href="/profile">
+                          <Typography
+                            variant="p"
+                            sx={{
+                              fontWeight: '400',
+                              fontSize: '12px',
+                              lineHeight: '18px',
+                              color: '#000000',
+                              marginBottom: '8px',
+                            }}
+                          >
+                            My profile
+                          </Typography>
+                        </Link>
+
                         <Typography
                           variant="p"
                           sx={{

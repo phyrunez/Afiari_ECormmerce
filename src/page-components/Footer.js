@@ -28,6 +28,7 @@ const Footer = () => {
         background: '#0A503D',
         padding: '4rem 4rem',
         color: '#fff',
+        // zIndex: '20000000000000000',
       }}
       className={styles.footer}
     >

@@ -16,6 +16,7 @@ import {
   getCart,
   handleDelete,
   handleUpdate,
+  setIsLoading,
 } from '../src/redux/cart/cartAction';
 import {
   getOrderNumber,
@@ -88,9 +89,6 @@ function Cart() {
       router.push('/login');
     }
   };
-  if (loading) {
-    return <Spinner />;
-  }
 
   return (
     <Box

@@ -140,39 +140,87 @@ export const getAddress = () => async (dispatch) => {
   }
 };
 
-export const initializePayment = (orderNumber) => async (dispatch) => {
-  try {
-    dispatch(setIsLoading(true));
-    const response = await httpRequest({
-      url: API_ROUTES?.initializePayment?.route,
-      method: API_ROUTES?.initializePayment?.method,
-      needToken: true,
-      body: { orderNumber: orderNumber },
-    });
-
-    if (response?.status === true) {
-      dispatch({
-        type: CheckoutTypes?.INITIALIZE_PAYMENT,
-        payload: {
-          init_payment: response?.result,
-          init_result: response?.status,
-        },
-      });
-
+export const initializePayment =
+  (orderNumber, verify, masterID, ref, data) => async (dispatch) => {
+    try {
       dispatch(setIsLoading(true));
-      const result = await httpRequest({
-        url: API_ROUTES?.verifyPayment?.route + response?.[0]?.reference,
-        method: API_ROUTES?.verifyPayment?.method,
+      const response = await httpRequest({
+        url: API_ROUTES?.initializePayment?.route,
+        method: API_ROUTES?.initializePayment?.method,
         needToken: true,
+        body: { orderNumber: orderNumber },
       });
 
-      console.log(result);
-      console.log(response?.[0]?.reference);
+      if (response?.status === true) {
+        dispatch({
+          type: CheckoutTypes?.INITIALIZE_PAYMENT,
+          payload: {
+            init_payment: response?.result,
+            init_result: response?.status,
+          },
+        });
+
+        dispatch(setIsLoading(true));
+
+        const res = await httpRequest({
+          url: API_ROUTES?.verifyPayment?.route + ref,
+          method: API_ROUTES?.verifyPayment?.method,
+          needToken: true,
+        });
+
+        console.log(res);
+        console.log(ref);
+
+        if (res?.status === true) {
+          dispatch({
+            type: CheckoutTypes?.VERIFY_PAYMENT,
+            payload: res?.status,
+          });
+
+          dispatch(setIsLoading(true));
+          const resp = await httpRequest({
+            url: API_ROUTES?.verifyPayment?.route + ref,
+            method: API_ROUTES?.verifyPayment?.method,
+            needToken: true,
+          });
+
+          console.log(resp);
+          console.log(ref);
+
+          if (resp?.status === true) {
+            dispatch({
+              type: CheckoutTypes?.VERIFY_PAYMENT,
+              payload: response?.status,
+            });
+
+            dispatch(setIsLoading(true));
+            const response = await httpRequest({
+              url: API_ROUTES?.placeOrder?.route,
+              method: API_ROUTES?.placeOrder?.method,
+              needToken: true,
+              body: {
+                paymentType: data.paymentType,
+                shippingAddress: data.shippingAddress,
+                masterRecordId: data.masterRecordId,
+              },
+            });
+
+            console.log(response);
+            console.log(data);
+
+            if (response?.status === true) {
+              dispatch({
+                type: CheckoutTypes?.PLACE_ORDER,
+                payload: response?.result?.success_message,
+              });
+            }
+          }
+        }
+      }
+    } catch (error) {
+      console.log(error);
     }
-  } catch (error) {
-    console.log(error);
-  }
-};
+  };
 
 export const getOrderNumber = (country_id) => async (dispatch) => {
   try {
@@ -241,7 +289,7 @@ export const placeOrder = (data) => async (dispatch) => {
     if (response?.status === true) {
       dispatch({
         type: CheckoutTypes?.PLACE_ORDER,
-        payload: response?.result,
+        payload: response?.result?.success_message,
       });
     }
   } catch (error) {

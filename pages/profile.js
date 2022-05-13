@@ -5,20 +5,26 @@ import ShoppingHistory from '../components/Profile/ShoppingHistory';
 import Navbar from '../src/shared-components/navbar/Navbar';
 import Footer from '../src/page-components/Footer';
 import { useSelector } from 'react-redux';
-import Spinner from '../components/Spinner';
 
 function Profile() {
-  const { loading } = useSelector((state) => state.auth);
-
-  if (loading) {
-    return <Spinner />;
-  }
   return (
-    <>
+    <Box
+      sx={{
+        position: 'relative',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '0px',
+      }}
+    >
       <Navbar />
       <Box
         sx={{
+          position: 'relative',
           display: 'flex',
+          width: '100%',
+          height: 'auto',
         }}
       >
         <ProfileSideNav />
@@ -27,7 +33,7 @@ function Profile() {
         </Box>
       </Box>
       <Footer />
-    </>
+    </Box>
   );
 }
 
