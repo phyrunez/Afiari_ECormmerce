@@ -30,7 +30,7 @@ const initialState = {
   order_number: [],
   selectedAddress: {},
   verify_payment: '',
-  place_order: [],
+  place_order: '',
 };
 
 const reducer = (state = initialState, action) => {

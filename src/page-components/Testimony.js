@@ -7,8 +7,20 @@ import Slider from 'react-slick';
 import { useState, useEffect, useRef } from 'react';
 import leftArrow from '../../public/leftArrow.svg';
 import rightArrow from '../../public/rightArrow.svg';
+import { useDispatch, useSelector } from 'react-redux';
+import { getTestimony } from '../redux/general/generalAction';
 
 const Testimony = () => {
+  const { testimonies } = useSelector((state) => state.general);
+
+  console.log(testimonies);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getTestimony());
+  }, []);
+
   const items = [
     {
       id: '08d9b9c5-0f91-4774-87ed-c7b75029ac53',

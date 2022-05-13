@@ -2,10 +2,28 @@ import React, { useState } from 'react';
 import { Box, Button, Divider, IconButton, Typography } from '@mui/material';
 import { ButtonSmall } from '../shared-components/Button';
 import styles from '../../styles/Payment.module.css';
+import { handleUserInput, saveTestimony } from '../redux/general/generalAction';
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 function RateUsPopUp() {
-  const [starClicked, setStarClicked] = useState(false);
-  const [itemClicked, setItemClicked] = useState('');
+  const [rating, setRating] = useState(0);
+  const [disable, setDisable] = useState(true);
+
+  const { comment } = useSelector((state) => state.general);
+
+  // user_test
+  const dispatch = useDispatch();
+
+  const handleSaveTestimony = () => {
+    const data = {
+      numberOfStars: rating,
+      comment: comment,
+    };
+
+    dispatch(saveTestimony(data));
+  };
+
   return (
     <Box
       sx={{
@@ -48,24 +66,24 @@ function RateUsPopUp() {
           marginBottom: { xs: '16px', md: '29px' },
         }}
       >
-        {[1, 2, 3, 4, 5].map((item, i) => (
-          <img
-            src={
-              starClicked && itemClicked === item
-                ? '/blackStar.svg'
-                : '/whiteStar.svg'
-            }
-            alt="star"
-            key={i}
-            width={46}
-            height={46}
-            className={styles.payment__img__star_popup}
-            onClick={() => {
-              setStarClicked(!starClicked);
-              setItemClicked(item);
-            }}
-          />
-        ))}
+        {[...Array(5)].map((item, index) => {
+          index += 1;
+          return (
+            <img
+              src={index <= rating ? '/blackStar.svg' : '/whiteStar.svg'}
+              alt="star"
+              key={index}
+              width={46}
+              height={46}
+              className={styles.payment__img__star_popup}
+              onClick={() => {
+                setRating(index);
+                setDisable(false);
+                // itemClicked.push(item);
+              }}
+            />
+          );
+        })}
       </Box>
 
       <Typography
@@ -98,6 +116,12 @@ function RateUsPopUp() {
       <input
         type="text"
         placeholder="Enter your comment here"
+        value={comment}
+        name="comment"
+        id="comment"
+        onChange={(e) => {
+          dispatch(handleUserInput('comment', e.target.value));
+        }}
         // style={{
         //   width: '503px',
         //   height: '66px',
@@ -123,6 +147,8 @@ function RateUsPopUp() {
         fontWeight="400"
         color="#fff"
         className={styles.payment__review__btn__popup}
+        disabled={disable}
+        onClick={handleSaveTestimony}
       />
     </Box>
   );

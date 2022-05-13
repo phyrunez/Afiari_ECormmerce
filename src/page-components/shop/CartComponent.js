@@ -39,6 +39,8 @@ const CartComponent = () => {
 
   const cartItems = isLogged_in ? cart?.cart?.[0]?.cart_items : items;
 
+  const currency = cartItems?.map((item) => item?.currency);
+
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
@@ -272,7 +274,7 @@ const CartComponent = () => {
             `CHECK OUT: ${
               cartItems?.length === 0
                 ? 0
-                : `${currency[0]} ` + formatCurrency(cartTotal)
+                : `${currency?.[0]} ` + formatCurrency(cartTotal)
             }`
           )}
         </Button>

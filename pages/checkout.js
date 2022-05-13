@@ -15,6 +15,7 @@ import { handleDelete } from '../src/redux/cart/cartAction';
 import { useCart } from 'react-use-cart';
 import { useDispatch, useSelector } from 'react-redux';
 import Spinner from '../components/Spinner';
+import withAuth from '../constants/ProtectedRoutes';
 
 function Checkout() {
   const [showModal, setShowModal] = useState(false);
@@ -52,10 +53,6 @@ function Checkout() {
   const handleCheckOut = () => {
     setShowPaymentForm(true);
   };
-
-  if (loading) {
-    return <Spinner />;
-  }
 
   return (
     <Box

@@ -64,9 +64,9 @@ const SignUp = () => {
     }
   };
 
-  if (loading) {
-    return <Spinner />;
-  }
+  // if (loading) {
+  //   return <Spinner />;
+  // }
   return (
     <>
       <Box

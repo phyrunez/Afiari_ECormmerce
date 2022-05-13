@@ -10,6 +10,9 @@ const initialState = {
   meta_data: {},
   cart_message: '',
   selectedCategory: '',
+  testimonies: [],
+  saved_testimony_message: '',
+  comment: '',
 };
 
 const reducer = (state = initialState, action) => {
@@ -50,6 +53,22 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         selectedCategory: action.payload,
+      };
+    case GeneralTypes.SAVE__TESTIMONY:
+      return {
+        ...state,
+        saved_testimony_message: action.payload,
+      };
+    case GeneralTypes.GET_TESTIMONY:
+      return {
+        ...state,
+        testimonies: action.payload,
+      };
+
+    case GeneralTypes.USER_INPUT:
+      return {
+        ...state,
+        [action.payload.name]: action.payload.value,
       };
 
     default:

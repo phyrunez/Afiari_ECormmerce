@@ -13,14 +13,10 @@ import styles from '../styles/Payment.module.css';
 function PaymentComplete() {
   const [showRating, setShowRating] = useState(false);
 
-  const { loading } = useSelector((state) => state.auth);
-
   const handleModal = () => {
     setShowRating(!showRating);
   };
-  if (loading) {
-    return <Spinner />;
-  }
+
   return (
     <Box
       sx={{

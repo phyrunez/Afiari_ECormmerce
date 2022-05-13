@@ -24,8 +24,10 @@ const Login = () => {
   const { country, api_error, email, isLoggged_in, password, loading } =
     useSelector((state) => state.auth);
   const dispatch = useDispatch();
-  const path = '/shop';
+
   const router = useRouter();
+  const path = router.query;
+  console.log(path);
   const [showpassword, setShowpassword] = useState(false);
 
   // useEffect(() => {
@@ -46,7 +48,7 @@ const Login = () => {
   const onSubmit = (e) => {
     e.preventDefault();
     if (email === '' || password === '') {
-      toast.error('message');
+      toast.error('Fields can not be empty');
     } else {
       const userData = {
         username: email,
@@ -59,10 +61,6 @@ const Login = () => {
       console.log(userData);
     }
   };
-
-  if (loading) {
-    return <Spinner />;
-  }
 
   return (
     <>
