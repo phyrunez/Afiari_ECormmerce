@@ -8,7 +8,7 @@ import {
 } from '../../shared-components/Button';
 import Image from 'next/image';
 import styles from '../../../styles/Shop.module.css';
-
+import { makeStyles } from '@mui/styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { useCart } from 'react-use-cart';
 import {
@@ -24,11 +24,37 @@ import {
   getCart,
   handleDelete,
 } from '../../redux/cart/cartAction';
-import { usePaystackPayment } from 'react-paystack';
+import { usePaystackPayment, PaystackButton } from 'react-paystack';
 import { toast } from 'react-toastify';
+
+const useStyles = makeStyles((theme) => ({
+  checkoutButton: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: { xs: '263', md: '515px' },
+    height: { xs: '40px', md: '79px' },
+    background: '#0A503D',
+    borderRadius: {
+      xs: '0px 0px 31.5402px 31.5402px',
+      md: '0px 0px 61.8375px 61.8375px',
+    },
+    fontWeight: '600',
+    fontSize: { xs: '12px', md: ' 25px' },
+    lineHeight: ' 19px',
+    textAlign: 'center',
+    letterSpacing: ' 0.04em',
+    cursor: 'pointer',
+    color: ' #FFFFFF',
+    '&:hover': {
+      backgroundColor: '#0a3d30',
+    },
+  },
+}));
 
 function CheckoutCart({ handleCheckOut }) {
   const { cart } = useSelector((state) => state.cart);
+  const classes = useStyles();
   const {
     isEmpty,
     totalUniqueItems,
@@ -97,31 +123,47 @@ function CheckoutCart({ handleCheckOut }) {
   const onClose = () => {
     toast.error('Order Cancel');
   };
-  const initializePayments = usePaystackPayment(config);
+  // const initializePayments = usePaystackPayment(config);
 
-  const handleOrder = async () => {
-    const ref = init_payment?.[0]?.reference;
-    const masterID = order_number?.[0]?.order_master_id;
+  // const handleOrder = async () => {
+  //   const ref = init_payment?.[0]?.reference;
+  //   const masterID = order_number?.[0]?.order_master_id;
 
-    const verify = verify_payment;
+  //   const verify = verify_payment;
 
-    const data = {
-      paymentType: selectedPayment,
-      shippingAddress: selectedAddress.id,
-      masterRecordId: masterID,
-    };
-    initializePayments(onSuccess, onClose);
-    // dispatch(initializePayment(orderNumber, verify, masterID, ref, data));
+  //   const data = {
+  //     paymentType: selectedPayment,
+  //     shippingAddress: selectedAddress.id,
+  //     masterRecordId: masterID,
+  //   };
+  //   initializePayments(onSuccess, onClose);
+  //   // dispatch(initializePayment(orderNumber, verify, masterID, ref, data));
+  // };
+
+  const componentProps = {
+    ...config,
+    text: `PLACE ORDER:
+    ${`${cart?.cart?.[0]?.currency} ` + cart?.cart?.[0]?.charged_total_cost}`,
+    onSuccess: (reference) => {
+      // verify payment here with the verify route
+      // any action that you want to perform after payment is succesfull
+      onSuccess(reference);
+      console.log('success');
+    },
+    onClose: () => {
+      //terminate payment here with the terminate route
+      onClose();
+    },
   };
 
   useEffect(() => {
     dispatch(getCart());
   }, [dispatch]);
 
-  console.log(orderNumber);
-  console.log(public_key);
-  console.log(selectedAddress.id);
-  console.log(init_payment);
+  console.log(orderNumber, 'order number');
+  console.log(public_key, 'publickey');
+  console.log(selectedAddress.id, 'selected id');
+  console.log(init_payment, 'init payment');
 
   return (
     <>
@@ -279,9 +321,13 @@ function CheckoutCart({ handleCheckOut }) {
             marginTop: '27px',
             cursor: 'pointer',
           }}
-          onClick={handleOrder}
+          // onClick={handleOrder}
         >
-          <Button
+          <PaystackButton
+            className={classes.checkoutButton}
+            {...componentProps}
+          />
+          {/* <Button
             variant="h4"
             sx={{
               display: 'flex',
@@ -310,7 +356,7 @@ function CheckoutCart({ handleCheckOut }) {
             PLACE ORDER:
             {`${cart?.cart?.[0]?.currency} ` +
               cart?.cart?.[0]?.charged_total_cost}
-          </Button>
+          </Button> */}
         </Box>
       </Box>
     </>
