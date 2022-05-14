@@ -1,13 +1,17 @@
 import { Box } from '@mui/material';
-import React from 'react';
+import React, { useEffect } from 'react';
 import ProfileSideNav from '../../components/Profile/ProfileSideNav';
 import ShoppingHistory from '../../components/Profile/ShoppingHistory';
 import Navbar from '../../src/shared-components/navbar/Navbar';
 import Footer from '../../src/page-components/Footer';
 import { useSelector } from 'react-redux';
 import ProfileSettings from '../../components/Profile/ProfileSettings';
+import { getShoppingHistory } from '../../src/redux/shopping/shoppingAction';
 
 function Profile() {
+  useEffect(() => {
+    dispatch(getShoppingHistory());
+  }, [dispatch]);
   const mo = true;
   return (
     <Box

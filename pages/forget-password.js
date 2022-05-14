@@ -1,12 +1,33 @@
 import { Box } from '@mui/system';
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 import AuthenticationPages from '../components/AuthenticationPages';
 import Spinner from '../components/Spinner';
+import {
+  handleUserInput,
+  sendConfirmationMail,
+} from '../src/redux/auth/authAction';
 import { ButtonBig as Button } from '../src/shared-components/Button';
 import { Input } from '../src/shared-components/InputComponent';
+import { useRouter } from 'next/router';
 
 const ForgetPassword = () => {
+  const { country, api_error, email, isLoggged_in, password, loading } =
+    useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
+  const router = useRouter();
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    if (email === '') {
+      toast.error('Fields can not be empty');
+    } else {
+      // dispatch(login(userData));
+      dispatch(sendConfirmationMail());
+    }
+  };
   return (
     <Box
       sx={{
@@ -28,9 +49,21 @@ const ForgetPassword = () => {
         label="Email"
         htmlFor="email"
         placeholder="somebody@mail.com"
+        onChange={(e) => {
+          dispatch(handleUserInput('email', e.target.value));
+        }}
+        name="email"
+        id="email"
+        value={email}
       />
 
-      <Button text="SUBMIT" color="#fff" backgroundColor="#0A503D" />
+      <Button
+        text="SUBMIT"
+        color="#fff"
+        backgroundColor="#0A503D"
+        onClick={onSubmit}
+        isLoading={loading}
+      />
     </Box>
   );
 };

@@ -13,6 +13,8 @@ const initialState = {
   country: '08d9c086-88ab-40d7-8029-e7df4efadc60',
   ...emptyUser,
   api_error: '',
+  confirmation_message: '',
+  forget_password: '',
 };
 
 const reducer = (state = initialState, action) => {
@@ -60,6 +62,16 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         country: action.payload,
+      };
+    case AuthTypes.FORGET_PASSWORD:
+      return {
+        ...state,
+        forget_password: action.payload,
+      };
+    case AuthTypes.EMAIL_CONFIRM:
+      return {
+        ...state,
+        confirmation_message: action.payload,
       };
 
     default:

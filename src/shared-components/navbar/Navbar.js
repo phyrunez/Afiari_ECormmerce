@@ -32,7 +32,7 @@ const Navbar = () => {
 
   const { isLogged_in } = useSelector((state) => state.auth);
   const { cart } = useSelector((state) => state.cart);
-  const [cartItems, setCartItems] = useState([]);
+  const [active, setActive] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -99,19 +99,36 @@ const Navbar = () => {
             <li
               className={styles.nav__list}
               style={{
-                fontWeight: '600',
+                fontWeight: active ? '600' : '400',
 
-                color: '#000000',
+                color: active ? '#000000' : '3a3a3a',
+              }}
+              onClick={() => {
+                setActive(true);
               }}
             >
               <Link href="/">Home </Link>
             </li>
 
-            <li className={styles.nav__list}>
+            <li
+              className={styles.nav__list}
+              style={{
+                fontWeight: active ? '600' : '400',
+
+                color: active ? '#000000' : '3a3a3a',
+              }}
+            >
               <Link href="/shop">Shops </Link>
             </li>
 
-            <li className={styles.nav__list}>
+            <li
+              className={styles.nav__list}
+              style={{
+                fontWeight: active ? '600' : '400',
+
+                color: active ? '#000000' : '3a3a3a',
+              }}
+            >
               <Link href="/">Stores around you </Link>
             </li>
           </Box>

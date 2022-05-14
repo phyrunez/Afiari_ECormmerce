@@ -1,7 +1,6 @@
 import React, { Fragment, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { API_ROUTES, authToken } from '../../constants/config';
-import { LOGIN_SUCCESS } from '../redux/auth/authTypes';
 import { httpRequest } from '../https/http';
 import * as AuthTypes from '../redux/auth/authTypes';
 import {
@@ -11,10 +10,6 @@ import {
 } from '../redux/general/generalAction';
 import { addMultipleCart, getCart } from '../redux/cart/cartAction';
 import { useCart } from 'react-use-cart';
-import {
-  getShoppingHistory,
-  getUserAddress,
-} from '../redux/shopping/shoppingAction';
 
 function AuthProvider({ children }) {
   const { isLogged_in, country, loading } = useSelector((state) => state.auth);
@@ -32,8 +27,6 @@ function AuthProvider({ children }) {
         method: API_ROUTES.userInfo.method,
         needToken: true,
       });
-
-      console.log(result);
 
       if (result?.status === true) {
         dispatch({
@@ -58,7 +51,7 @@ function AuthProvider({ children }) {
     dispatch(getAllCategories());
 
     dispatch(getAllProducts(country, PageNumber));
-    dispatch(getShoppingHistory());
+
     // dispatch(getCart());
   }, [dispatch, getAllCountries, getAllCategories, getAllProducts]);
 

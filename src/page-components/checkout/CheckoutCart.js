@@ -111,7 +111,7 @@ function CheckoutCart({ handleCheckOut }) {
       masterRecordId: masterID,
     };
     initializePayments(onSuccess, onClose);
-    dispatch(initializePayment(orderNumber, verify, masterID, ref, data));
+    // dispatch(initializePayment(orderNumber, verify, masterID, ref, data));
   };
 
   useEffect(() => {
@@ -119,7 +119,7 @@ function CheckoutCart({ handleCheckOut }) {
   }, [dispatch]);
 
   console.log(orderNumber);
-  console.log(verify_payment);
+  console.log(public_key);
   console.log(selectedAddress.id);
   console.log(init_payment);
 

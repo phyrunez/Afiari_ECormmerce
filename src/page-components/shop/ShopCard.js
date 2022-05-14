@@ -156,7 +156,7 @@ const ShopCard = () => {
           // justifyContent: 'center',
           height: '900px',
 
-          overflow: 'hidden',
+          overflowX: 'hidden',
           // marginTop: { md: "-15rem", xs: "1rem" },
           width: { sx: '100%', sm: '50%', lg: '100%' },
           '&:hover': {

@@ -7,3 +7,5 @@ export const LOGOUT = 'LOGOUT';
 export const USER_INPUT = 'USER_INPUT';
 export const GET_CURRENT_USER = 'GET_CURRENT_USER';
 export const SELECTED_COUNTRY = 'SELECTED_COUNTRY';
+export const FORGET_PASSWORD = 'FORGET_PASSWORD';
+export const EMAIL_CONFIRM = 'EMAIL_CONFIRM';

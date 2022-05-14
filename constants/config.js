@@ -16,9 +16,9 @@ const API_ROUTES = {
     method: 'POST',
   },
 
-  forgot: {
-    route: 'auth/forgot-password',
-    method: 'POST',
+  emailConfirmation: {
+    route: 'Auth/verification/confirm-email?',
+    method: 'GET',
   },
   reset: {
     route: 'auth/reset-forgotten-password',
@@ -29,9 +29,9 @@ const API_ROUTES = {
     route: 'Auth/refresh/access-token',
     method: 'POST',
   },
-  confirmation: {
-    route: 'auth/confirm-registration',
-    method: 'POST',
+  sendConfirmationMail: {
+    route: 'Auth/verification/email-confirmation/send-mail',
+    method: 'GET',
   },
   resendConfirmation: {
     route: 'auth/resend-confirmation-code',
