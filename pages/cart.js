@@ -98,6 +98,7 @@ function Cart() {
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'column',
+        // border: '1px solid red',
       }}
     >
       <Navbar />
@@ -125,7 +126,8 @@ function Cart() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          padding: '3rem 3rem',
+          padding: { md: '3rem 3rem' },
+          // border: '1px solid red',
         }}
       >
         <Box
@@ -260,8 +262,8 @@ function Cart() {
                       {/* {isLogged_in ? cart?.cart?.[0]?.currency : 'NGN'}{' '}
                   {item?.charged_unit_price} */}
                       {isLogged_in
-                        ? `${cart?.cart?.[0]?.currency} ` + item.unit_price
-                        : item?.currency}
+                        ? `${cart?.cart?.[0]?.currency}  ``${item?.unit_price}`
+                        : `${item?.currency}`}
                       {!isLogged_in && formatCurrency(item?.price)}
                     </Typography>
                   </Box>

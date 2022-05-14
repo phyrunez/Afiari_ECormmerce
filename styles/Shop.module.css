@@ -42,7 +42,7 @@
 .cart_details {
   font-weight: 600;
   font-size: 12px;
-  line-height: 8px;
+  line-height: 15px;
   text-align: center;
   letter-spacing: 0.04em;
   margin-bottom: 12px !important;
@@ -126,7 +126,7 @@
 
   .cart_details {
     font-size: 9px;
-    line-height: 8px;
+    line-height: 15px;
   }
 
   .checkout_input {
