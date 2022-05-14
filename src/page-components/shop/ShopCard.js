@@ -155,9 +155,13 @@ const ShopCard = () => {
           alignItems: 'center',
           // justifyContent: 'center',
           height: '900px',
-          overflowX: 'hidden',
+
+          overflow: 'hidden',
           // marginTop: { md: "-15rem", xs: "1rem" },
           width: { sx: '100%', sm: '50%', lg: '100%' },
+          '&:hover': {
+            overflowX: 'scroll',
+          },
         }}
       >
         {products()?.map((item, i) => (

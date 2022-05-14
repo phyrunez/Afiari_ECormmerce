@@ -3,7 +3,7 @@
 } */
 
 .shop__card__wrapper::-webkit-scrollbar {
-  width: 5px;
+  width: 0px;
 }
 .shop__card__wrapper::-webkit-scrollbar-track {
   background: #f1f1f1;

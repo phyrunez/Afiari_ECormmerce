@@ -189,12 +189,15 @@ function Cart() {
             </Box>
           ) : (
             <Box
+              className={styles.cart__warraper}
               sx={{
                 display: 'flex',
                 flexDirection: 'column',
                 padding: { xs: '1rem', md: '53px 83px' },
                 height: '300px',
+                overflow: 'scroll',
                 overflowX: 'hidden',
+
                 // width: '30%',
                 marginBottom: '2rem',
                 marginTop: '3rem',
