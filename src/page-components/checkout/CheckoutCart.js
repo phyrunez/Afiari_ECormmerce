@@ -146,6 +146,7 @@ function CheckoutCart({ handleCheckOut }) {
     ${`${cart?.cart?.[0]?.currency} ` + cart?.cart?.[0]?.charged_total_cost}`,
     onSuccess: (reference) => {
       // verify payment here with the verify route
+      // any action that you want to perform after payment is succesfull
       onSuccess(reference);
       console.log('success');
     },
