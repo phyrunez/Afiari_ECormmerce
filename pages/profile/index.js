@@ -1,5 +1,5 @@
 import { Box } from '@mui/material';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import ProfileSideNav from '../../components/Profile/ProfileSideNav';
 import ShoppingHistory from '../../components/Profile/ShoppingHistory';
 import Navbar from '../../src/shared-components/navbar/Navbar';
@@ -12,10 +12,14 @@ import ProfileOpenNotification from '../../components/Profile/ProfileOpenNotific
 
 function Profile() {
   const dispatch = useDispatch();
-  // useEffect(() => {
-  //   dispatch(getShoppingHistory());
-  // }, []);
-  const mo = true;
+
+  const [selected, setSelected] = useState('');
+  const { selectedProfileMenu } = useSelector((state) => state.general);
+
+  useEffect(() => {
+    dispatch(getShoppingHistory());
+  }, [dispatch]);
+
   return (
     <Box
       sx={{
@@ -39,9 +43,17 @@ function Profile() {
         }}
       >
         <ProfileSideNav />
-        <ProfileSettings />
-        {/* {mo ? <ProfileSettings /> : <ShoppingHistory />} */}
-        {/* <Notification /> */}
+
+        {selectedProfileMenu === 'Shopping History' ? (
+          <ShoppingHistory />
+        ) : selectedProfileMenu === 'Notification' ? (
+          <Notification />
+        ) : selectedProfileMenu === 'Profile Settings' ? (
+          <ProfileSettings />
+        ) : (
+          <ShoppingHistory />
+        )}
+
         {/* <ProfileOpenNotification /> */}
       </Box>
       <Footer />

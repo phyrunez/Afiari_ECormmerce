@@ -74,9 +74,9 @@ const Navbar = () => {
             cursor: 'pointer',
           }}
         >
-          {/* <Link href="/"> */}
-          <Box>{logo}</Box>
-          {/* </Link> */}
+          <Link href="/">
+            <Box>{logo}</Box>
+          </Link>
         </Box>
 
         <Toolbar

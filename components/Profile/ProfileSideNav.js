@@ -13,7 +13,8 @@ import {
   Typography,
 } from '@mui/material';
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { getSelectedProfileMenu } from '../../src/redux/general/generalAction';
 import styles from '../../styles/Profile.module.css';
 
 function ProfileSideNav() {
@@ -22,7 +23,11 @@ function ProfileSideNav() {
 
   const [active, setActive] = useState(false);
 
-  const [selectedProfileList, setSelectedProfileList] = useState(false);
+  const [selectedProfileList, setSelectedProfileList] = useState('');
+
+  console.log(selectedProfileList);
+
+  const dispatch = useDispatch();
 
   const profileItems = [
     {
@@ -124,9 +129,9 @@ function ProfileSideNav() {
       <Box
         component="ul"
         className={styles.profile__side__nav__list}
-        onClick={() => {
-          setSelectedProfileList(!selectedProfileList);
-        }}
+        // onClick={() => {
+        //   setSelectedProfileList(!selectedProfileList);
+        // }}
         sx={{
           marginBottom: '500px',
         }}
@@ -136,6 +141,16 @@ function ProfileSideNav() {
             component="li"
             key={i}
             className={styles.profile__side__nav__list_item}
+            onClick={() => {
+              setSelectedProfileList(item.name);
+              dispatch(getSelectedProfileMenu(item.name));
+            }}
+            sx={{
+              // border: '2px solid red',
+              background:
+                selectedProfileList === item.name ? { md: '#0a503d' } : '#fff',
+              color: selectedProfileList === item.name ? '#fff' : '#000',
+            }}
             // sx={{
             //   background: selectedProfileList === true ? ' #0A503D' : '#fff',
             // }}
@@ -144,9 +159,10 @@ function ProfileSideNav() {
               sx={{
                 // border: '2px solid red',
                 color:
-                  selectedProfileList === item.name ? '#F7A929' : '#3A4942',
+                  selectedProfileList === item.name
+                    ? { xs: '#F7A929', md: '#3A4942' }
+                    : '#3A4942',
               }}
-              onClick={() => setSelectedProfileList(item.name)}
             >
               {item.icon}
             </IconButton>

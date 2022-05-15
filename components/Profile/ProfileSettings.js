@@ -1,5 +1,5 @@
 import { Email, Phone, Visibility, VisibilityOff } from '@mui/icons-material';
-import { Box, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import {
   handleUserInput,
@@ -15,6 +15,7 @@ function ProfileSettings() {
   const [visible, setVisible] = useState(false);
   const [day, setDay] = useState(0);
   const [month, setMonth] = useState('');
+  const [country, setCountry] = useState('');
 
   const {
     email,
@@ -28,7 +29,6 @@ function ProfileSettings() {
     password,
     loading,
     address,
-    country,
   } = useSelector((state) => state.auth);
 
   const dispatch = useDispatch();
@@ -39,7 +39,7 @@ function ProfileSettings() {
       FirstName: firstName,
       LastName: lastName,
       BirthDay: day,
-      BirthMonth: birth_month,
+      BirthMonth: month,
       BirthYear: birth_month,
       PhoneNumber: phone_number,
       ProfilePicture: picture_url,
@@ -78,7 +78,7 @@ function ProfileSettings() {
           variant="h2"
           className={styles.profile__header}
           sx={{
-            marginTop: '2rem',
+            // marginTop: '2rem',
             marginBottom: '16px',
           }}
         >
@@ -119,11 +119,28 @@ function ProfileSettings() {
               Michael Adewole
             </Typography>
           </Box>
-          <input
+          {/* <input
             type="file"
             placeholder="UPDATE PROFILE"
             className={styles.profile__image__upload__btn}
+          /> */}
+          <input
+            type="file"
+            accept="image/*"
+            style={{ display: 'none' }}
+            id="contained-button-file"
+            className={styles.profile__image__upload__btn}
           />
+          <label htmlFor="contained-button-file">
+            <Button
+              variant="contained"
+              color="primary"
+              component="span"
+              className={styles.profile__image__upload__btn}
+            >
+              UPDATE PHOTO
+            </Button>
+          </label>
         </Box>
 
         <Box
@@ -249,13 +266,13 @@ function ProfileSettings() {
               placeholder="Country"
               className={styles.profile__settings__select}
               onChange={(e) => {
-                dispatch(handleUserInput('country', e.target.value));
+                setCountry(e.target.value);
               }}
               name="country"
               id="country"
               value={country}
             >
-              <option value="">Nigeria</option>
+              <option value="Nigeria">Nigeria</option>
             </select>
           </Box>
 
@@ -309,13 +326,17 @@ function ProfileSettings() {
               <select
                 className={styles.profile__settings__select}
                 onChange={(e) => {
-                  dispatch(handleUserInput('birth_month', e.target.value));
+                  setMonth(e.target.value);
                 }}
                 name="birth_month"
                 id="birth_month"
-                value={birth_month}
+                value={month}
               >
-                <option value="">07</option>
+                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((item, i) => (
+                  <option key={i} value={item}>
+                    {item}
+                  </option>
+                ))}
               </select>
             </Box>
           </Box>
