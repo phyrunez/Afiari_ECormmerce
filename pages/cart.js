@@ -80,9 +80,6 @@ function Cart() {
 
   const onClick = () => {
     if (isLogged_in) {
-      dispatch(publicKey());
-      dispatch(getOrderNumber(country));
-
       router.push('/checkout');
     } else {
       toast.error('You need to be logged in');
@@ -98,6 +95,7 @@ function Cart() {
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'column',
+        // border: '1px solid red',
       }}
     >
       <Navbar />
@@ -125,7 +123,8 @@ function Cart() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          padding: '3rem 3rem',
+          padding: { md: '3rem 3rem' },
+          // border: '1px solid red',
         }}
       >
         <Box
@@ -189,12 +188,15 @@ function Cart() {
             </Box>
           ) : (
             <Box
+              className={styles.cart__warraper}
               sx={{
                 display: 'flex',
                 flexDirection: 'column',
                 padding: { xs: '1rem', md: '53px 83px' },
                 height: '300px',
+                overflow: 'scroll',
                 overflowX: 'hidden',
+
                 // width: '30%',
                 marginBottom: '2rem',
                 marginTop: '3rem',
@@ -257,8 +259,9 @@ function Cart() {
                       {/* {isLogged_in ? cart?.cart?.[0]?.currency : 'NGN'}{' '}
                   {item?.charged_unit_price} */}
                       {isLogged_in
-                        ? `${cart?.cart?.[0]?.currency} ` + item.unit_price
-                        : item?.currency}
+                        ? `${cart?.cart?.[0]?.currency}  ` +
+                          `${item?.unit_price}`
+                        : `${item?.currency}`}
                       {!isLogged_in && formatCurrency(item?.price)}
                     </Typography>
                   </Box>

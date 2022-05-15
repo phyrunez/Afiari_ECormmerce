@@ -11,17 +11,26 @@ const API_ROUTES = {
     route: 'Account/get/my-profile',
     method: 'GET',
   },
+  updateProfile: {
+    route: 'Account/update-profile',
+    method: 'PUT',
+  },
   signup: {
     route: 'Auth/signup',
     method: 'POST',
   },
 
-  forgot: {
-    route: 'auth/forgot-password',
+  forgetPassword: {
+    route: 'Account/forgot-password',
     method: 'POST',
   },
-  reset: {
-    route: 'auth/reset-forgotten-password',
+
+  verifyPasswordReset: {
+    route: 'Account/verify/password-reset/',
+    method: 'GET',
+  },
+  resetPassword: {
+    route: 'Account/reset-password',
     method: 'POST',
   },
 
@@ -29,9 +38,9 @@ const API_ROUTES = {
     route: 'Auth/refresh/access-token',
     method: 'POST',
   },
-  confirmation: {
-    route: 'auth/confirm-registration',
-    method: 'POST',
+  sendConfirmationMail: {
+    route: 'Auth/verification/email-confirmation/send-mail',
+    method: 'GET',
   },
   resendConfirmation: {
     route: 'auth/resend-confirmation-code',

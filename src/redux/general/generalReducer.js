@@ -13,6 +13,7 @@ const initialState = {
   testimonies: [],
   saved_testimony_message: '',
   comment: '',
+  selectedProfileMenu: '',
 };
 
 const reducer = (state = initialState, action) => {
@@ -53,6 +54,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         selectedCategory: action.payload,
+      };
+    case GeneralTypes.GET_SELECTED_PROFILE_MENU:
+      return {
+        ...state,
+        selectedProfileMenu: action.payload,
       };
     case GeneralTypes.SAVE__TESTIMONY:
       return {

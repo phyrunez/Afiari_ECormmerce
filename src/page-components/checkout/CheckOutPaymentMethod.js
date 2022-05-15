@@ -3,9 +3,11 @@ import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import {
   getAddress,
+  getOrderNumber,
   getPaymentOptions,
   handleSelectedAddress,
   handleSelectedPaymentMethod,
+  publicKey,
 } from '../../redux/checkout/checkoutAction';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -18,6 +20,7 @@ function CheckOutPaymentMethod({ handleModal }) {
     selectedAddress,
   } = useSelector((state) => state.checkout);
 
+  const { country } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -85,6 +88,8 @@ function CheckOutPaymentMethod({ handleModal }) {
                 }}
                 onClick={() => {
                   dispatch(handleSelectedPaymentMethod(item.id));
+                  dispatch(publicKey());
+                  dispatch(getOrderNumber(country));
                   console.log(selectedPayment);
                 }}
               >

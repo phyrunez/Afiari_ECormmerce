@@ -155,118 +155,76 @@ const ShopCard = () => {
           alignItems: 'center',
           // justifyContent: 'center',
           height: '900px',
+
           overflowX: 'hidden',
           // marginTop: { md: "-15rem", xs: "1rem" },
           width: { sx: '100%', sm: '50%', lg: '100%' },
+          '&:hover': {
+            overflowX: 'scroll',
+          },
         }}
       >
-        {products()?.map((item, i) => (
-          <Box
-            key={item.id}
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'space-around',
-              // marginTop: '29px',
-              width: '100%',
-              padding: '29px 16px',
-              cursor: 'pointer',
-            }}
-          >
+        {products().length === 0 ? (
+          <Box>
+            <h1>Category Empty</h1>
+          </Box>
+        ) : (
+          products()?.map((item, i) => (
             <Box
-              component="div"
+              key={item.id}
               sx={{
                 display: 'flex',
-                justifyContent: 'space-evenly',
-                width: { md: '80%', xs: '100%' },
-                height: { md: '200px', xs: '139.06px' },
-                background: '#FFFFFF',
-                boxShadow: '0px 4.16667px 8.33333px rgba(0, 0, 0, 0.08)',
-                borderRadius: ' 5.20833px',
-                padding: '1rem 1rem',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'space-around',
+                // marginTop: '29px',
+                width: '100%',
+                padding: '29px 16px',
+                cursor: 'pointer',
               }}
             >
-              {/* <Link href={`/shop/${item.id}`}> */}
-              <Box
-                sx={{
-                  height: '100%',
-                }}
-                onClick={() => {
-                  router.push(`/shop/${item.id}`);
-                }}
-              >
-                {item?.images[0]?.image_url ? (
-                  <Image
-                    key={item?.images[0]?.id}
-                    loader={() => item?.images[0]?.image_url}
-                    src={item?.images[0]?.image_url}
-                    alt="product"
-                    width={222}
-                    height={140}
-                    className={styles.product_img}
-                    unoptimized={true}
-                  />
-                ) : (
-                  <Image
-                    src="/fish.png"
-                    alt="product"
-                    width={50}
-                    height={50}
-                    className={styles.product_img}
-                  />
-                )}
-              </Box>
-              {/* </Link> */}
-
               <Box
                 component="div"
                 sx={{
                   display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'flex-start',
-                  justifyContent: 'center',
-                  width: '50%',
-                  // marginLeft: '1rem',
-                  padding: '0 1rem',
+                  justifyContent: 'space-evenly',
+                  width: { md: '80%', xs: '100%' },
+                  height: { md: '200px', xs: '139.06px' },
+                  background: '#FFFFFF',
+                  boxShadow: '0px 4.16667px 8.33333px rgba(0, 0, 0, 0.08)',
+                  borderRadius: ' 5.20833px',
+                  padding: '1rem 1rem',
                 }}
               >
                 {/* <Link href={`/shop/${item.id}`}> */}
                 <Box
                   sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'flex-start',
+                    height: '100%',
                   }}
                   onClick={() => {
                     router.push(`/shop/${item.id}`);
                   }}
                 >
-                  <Typography
-                    variant="p"
-                    className={styles.cart_product_details}
-                  >
-                    {item.name}
-                  </Typography>
-                  <Typography
-                    variant="p"
-                    className={styles.cart_product_details}
-                    sx={{
-                      fontWeight: '400',
-                      marginBottom: { xs: '10px', md: '30px' },
-                    }}
-                  >
-                    {item.description}
-                  </Typography>
-                  <Typography
-                    variant="p"
-                    className={styles.cart_product_details}
-                    sx={{
-                      marginBottom: { xs: '0px', md: '13px' },
-                    }}
-                  >
-                    NGN {formatCurrency(item?.price)}
-                  </Typography>
+                  {item?.images[0]?.image_url ? (
+                    <Image
+                      key={item?.images[0]?.id}
+                      loader={() => item?.images[0]?.image_url}
+                      src={item?.images[0]?.image_url}
+                      alt="product"
+                      width={222}
+                      height={140}
+                      className={styles.product_img}
+                      unoptimized={true}
+                    />
+                  ) : (
+                    <Image
+                      src="/fish.png"
+                      alt="product"
+                      width={50}
+                      height={50}
+                      className={styles.product_img}
+                    />
+                  )}
                 </Box>
                 {/* </Link> */}
 
@@ -274,43 +232,95 @@ const ShopCard = () => {
                   component="div"
                   sx={{
                     display: 'flex',
-                    width: '100%',
-                    marginTop: '16px',
+                    flexDirection: 'column',
+                    alignItems: 'flex-start',
+                    justifyContent: 'center',
+                    width: '50%',
+                    // marginLeft: '1rem',
+                    padding: '0 1rem',
                   }}
                 >
-                  <Button
+                  {/* <Link href={`/shop/${item.id}`}> */}
+                  <Box
                     sx={{
-                      width: { xs: '56px', md: '85px' },
-                      height: { xs: '18px', md: '35px' },
-                      borderRadius: '50px',
-                      fontSize: { xs: '9px', md: '12px' },
-                      backgroundColor: ' #0A503D',
-                      color: '#fff',
-                      '&:hover': {
-                        backgroundColor: '#0a3d30',
-                        color: '#fff',
-                      },
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'flex-start',
                     }}
                     onClick={() => {
-                      const data = {
-                        country: country,
-                        id: item.id,
-                        isLogged_in: isLogged_in,
-                      };
-                      if (isLogged_in) {
-                        dispatch(addCart(data));
-                      } else {
-                        addItem(item);
-                      }
+                      router.push(`/shop/${item.id}`);
                     }}
                   >
-                    ADD
-                  </Button>
+                    <Typography
+                      variant="p"
+                      className={styles.cart_product_details}
+                    >
+                      {item.name}
+                    </Typography>
+                    <Typography
+                      variant="p"
+                      className={styles.cart_product_details}
+                      sx={{
+                        fontWeight: '400',
+                        marginBottom: { xs: '10px', md: '30px' },
+                      }}
+                    >
+                      {item.description}
+                    </Typography>
+                    <Typography
+                      variant="p"
+                      className={styles.cart_product_details}
+                      sx={{
+                        marginBottom: { xs: '0px', md: '13px' },
+                      }}
+                    >
+                      NGN {formatCurrency(item?.price)}
+                    </Typography>
+                  </Box>
+                  {/* </Link> */}
+
+                  <Box
+                    component="div"
+                    sx={{
+                      display: 'flex',
+                      width: '100%',
+                      marginTop: '16px',
+                    }}
+                  >
+                    <Button
+                      sx={{
+                        width: { xs: '56px', md: '85px' },
+                        height: { xs: '18px', md: '35px' },
+                        borderRadius: '50px',
+                        fontSize: { xs: '9px', md: '12px' },
+                        backgroundColor: ' #0A503D',
+                        color: '#fff',
+                        '&:hover': {
+                          backgroundColor: '#0a3d30',
+                          color: '#fff',
+                        },
+                      }}
+                      onClick={() => {
+                        const data = {
+                          country: country,
+                          id: item.id,
+                          isLogged_in: isLogged_in,
+                        };
+                        if (isLogged_in) {
+                          dispatch(addCart(data));
+                        } else {
+                          addItem(item);
+                        }
+                      }}
+                    >
+                      ADD
+                    </Button>
+                  </Box>
                 </Box>
               </Box>
             </Box>
-          </Box>
-        ))}
+          ))
+        )}
       </Box>
 
       <Box

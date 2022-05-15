@@ -23,7 +23,7 @@ export const setUserCountry = (value) => ({
 export const logInUser = (user, router, path) => async (dispatch) => {
   try {
     dispatch(setIsLoading(true));
-    console.log(user);
+
     const result = await httpRequest({
       url: API_ROUTES.login.route,
       method: API_ROUTES.login.method,
@@ -31,8 +31,6 @@ export const logInUser = (user, router, path) => async (dispatch) => {
       isFormData: false,
       body: { ...user },
     });
-    console.log(result);
-    console.log(path);
 
     if (result.status === true) {
       dispatch(setIsLoading(false));
@@ -74,7 +72,7 @@ export const logInUser = (user, router, path) => async (dispatch) => {
 export const signUpUser = (user, router) => async (dispatch) => {
   try {
     dispatch(setIsLoading(true));
-    console.log(user);
+
     const result = await httpRequest({
       url: API_ROUTES.signup.route,
       method: API_ROUTES.signup.method,
@@ -82,7 +80,6 @@ export const signUpUser = (user, router) => async (dispatch) => {
       isFormData: false,
       body: { ...user },
     });
-    console.log(result);
 
     if (result.status === true) {
       dispatch(setIsLoading(false));
@@ -122,4 +119,155 @@ export const logout = () => (dispatch) => {
   });
   localStorage.removeItem(authToken);
   localStorage.removeItem(refreshToken);
+};
+
+export const sendConfirmationMail = () => async (dispatch) => {
+  try {
+    dispatch(setIsLoading(true));
+    const result = await httpRequest({
+      url: API_ROUTES?.sendConfirmationMail?.route,
+      method: API_ROUTES?.sendConfirmationMail?.method,
+    });
+    console.log(result);
+
+    if (result?.status === true) {
+      dispatch(setIsLoading(false));
+      dispatch({
+        type: AuthTypes?.SEND__EMAIL,
+        payload: result?.success_message,
+      });
+
+      router.push('/reset-password');
+    } else {
+      dispatch(setIsLoading(false));
+      dispatch({
+        type: AuthTypes?.SEND__EMAIL,
+        payload: result?.error_message,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const verifyPasswordReset = (email, token) => async (dispatch) => {
+  try {
+    dispatch(setIsLoading(true));
+    const result = await httpRequest({
+      url: API_ROUTES?.verifyPasswordReset?.route + email + token,
+      method: API_ROUTES?.verifyPasswordReset?.method,
+    });
+    // console.log(result);
+
+    if (result.status === true) {
+      dispatch(setIsLoading(false));
+      dispatch({
+        type: AuthTypes?.EMAIL_CONFIRM,
+        payload: result?.success_message,
+      });
+
+      // router.push('/password-reset-success');
+    } else {
+      dispatch({
+        type: AuthTypes?.EMAIL_CONFIRM,
+        payload: result?.error_message,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const resetPassword = (userData) => async (dispatch) => {
+  try {
+    dispatch(setIsLoading(true));
+    const result = await httpRequest({
+      url: API_ROUTES?.resetPassword?.route,
+      method: API_ROUTES?.resetPassword?.method,
+
+      body: {
+        ...userData,
+      },
+    });
+    // console.log(result);
+
+    if (result.status === true) {
+      dispatch(setIsLoading(false));
+      dispatch({
+        type: AuthTypes?.RESET_PASSWORD,
+        payload: result?.success_message,
+      });
+
+      // router.push('/password-reset-success');
+    } else {
+      dispatch({
+        type: AuthTypes?.RESET_PASSWORD,
+        payload: result?.error_message,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const forgetPassword = (email) => async (dispatch) => {
+  try {
+    dispatch(setIsLoading(true));
+    const result = await httpRequest({
+      url: API_ROUTES?.forgetPassword?.route,
+      method: API_ROUTES?.forgetPassword?.method,
+      body: {
+        email: email,
+      },
+    });
+    console.log(result);
+
+    if (result.status === true) {
+      dispatch(setIsLoading(false));
+      dispatch({
+        type: AuthTypes?.FORGET_PASSWORD,
+        payload: result,
+      });
+
+      // router.push('/password-reset-success');
+    } else {
+      dispatch({
+        type: AuthTypes?.FORGET_PASSWORD,
+        payload: result?.error_message,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const updateProfile = (data) => async (dispatch) => {
+  try {
+    dispatch(setIsLoading(true));
+    const result = await httpRequest({
+      url: API_ROUTES?.updateProfile?.route,
+      method: API_ROUTES?.updateProfile?.method,
+      body: {
+        ...data,
+      },
+    });
+    console.log(result);
+
+    if (result.status === true) {
+      dispatch(setIsLoading(false));
+      dispatch({
+        type: AuthTypes?.UPDATE__PROFILE,
+        payload: result,
+      });
+
+      // router.push('/password-reset-success');
+    } else {
+      dispatch({
+        type: AuthTypes?.UPDATE__PROFILE,
+        payload: result?.error_message,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
 };

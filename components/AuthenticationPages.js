@@ -18,6 +18,7 @@ const AuthenticationPages = ({
   paddingxs,
   paddinglg,
   btnText,
+  onClick,
 }) => {
   return (
     <>
@@ -106,7 +107,12 @@ const AuthenticationPages = ({
           )}
 
           {btnText && (
-            <Button text={btnText} color="#fff" backgroundColor="#0A503D" />
+            <Button
+              text={btnText}
+              color="#fff"
+              backgroundColor="#0A503D"
+              onClick={onClick}
+            />
           )}
 
           <Typography

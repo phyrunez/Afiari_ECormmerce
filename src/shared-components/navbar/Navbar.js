@@ -32,7 +32,7 @@ const Navbar = () => {
 
   const { isLogged_in } = useSelector((state) => state.auth);
   const { cart } = useSelector((state) => state.cart);
-  const [cartItems, setCartItems] = useState([]);
+  const [active, setActive] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -99,19 +99,36 @@ const Navbar = () => {
             <li
               className={styles.nav__list}
               style={{
-                fontWeight: '600',
+                fontWeight: active ? '600' : '400',
 
-                color: '#000000',
+                color: active ? '#000000' : '3a3a3a',
+              }}
+              onClick={() => {
+                setActive(true);
               }}
             >
               <Link href="/">Home </Link>
             </li>
 
-            <li className={styles.nav__list}>
+            <li
+              className={styles.nav__list}
+              style={{
+                fontWeight: active ? '600' : '400',
+
+                color: active ? '#000000' : '3a3a3a',
+              }}
+            >
               <Link href="/shop">Shops </Link>
             </li>
 
-            <li className={styles.nav__list}>
+            <li
+              className={styles.nav__list}
+              style={{
+                fontWeight: active ? '600' : '400',
+
+                color: active ? '#000000' : '3a3a3a',
+              }}
+            >
               <Link href="/">Stores around you </Link>
             </li>
           </Box>
@@ -176,9 +193,11 @@ const Navbar = () => {
                 cursor: 'pointer',
               }}
             >
-              <Image src="/profile.svg" width={24} height={24} alt="profile" />
+              <Link href="/profile">
+                <img src="/profile.svg" width={24} height={24} alt="profile" />
+              </Link>
               {show === false ? (
-                <Image
+                <img
                   src="/arrowDown.svg"
                   width={12}
                   height={6}
@@ -186,7 +205,7 @@ const Navbar = () => {
                   onClick={() => setShow(!show)}
                 />
               ) : (
-                <Image
+                <img
                   src="/arrowUp.svg"
                   width={12}
                   height={6}
@@ -443,7 +462,7 @@ const Navbar = () => {
                       cursor: 'pointer',
                     }}
                   >
-                    <Image
+                    <img
                       src="/profile.svg"
                       width={24}
                       height={24}
@@ -453,14 +472,14 @@ const Navbar = () => {
                       }}
                     />
                     {show === false ? (
-                      <Image
+                      <img
                         src="/arrowDown.svg"
                         width={12}
                         height={6}
                         alt="arrow down"
                       />
                     ) : (
-                      <Image
+                      <img
                         src="/arrowUp.svg"
                         width={12}
                         height={6}
@@ -580,7 +599,7 @@ const Navbar = () => {
                 }}
               >
                 <li className={styles.nav__service__link}>
-                  <Image
+                  <img
                     src={FreeShipping}
                     alt="Free Shipping"
                     width={15}
@@ -589,7 +608,7 @@ const Navbar = () => {
                   Free Shipping
                 </li>
                 <li className={styles.nav__service__link}>
-                  <Image
+                  <img
                     src={returnsIcon}
                     alt="Easy Returns"
                     width={15}
@@ -598,7 +617,7 @@ const Navbar = () => {
                   Easy Returns
                 </li>
                 <li className={styles.nav__service__link}>
-                  <Image
+                  <img
                     src={CardPayment}
                     alt="Card Payment"
                     width={15}
@@ -607,7 +626,7 @@ const Navbar = () => {
                   Secure Payment
                 </li>
                 <li className={styles.nav__service__link}>
-                  <Image
+                  <img
                     src={OnlineSupport}
                     alt="Online Support"
                     width={15}

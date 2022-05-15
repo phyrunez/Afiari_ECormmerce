@@ -1,14 +1,25 @@
 import { Box } from '@mui/material';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ProfileSideNav from '../../components/Profile/ProfileSideNav';
 import ShoppingHistory from '../../components/Profile/ShoppingHistory';
 import Navbar from '../../src/shared-components/navbar/Navbar';
 import Footer from '../../src/page-components/Footer';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import ProfileSettings from '../../components/Profile/ProfileSettings';
+import { getShoppingHistory } from '../../src/redux/shopping/shoppingAction';
+import Notification from '../../components/Profile/Notification';
+import ProfileOpenNotification from '../../components/Profile/ProfileOpenNotification';
 
 function Profile() {
-  const mo = true;
+  const dispatch = useDispatch();
+
+  const [selected, setSelected] = useState('');
+  const { selectedProfileMenu } = useSelector((state) => state.general);
+
+  useEffect(() => {
+    dispatch(getShoppingHistory());
+  }, [dispatch]);
+
   return (
     <Box
       sx={{
@@ -19,7 +30,7 @@ function Profile() {
         justifyContent: 'center',
         padding: '0px',
         width: '100%',
-        border: '1px solid red',
+        // border: '1px solid red',
       }}
     >
       <Navbar />
@@ -32,7 +43,18 @@ function Profile() {
         }}
       >
         <ProfileSideNav />
-        {mo ? <ProfileSettings /> : <ShoppingHistory />}
+
+        {selectedProfileMenu === 'Shopping History' ? (
+          <ShoppingHistory />
+        ) : selectedProfileMenu === 'Notification' ? (
+          <Notification />
+        ) : selectedProfileMenu === 'Profile Settings' ? (
+          <ProfileSettings />
+        ) : (
+          <ShoppingHistory />
+        )}
+
+        {/* <ProfileOpenNotification /> */}
       </Box>
       <Footer />
     </Box>

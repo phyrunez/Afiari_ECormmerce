@@ -4,7 +4,7 @@ export const appRoutes = {
   SHOP: '/shop',
   PRODUCT: '/shop/[productId]',
   REGISTER: '/sign-up',
-  FORGOT: '/forgot-password',
+  FORGOT: '/forget-password',
   RESET: '/reset-password',
   CART: '/cart',
   PROFILE: '/profile',

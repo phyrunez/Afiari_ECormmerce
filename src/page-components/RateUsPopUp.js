@@ -6,7 +6,7 @@ import { handleUserInput, saveTestimony } from '../redux/general/generalAction';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
-function RateUsPopUp() {
+function RateUsPopUp({ handleModal }) {
   const [rating, setRating] = useState(0);
   const [disable, setDisable] = useState(true);
 
@@ -22,6 +22,8 @@ function RateUsPopUp() {
     };
 
     dispatch(saveTestimony(data));
+    handleModal();
+    toast.success('Thank you for your feedback');
   };
 
   return (

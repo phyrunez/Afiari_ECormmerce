@@ -1,5 +1,5 @@
 import { Box, Divider, IconButton, Typography } from '@mui/material';
-import React from 'react';
+import React, { useEffect } from 'react';
 import Footer from '../src/page-components/Footer';
 import Navbar from '../src/shared-components/navbar/Navbar';
 import styles from '../styles/Shop.module.css';
@@ -16,6 +16,10 @@ import { useCart } from 'react-use-cart';
 import { useDispatch, useSelector } from 'react-redux';
 import Spinner from '../components/Spinner';
 import withAuth from '../constants/ProtectedRoutes';
+import {
+  getOrderNumber,
+  publicKey,
+} from '../src/redux/checkout/checkoutAction';
 
 function Checkout() {
   const [showModal, setShowModal] = useState(false);
@@ -53,6 +57,11 @@ function Checkout() {
   const handleCheckOut = () => {
     setShowPaymentForm(true);
   };
+
+  useEffect(() => {
+    dispatch(publicKey());
+    dispatch(getOrderNumber(country));
+  }, []);
 
   return (
     <Box
@@ -140,7 +149,7 @@ function Checkout() {
             One last look in your cart
           </Typography>
         </Box>
-        <Box
+        {/* <Box
           sx={{
             padding: { md: '0px 58px' },
             display: { xs: 'flex', md: 'none' },
@@ -230,7 +239,7 @@ function Checkout() {
               />
             </Box>
           ))}
-        </Box>
+        </Box> */}
 
         <Divider
           sx={{

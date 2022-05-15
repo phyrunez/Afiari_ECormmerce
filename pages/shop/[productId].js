@@ -10,7 +10,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import { ArrowBackIos, IonBu } from '@mui/icons-material';
 import { getSingleProduct } from '../../src/redux/general/generalAction';
-import test from '../../public/tes1.svg';
+
 import {
   addCart,
   getCart,
@@ -21,11 +21,21 @@ import {
 import { useCart } from 'react-use-cart';
 import { formatCurrency, getNumber } from '../../src/utils/utils';
 import Spinner from '../../components/Spinner';
+import {
+  handleUserInput,
+  saveTestimony,
+} from '../../src/redux/general/generalAction';
+import BackButton from '../../src/shared-components/BackButton';
 
 function ProductDetail() {
-  const { singleProduct: product } = useSelector((state) => state.general);
+  const { singleProduct: product, comment } = useSelector(
+    (state) => state.general
+  );
   const { country, isLogged_in, loading } = useSelector((state) => state.auth);
   // const { cart } = useSelector((state) => state.cart);
+  const [rating, setRating] = useState(0);
+  const [disable, setDisable] = useState(true);
+
   const { addItem, items } = useCart();
 
   const [review, setReview] = useState(false);
@@ -65,6 +75,17 @@ function ProductDetail() {
       };
     });
     return newData;
+  };
+
+  const handleSaveTestimony = () => {
+    const data = {
+      numberOfStars: rating,
+      comment: comment,
+    };
+
+    dispatch(saveTestimony(data));
+    handleModal();
+    toast.success('Thank you for your feedback');
   };
 
   // const addToCart = () => {
@@ -198,7 +219,8 @@ function ProductDetail() {
             // border: '1px solid red',
           }}
         >
-          <Box
+          <BackButton />
+          {/* <Box
             component="div"
             sx={{
               position: 'absolute',
@@ -214,6 +236,9 @@ function ProductDetail() {
               borderRadius: '100%',
               paddingLeft: '.3rem',
             }}
+            onClick={() => {
+              router.back();
+            }}
           >
             <IconButton>
               <ArrowBackIos
@@ -226,7 +251,7 @@ function ProductDetail() {
                 }}
               />
             </IconButton>
-          </Box>
+          </Box> */}
           <Box
             component="div"
             sx={{
@@ -390,7 +415,7 @@ function ProductDetail() {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            borderBottom: ' 4px solid  #363434',
+            borderBottom: description ? ' 4px solid  #363434' : '0',
             padding: '10px 2px',
             marginRight: '3rem',
             width: '102px',
@@ -407,7 +432,7 @@ function ProductDetail() {
           variant="p"
           sx={{
             display: 'flex',
-            // borderBottom: ' 3px solid  #363434',
+            borderBottom: review ? ' 4px solid  #363434' : '0',
             padding: '10px 2px',
             marginRight: '3rem',
             width: '102px',
@@ -425,13 +450,18 @@ function ProductDetail() {
       <Box
         sx={{
           display: 'flex',
-          justifyContent: 'center',
+          // justifyContent: 'center',
           height: '869px',
+          padding: '11px 32px',
         }}
       >
         {description &&
           product?.map((item) => (
-            <Typography key={item.id}>{item.description}</Typography>
+            <Typography key={item?.id}>
+              {item?.description
+                ? item.description
+                : 'No description for this item'}
+            </Typography>
           ))}
         {review &&
           product?.map((item) => (
@@ -440,41 +470,151 @@ function ProductDetail() {
               component="div"
               sx={{
                 display: 'flex',
+                justifyContent: 'space-evenly',
               }}
             >
               <Box
                 component="div"
                 sx={{
-                  width: '34px',
-                  height: '34px',
-                  background: ' #FFFFFF',
-                  border: ' 0.33px solid #3A3A3A',
-                  boxSizing: ' borderBox',
+                  width: { xs: '25px', md: '100px' },
+                  height: { xs: '25px', md: '100px' },
+                  marginRight: '1rem',
                 }}
               >
-                <img src={test} alt="profile" />
+                <img
+                  src="/data.svg"
+                  alt="profile"
+                  width="100%"
+                  height="100%"
+                  style={{
+                    borderRadius: '100%',
+                  }}
+                />
               </Box>
-              <Box>
-                <Typography>Georgefx - October 8 2021</Typography>
-                <Typography>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                }}
+              >
+                <Typography
+                  sx={{
+                    fontStyle: 'normal',
+                    fontWeight: '600',
+                    fontSize: { xs: '10px', md: '16px' },
+                    lineHeight: '12px',
+                    // textAlign: 'center',
+
+                    color: ' #000000',
+                    marginBottom: '8px',
+                  }}
+                >
+                  Georgefx - October 8 2021
+                </Typography>
+                <Typography
+                  sx={{
+                    width: { xs: '187px', md: '520px' },
+                    fontStyle: 'normal',
+                    fontWeight: '400',
+                    fontSize: { xs: '10px', md: '16px' },
+                    lineHeight: { xs: '12px', md: '22px' },
+                    // textAlign: 'center',
+                    marginBottom: '26px',
+                    color: ' #000000',
+                  }}
+                >
                   This yam is the best recommended nigerian yam for the pounded
                   yam recipe and it is also suitable for other yam dishes.
                 </Typography>
-                <Typography>Add your review</Typography>
-                <Typography>Rate the product</Typography>
-                <Typography>Write your review</Typography>
-                <button
-                  style={{
-                    width: ' 32.17px',
-                    height: '9.79px',
+                <Typography
+                  sx={{
                     fontStyle: 'normal',
-                    fontWeight: '600',
-                    fontSize: ' 2.79755px',
-                    lineHeight: ' 4px',
-                    borderRadius: '8.74233px',
-                    background: '#0A503D',
-                    color: ' #FFFFFF',
+                    fontWeight: '400',
+                    fontSize: { xs: '10px', md: '25px' },
+                    lineHeight: { xs: '12px', md: '34px' },
+                    // textAlign: 'center',
+                    textDecorationLine: 'underline',
+                    marginBottom: '8px',
+                    color: ' #000000',
                   }}
+                >
+                  Add your review
+                </Typography>
+
+                <Typography
+                  sx={{
+                    fontStyle: 'normal',
+                    fontWeight: '400',
+                    fontSize: { xs: '10px', md: '16px' },
+                    lineHeight: { xs: '12px', md: '22px' },
+                    marginBottom: '4px',
+                    color: ' #000000',
+                  }}
+                >
+                  Rate the product
+                </Typography>
+
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    // justifyContent: 'space-evenly',
+                    width: { xs: '15px', md: '36px' },
+
+                    marginBottom: { xs: '16px', md: '29px' },
+                  }}
+                >
+                  {[...Array(5)].map((item, index) => {
+                    index += 1;
+                    return (
+                      <img
+                        src={
+                          index <= rating ? '/blackStar.svg' : '/whiteStar.svg'
+                        }
+                        alt="star"
+                        key={index}
+                        width="100%"
+                        height="100%"
+                        className={styles.payment__img__star_popup}
+                        onClick={() => {
+                          setRating(index);
+                          setDisable(false);
+                          // itemClicked.push(item);
+                        }}
+                      />
+                    );
+                  })}
+                </Box>
+
+                <Typography
+                  sx={{
+                    fontStyle: 'normal',
+                    fontWeight: '400',
+                    fontSize: { xs: '10px', md: '16px' },
+                    lineHeight: { xs: '12px', md: '22px' },
+                    marginBottom: '30px',
+                    color: ' #000000',
+                  }}
+                >
+                  Write your review
+                </Typography>
+
+                <input
+                  type="text"
+                  value={comment}
+                  name="comment"
+                  id="comment"
+                  onChange={(e) => {
+                    dispatch(handleUserInput('comment', e.target.value));
+                  }}
+                  className={styles.product__detail__review_input}
+                />
+
+                <button
+                  //
+                  className={styles.product__detail__review_btn}
+                  disabled={disable}
+                  onClick={handleSaveTestimony}
                 >
                   Submit
                 </button>

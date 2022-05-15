@@ -3,7 +3,6 @@ import { Typography } from '@mui/material';
 import Image from 'next/image';
 import styles from '../../styles/Categories.module.css';
 import Slider from 'react-slick';
-import { getProductCategory, reset } from '../redux/slice/ProductSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import {
@@ -12,27 +11,20 @@ import {
 } from '../redux/general/generalAction';
 
 const Categories = () => {
-  const dispatch = useDispatch();
   const { categories } = useSelector((state) => state.general);
 
   const { country, isLogged_in } = useSelector((state) => state?.auth);
-  // useEffect(() => {
-  //   dispatch(getProductsByCategory());
-  // }, [dispatch]);
 
-  // useEffect(() => {
-  //   if (isSuccess) {
-  //     dispatch(reset());
-  //   }
-  // }, [dispatch, isSuccess, reset]);
+  const router = useRouter();
+  const dispatch = useDispatch();
 
   //////////////////////////// CUSTOMIZING SOME SETTINGS ON THE REACT-SLICK SLIDER //////////////////////////
 
   const settings = {
     infinite: true,
     speed: 500,
-    slidesToShow: 6,
-    slidesToScroll: 6,
+    slidesToShow: 5,
+    slidesToScroll: 5,
     initialSlide: 0,
     responsive: [
       {
@@ -76,7 +68,7 @@ const Categories = () => {
         style={{ ...style, display: 'block' }}
         onClick={onClick}
       >
-        <Image
+        <img
           src="/leftArrow.svg"
           alt="previous buttton"
           width={20}
@@ -103,12 +95,7 @@ const Categories = () => {
           borderRadius: 'none',
         }}
       >
-        <Image
-          src="/rightArrow.svg"
-          alt="next buttton"
-          width={20}
-          height={20}
-        />
+        <img src="/rightArrow.svg" alt="next buttton" width={20} height={20} />
       </div>
     );
   };
@@ -116,7 +103,7 @@ const Categories = () => {
   //////////////////////////// END OF CUSTOMIZING THE NEXT AND PREV BUTTON ON THE REACT-SLICK SLIDER //////////////////////////
 
   // //////////////////////////// THE CARD FOR DISPLAYINY EACH CATEGORY //////////////////////////
-  const Card = ({ src, details, router, item }) => {
+  const Card = ({ src, details, item }) => {
     return (
       <div
         className={styles.top}
@@ -126,22 +113,18 @@ const Categories = () => {
           router.push({ pathname: '/shop', state: { category: item } });
         }}
       >
-        <Image
-          loader={() => src}
+        <img
           src={src}
           alt="profile"
           width={180}
           height={272}
           className={styles.img}
-          unoptimized={true}
         />
 
         <p className={styles.p}>{details}</p>
       </div>
     );
   };
-
-  const router = useRouter();
 
   //////////////////////////// END OF THE CARD FOR DISPLAYINY EACH CATEGORY //////////////////////////
 
@@ -176,7 +159,7 @@ const Categories = () => {
           className={styles.foo}
           style={{
             textAlign: 'center',
-            width: '70%',
+            width: '80%',
           }}
         >
           <Slider {...settings} prevArrow={<PrevBtn />} nextArrow={<NextBtn />}>
@@ -185,7 +168,6 @@ const Categories = () => {
                 key={item.id}
                 src={item.item_image_url}
                 details={item.item_value}
-                router={router}
                 item={item.id}
               />
             ))}

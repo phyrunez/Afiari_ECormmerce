@@ -7,9 +7,15 @@ import Image from 'next/image';
 import { ButtonBig as Button } from '../src/shared-components/Button';
 import AuthenticationPages from '../components/AuthenticationPages';
 import { useSelector } from 'react-redux';
-import Spinner from '../components/Spinner';
+import { useRouter } from 'next/router';
 
 const MailConfirmation = () => {
+  const router = useRouter();
+
+  const onClick = () => {
+    router.push('/login');
+  };
+
   return (
     <Box
       sx={{
@@ -46,7 +52,12 @@ const MailConfirmation = () => {
         Your password has been reset successfully.
       </Typography>
 
-      <Button text="LOGIN" color="#fff" backgroundColor="#0A503D" />
+      <Button
+        text="LOGIN"
+        color="#fff"
+        backgroundColor="#0A503D"
+        onClick={onClick}
+      />
     </Box>
   );
 };

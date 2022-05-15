@@ -19,6 +19,10 @@ export const setSelectedCategory = (value) => ({
   type: GeneralTypes.GET_SELECTED_CATEGORY,
   payload: value,
 });
+export const getSelectedProfileMenu = (value) => ({
+  type: GeneralTypes.GET_SELECTED_PROFILE_MENU,
+  payload: value,
+});
 
 export const getAllCountries = () => async (dispatch) => {
   try {

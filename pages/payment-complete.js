@@ -43,7 +43,7 @@ function PaymentComplete() {
             }}
             onClick={handleModal}
           ></Box>
-          <RateUsPopUp />
+          <RateUsPopUp handleModal={handleModal} />
         </>
       )}
 
