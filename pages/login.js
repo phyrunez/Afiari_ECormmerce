@@ -57,8 +57,6 @@ const Login = () => {
 
       // dispatch(login(userData));
       dispatch(logInUser(userData, router, path));
-
-      console.log(userData);
     }
   };
 

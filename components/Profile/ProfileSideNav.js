@@ -51,22 +51,28 @@ function ProfileSideNav() {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        width: active ? '45%' : '25%',
+        width: { xs: active ? '45%' : '25%', md: '45%' },
         background: ' #FFFFFF',
         border: '1px solid rgba(0, 0, 0, 0.3)',
         // marginLeft: '3rem',
         padding: '24px 0px',
-        // borderTopRightRadius: '15px',
-        // borderBottomRightRadius: '15px',
-        borderTop: 'none',
-        borderBottom: 'none',
-        zIndex: '10000000000  ',
+        borderTop: { xs: 'none' },
+        borderBottom: { xs: 'none' },
+        borderTopRightRadius: { md: '15px' },
+        borderBottomRightRadius: { md: '15px' },
+        zIndex: { xs: '10000000000000000000000  ', md: '0' },
+        // border: '1px solid red',
       }}
       className={styles.profile__side__nav__wrapper}
     >
       <Box
         onClick={() => {
           setActive(!active);
+        }}
+        sx={{
+          display: { xs: 'flex', md: 'none' },
+          // border: '1px solid red',
+          // marginTop: '-13.5rem',
         }}
       >
         <img src="/menu.svg" alt="" />
@@ -77,10 +83,18 @@ function ProfileSideNav() {
           flexDirection: 'column',
           alignItems: 'center',
           width: '100%',
-          marginBottom: '67px',
+          // marginBottom: '67px',
         }}
       >
-        <Typography variant="h2" className={styles.profile__header}>
+        <Typography
+          variant="h2"
+          className={styles.profile__header}
+          sx={
+            {
+              // marginTop: '-8rem',
+            }
+          }
+        >
           MY PROFILE
         </Typography>
 
@@ -128,6 +142,7 @@ function ProfileSideNav() {
           >
             <IconButton
               sx={{
+                // border: '2px solid red',
                 color:
                   selectedProfileList === item.name ? '#F7A929' : '#3A4942',
               }}
@@ -138,8 +153,8 @@ function ProfileSideNav() {
             <Typography
               variant="p"
               sx={{
-                display: active ? 'flex' : 'none',
-                width: { xs: '100%', sm: '70%' },
+                display: { xs: active ? 'flex' : 'none', md: 'flex' },
+                width: { xs: '100%', sm: '70%', md: '50%' },
                 fontStyle: 'normal',
                 fontWeight: '400',
                 fontSize: '14px',

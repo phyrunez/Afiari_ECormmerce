@@ -28,3 +28,10 @@
 .img {
   border-radius: 25px !important;
 }
+
+@media only screen and (max-width: 899px) {
+  .img {
+    width: 150px;
+    height: 220px;
+  }
+}

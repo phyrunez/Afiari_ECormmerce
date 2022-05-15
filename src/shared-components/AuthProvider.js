@@ -10,6 +10,7 @@ import {
 } from '../redux/general/generalAction';
 import { addMultipleCart, getCart } from '../redux/cart/cartAction';
 import { useCart } from 'react-use-cart';
+import { getShoppingHistory } from '../redux/shopping/shoppingAction';
 
 function AuthProvider({ children }) {
   const { isLogged_in, country, loading } = useSelector((state) => state.auth);
@@ -53,11 +54,12 @@ function AuthProvider({ children }) {
     dispatch(getAllProducts(country, PageNumber));
 
     // dispatch(getCart());
-  }, [dispatch, getAllCountries, getAllCategories, getAllProducts]);
+  }, [dispatch]);
 
   useEffect(() => {
     if (isLogged_in) {
       fectchProfile();
+      // dispatch(getShoppingHistory());
       const items = JSON.parse(localStorage.getItem('react-use-cart'));
 
       const cart = () => {
@@ -76,7 +78,7 @@ function AuthProvider({ children }) {
         emptyCart();
       }
     }
-  }, [isLogged_in, dispatch, getCart, addMultipleCart]);
+  }, [isLogged_in, dispatch]);
 
   return <Fragment>{children}</Fragment>;
 }

@@ -25,6 +25,7 @@ import {
   handleUserInput,
   saveTestimony,
 } from '../../src/redux/general/generalAction';
+import BackButton from '../../src/shared-components/BackButton';
 
 function ProductDetail() {
   const { singleProduct: product, comment } = useSelector(
@@ -218,7 +219,8 @@ function ProductDetail() {
             // border: '1px solid red',
           }}
         >
-          <Box
+          <BackButton />
+          {/* <Box
             component="div"
             sx={{
               position: 'absolute',
@@ -249,7 +251,7 @@ function ProductDetail() {
                 }}
               />
             </IconButton>
-          </Box>
+          </Box> */}
           <Box
             component="div"
             sx={{
@@ -455,7 +457,11 @@ function ProductDetail() {
       >
         {description &&
           product?.map((item) => (
-            <Typography key={item.id}>{item.description}</Typography>
+            <Typography key={item?.id}>
+              {item?.description
+                ? item.description
+                : 'No description for this item'}
+            </Typography>
           ))}
         {review &&
           product?.map((item) => (

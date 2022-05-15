@@ -20,7 +20,6 @@ export const handleSelectedPaymentMethod = (value) => async (dispatch) => {
     type: CheckoutTypes.SELECTED_PAYMENT,
     payload: value,
   });
-  console.log(value);
 };
 
 // address?.id,
@@ -140,87 +139,29 @@ export const getAddress = () => async (dispatch) => {
   }
 };
 
-export const initializePayment =
-  (orderNumber, verify, masterID, ref, data) => async (dispatch) => {
-    try {
-      dispatch(setIsLoading(true));
-      const response = await httpRequest({
-        url: API_ROUTES?.initializePayment?.route,
-        method: API_ROUTES?.initializePayment?.method,
-        needToken: true,
-        body: { orderNumber: orderNumber },
+export const initializePayment = (orderNumber) => async (dispatch) => {
+  try {
+    dispatch(setIsLoading(true));
+    const response = await httpRequest({
+      url: API_ROUTES?.initializePayment?.route,
+      method: API_ROUTES?.initializePayment?.method,
+      needToken: true,
+      body: { orderNumber: orderNumber },
+    });
+
+    if (response?.status === true) {
+      console.log(response.result);
+      dispatch(setIsLoading(false));
+      localStorage.setItem('ref', JSON.stringify(response?.result));
+      dispatch({
+        type: CheckoutTypes?.INITIALIZE_PAYMENT,
+        payload: response?.result,
       });
-
-      if (response?.status === true) {
-        dispatch({
-          type: CheckoutTypes?.INITIALIZE_PAYMENT,
-          payload: {
-            init_payment: response?.result,
-            init_result: response?.status,
-          },
-        });
-
-        dispatch(setIsLoading(true));
-
-        const res = await httpRequest({
-          url: API_ROUTES?.verifyPayment?.route + ref,
-          method: API_ROUTES?.verifyPayment?.method,
-          needToken: true,
-        });
-
-        console.log(res);
-        console.log(ref);
-
-        if (res?.status === true) {
-          dispatch({
-            type: CheckoutTypes?.VERIFY_PAYMENT,
-            payload: res?.status,
-          });
-
-          dispatch(setIsLoading(true));
-          const resp = await httpRequest({
-            url: API_ROUTES?.verifyPayment?.route + ref,
-            method: API_ROUTES?.verifyPayment?.method,
-            needToken: true,
-          });
-
-          console.log(resp);
-          console.log(ref);
-
-          if (resp?.status === true) {
-            dispatch({
-              type: CheckoutTypes?.VERIFY_PAYMENT,
-              payload: response?.status,
-            });
-
-            dispatch(setIsLoading(true));
-            const response = await httpRequest({
-              url: API_ROUTES?.placeOrder?.route,
-              method: API_ROUTES?.placeOrder?.method,
-              needToken: true,
-              body: {
-                paymentType: data.paymentType,
-                shippingAddress: data.shippingAddress,
-                masterRecordId: data.masterRecordId,
-              },
-            });
-
-            console.log(response);
-            console.log(data);
-
-            if (response?.status === true) {
-              dispatch({
-                type: CheckoutTypes?.PLACE_ORDER,
-                payload: response?.result?.success_message,
-              });
-            }
-          }
-        }
-      }
-    } catch (error) {
-      console.log(error);
     }
-  };
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export const getOrderNumber = (country_id) => async (dispatch) => {
   try {
@@ -232,8 +173,6 @@ export const getOrderNumber = (country_id) => async (dispatch) => {
       needToken: true,
       isFormData: false,
     });
-
-    console.log(result);
 
     if (result.status === true) {
       dispatch(setIsLoading(false));
@@ -256,10 +195,8 @@ export const verifyPayment = (ref) => async (dispatch) => {
       needToken: true,
     });
 
-    console.log(response);
-    console.log(ref);
-
     if (response?.status === true) {
+      dispatch(setIsLoading(false));
       dispatch({
         type: CheckoutTypes?.VERIFY_PAYMENT,
         payload: response?.status,
@@ -287,6 +224,7 @@ export const placeOrder = (data) => async (dispatch) => {
     console.log(data);
 
     if (response?.status === true) {
+      dispatch(setIsLoading(false));
       dispatch({
         type: CheckoutTypes?.PLACE_ORDER,
         payload: response?.result?.success_message,

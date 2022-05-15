@@ -11,17 +11,26 @@ const API_ROUTES = {
     route: 'Account/get/my-profile',
     method: 'GET',
   },
+  updateProfile: {
+    route: 'Account/update-profile',
+    method: 'PUT',
+  },
   signup: {
     route: 'Auth/signup',
     method: 'POST',
   },
 
-  emailConfirmation: {
-    route: 'Auth/verification/confirm-email?',
+  forgetPassword: {
+    route: 'Account/forgot-password',
+    method: 'POST',
+  },
+
+  verifyPasswordReset: {
+    route: 'Account/verify/password-reset/',
     method: 'GET',
   },
-  reset: {
-    route: 'auth/reset-forgotten-password',
+  resetPassword: {
+    route: 'Account/reset-password',
     method: 'POST',
   },
 

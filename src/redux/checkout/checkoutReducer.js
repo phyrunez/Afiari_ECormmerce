@@ -84,8 +84,7 @@ const reducer = (state = initialState, action) => {
     case CheckoutTypes?.INITIALIZE_PAYMENT:
       return {
         ...state,
-        init_payment: action.payload.init_payment,
-        init_result: action.payload.init_result,
+        init_payment: action.payload,
       };
     case CheckoutTypes?.VERIFY_PAYMENT:
       return {

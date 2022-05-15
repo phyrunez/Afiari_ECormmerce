@@ -133,7 +133,7 @@ export const sendConfirmationMail = () => async (dispatch) => {
     if (result?.status === true) {
       dispatch(setIsLoading(false));
       dispatch({
-        type: AuthTypes?.FORGET_PASSWORD,
+        type: AuthTypes?.SEND__EMAIL,
         payload: result?.success_message,
       });
 
@@ -141,7 +141,7 @@ export const sendConfirmationMail = () => async (dispatch) => {
     } else {
       dispatch(setIsLoading(false));
       dispatch({
-        type: AuthTypes?.FORGET_PASSWORD,
+        type: AuthTypes?.SEND__EMAIL,
         payload: result?.error_message,
       });
     }
@@ -150,14 +150,14 @@ export const sendConfirmationMail = () => async (dispatch) => {
   }
 };
 
-export const emailConfirmation = (email, token) => async (dispatch) => {
+export const verifyPasswordReset = (email, token) => async (dispatch) => {
   try {
     dispatch(setIsLoading(true));
     const result = await httpRequest({
-      url: API_ROUTES?.emailConfirmation?.route + email + token,
-      method: API_ROUTES?.emailConfirmation?.method,
+      url: API_ROUTES?.verifyPasswordReset?.route + email + token,
+      method: API_ROUTES?.verifyPasswordReset?.method,
     });
-    console.log(result);
+    // console.log(result);
 
     if (result.status === true) {
       dispatch(setIsLoading(false));
@@ -169,7 +169,101 @@ export const emailConfirmation = (email, token) => async (dispatch) => {
       // router.push('/password-reset-success');
     } else {
       dispatch({
+        type: AuthTypes?.EMAIL_CONFIRM,
+        payload: result?.error_message,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const resetPassword = (userData) => async (dispatch) => {
+  try {
+    dispatch(setIsLoading(true));
+    const result = await httpRequest({
+      url: API_ROUTES?.resetPassword?.route,
+      method: API_ROUTES?.resetPassword?.method,
+
+      body: {
+        ...userData,
+      },
+    });
+    // console.log(result);
+
+    if (result.status === true) {
+      dispatch(setIsLoading(false));
+      dispatch({
+        type: AuthTypes?.RESET_PASSWORD,
+        payload: result?.success_message,
+      });
+
+      // router.push('/password-reset-success');
+    } else {
+      dispatch({
+        type: AuthTypes?.RESET_PASSWORD,
+        payload: result?.error_message,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const forgetPassword = (email) => async (dispatch) => {
+  try {
+    dispatch(setIsLoading(true));
+    const result = await httpRequest({
+      url: API_ROUTES?.forgetPassword?.route,
+      method: API_ROUTES?.forgetPassword?.method,
+      body: {
+        email: email,
+      },
+    });
+    console.log(result);
+
+    if (result.status === true) {
+      dispatch(setIsLoading(false));
+      dispatch({
         type: AuthTypes?.FORGET_PASSWORD,
+        payload: result,
+      });
+
+      // router.push('/password-reset-success');
+    } else {
+      dispatch({
+        type: AuthTypes?.FORGET_PASSWORD,
+        payload: result?.error_message,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const updateProfile = (data) => async (dispatch) => {
+  try {
+    dispatch(setIsLoading(true));
+    const result = await httpRequest({
+      url: API_ROUTES?.updateProfile?.route,
+      method: API_ROUTES?.updateProfile?.method,
+      body: {
+        ...data,
+      },
+    });
+    console.log(result);
+
+    if (result.status === true) {
+      dispatch(setIsLoading(false));
+      dispatch({
+        type: AuthTypes?.UPDATE__PROFILE,
+        payload: result,
+      });
+
+      // router.push('/password-reset-success');
+    } else {
+      dispatch({
+        type: AuthTypes?.UPDATE__PROFILE,
         payload: result?.error_message,
       });
     }

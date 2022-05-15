@@ -5,12 +5,16 @@ import { toast } from 'react-toastify';
 import AuthenticationPages from '../components/AuthenticationPages';
 import Spinner from '../components/Spinner';
 import {
+  forgetPassword,
   handleUserInput,
   sendConfirmationMail,
 } from '../src/redux/auth/authAction';
 import { ButtonBig as Button } from '../src/shared-components/Button';
 import { Input } from '../src/shared-components/InputComponent';
 import { useRouter } from 'next/router';
+import { ArrowBackIos } from '@mui/icons-material';
+import { IconButton } from '@mui/material';
+import BackButton from '../src/shared-components/BackButton';
 
 const ForgetPassword = () => {
   const { country, api_error, email, isLoggged_in, password, loading } =
@@ -25,12 +29,14 @@ const ForgetPassword = () => {
       toast.error('Fields can not be empty');
     } else {
       // dispatch(login(userData));
-      dispatch(sendConfirmationMail());
+      dispatch(forgetPassword(email));
+      router.push('/mail-confirmation');
     }
   };
   return (
     <Box
       sx={{
+        position: 'relative',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -38,6 +44,7 @@ const ForgetPassword = () => {
         padding: '4rem',
       }}
     >
+      <BackButton />
       <AuthenticationPages
         heading="FORGOT PASSWORD"
         subHeading="Please enter your email so we can send you reset instructions"

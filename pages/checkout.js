@@ -149,7 +149,7 @@ function Checkout() {
             One last look in your cart
           </Typography>
         </Box>
-        <Box
+        {/* <Box
           sx={{
             padding: { md: '0px 58px' },
             display: { xs: 'flex', md: 'none' },
@@ -239,7 +239,7 @@ function Checkout() {
               />
             </Box>
           ))}
-        </Box>
+        </Box> */}
 
         <Divider
           sx={{

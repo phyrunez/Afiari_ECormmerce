@@ -53,6 +53,49 @@ export const Input = ({
     </Box>
   );
 };
+export const InputSmall = ({
+  label,
+  placeholder,
+  icon,
+  htmlFor,
+  type,
+  onChange,
+  name,
+  id,
+  value,
+  onClick,
+  className,
+}) => {
+  return (
+    <Box className={className} onClick={onClick}>
+      <label htmlFor={htmlFor} className={styles.label}>
+        {label}
+      </label>
+      <Box className={styles.input_icon_div}>
+        <Box
+          component="input"
+          type={type}
+          placeholder={placeholder}
+          className={styles.input}
+          onChange={onChange}
+          id={id}
+          name={name}
+          value={value}
+          required
+        />
+
+        <Box
+          sx={{
+            height: '10px',
+            // marginTop: '-.8rem',
+          }}
+        >
+          {icon}
+        </Box>
+      </Box>
+    </Box>
+  );
+};
 
 export const LoginBtnComponent = ({ text, text2 }) => {
   return (

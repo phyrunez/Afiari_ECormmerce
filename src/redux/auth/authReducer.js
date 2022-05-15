@@ -5,6 +5,8 @@ const emptyUser = {
   firstName: '',
   lastName: '',
   password: '',
+  dialCode: '',
+  address: '',
 };
 
 const initialState = {
@@ -15,6 +17,8 @@ const initialState = {
   api_error: '',
   confirmation_message: '',
   forget_password: '',
+  sent_mail: '',
+  reset_password: '',
 };
 
 const reducer = (state = initialState, action) => {
@@ -68,10 +72,25 @@ const reducer = (state = initialState, action) => {
         ...state,
         forget_password: action.payload,
       };
+    case AuthTypes.RESET_PASSWORD:
+      return {
+        ...state,
+        reset_password: action.payload,
+      };
     case AuthTypes.EMAIL_CONFIRM:
       return {
         ...state,
         confirmation_message: action.payload,
+      };
+    case AuthTypes.SEND__EMAIL:
+      return {
+        ...state,
+        sent_mail: action.payload,
+      };
+    case AuthTypes.UPDATE__PROFILE:
+      return {
+        ...state,
+        updateProfile: action.payload,
       };
 
     default:

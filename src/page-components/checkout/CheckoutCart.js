@@ -24,6 +24,7 @@ import {
   getCart,
   handleDelete,
 } from '../../redux/cart/cartAction';
+import { useRouter } from 'next/router';
 import { usePaystackPayment, PaystackButton } from 'react-paystack';
 import { toast } from 'react-toastify';
 
@@ -84,77 +85,85 @@ function CheckoutCart({ handleCheckOut }) {
     useSelector((state) => state?.auth);
 
   const dispatch = useDispatch();
+
+  const router = useRouter();
+
   const orderNumber = order_number?.[0]?.order_number;
 
   const totalAmount = order_number?.[0]?.total_cost;
 
   const finalAmount = +totalAmount?.replace(/,/g, '') * 100;
 
+  const masterID = order_number?.[0]?.order_master_id;
+
+  let getRef;
+  if (typeof window !== 'undefined') {
+    getRef = JSON.parse(localStorage.getItem('ref'));
+  }
+
+  const ref = getRef?.[0]?.reference;
+
   const config = {
-    reference: init_payment?.[0]?.reference,
+    reference: ref,
     email: email,
     amount: finalAmount,
     publicKey: public_key,
   };
 
+  const data = {
+    paymentType: selectedPayment,
+    shippingAddress: selectedAddress.id,
+    masterRecordId: masterID,
+  };
+
   // you can call this function anything
   const onSuccess = (reference) => {
-    console.log(reference);
-    // const ref = init_payment?.[0]?.reference;
-    // const masterID = order_number?.[0]?.order_master_id;
+    console.log(ref);
+    dispatch(verifyPayment(ref));
 
-    // const verify = verify_payment;
+    dispatch(placeOrder(data));
 
-    // dispatch(verifyPayment(ref));
+    toast.success('Order successful');
 
-    // if (verify === true) {
-    //   const data = {
-    //     paymentType: selectedPayment,
-    //     shippingAddress: selectedAddress.id,
-    //     masterRecordId: masterID,
-    //   };
+    localStorage.removeItem('ref');
 
-    //   dispatch(placeOrder(data));
-    //   toast.success(place_order);
-    //   console.log(data);
-    // }
+    router.push('/payment-complete');
   };
 
   const onClose = () => {
     toast.error('Order Cancel');
+    // router.push('/shop')
   };
-  // const initializePayments = usePaystackPayment(config);
+  const initializePayments = usePaystackPayment(config);
 
-  // const handleOrder = async () => {
-  //   const ref = init_payment?.[0]?.reference;
-  //   const masterID = order_number?.[0]?.order_master_id;
+  const handleOrder = () => {
+    dispatch(initializePayment(orderNumber));
 
-  //   const verify = verify_payment;
+    initializePayments(onSuccess, onClose);
+  };
 
-  //   const data = {
-  //     paymentType: selectedPayment,
-  //     shippingAddress: selectedAddress.id,
-  //     masterRecordId: masterID,
-  //   };
-  //   initializePayments(onSuccess, onClose);
-  //   // dispatch(initializePayment(orderNumber, verify, masterID, ref, data));
+  // const componentProps = {
+  //   ...config,
+  //   text: `PLACE ORDER:
+  //   ${`${cart?.cart?.[0]?.currency} ` + cart?.cart?.[0]?.charged_total_cost}`,
+
+  //   onSuccess: (reference) => {
+  //     // verify payment here with the verify route
+  //     dispatch(initializePayment(orderNumber));
+  //     console.log(orderNumber);
+  //     console.log({ ...config }, 'init payment');
+  //     console.log(config.reference, 'in');
+
+  //     // any action that you want to perform after payment is succesfull
+  //     onSuccess(reference);
+  //     console.log('success');
+  //   },
+
+  //   onClose: () => {
+  //     //terminate payment here with the terminate route
+  //     onClose();
+  //   },
   // };
-
-  const componentProps = {
-    ...config,
-    text: `PLACE ORDER:
-    ${`${cart?.cart?.[0]?.currency} ` + cart?.cart?.[0]?.charged_total_cost}`,
-    onSuccess: (reference) => {
-      // verify payment here with the verify route
-      // any action that you want to perform after payment is succesfull
-      onSuccess(reference);
-      console.log('success');
-    },
-    onClose: () => {
-      //terminate payment here with the terminate route
-      onClose();
-    },
-  };
 
   useEffect(() => {
     dispatch(getCart());
@@ -162,8 +171,9 @@ function CheckoutCart({ handleCheckOut }) {
 
   console.log(orderNumber, 'order number');
   console.log(public_key, 'publickey');
-  console.log(selectedAddress.id, 'selected id');
-  console.log(init_payment, 'init payment');
+  console.log(init_payment, 'init_payment');
+  console.log({ ...config }, 'init ');
+  console.log(init_payment?.[0]?.reference);
 
   return (
     <>
@@ -323,11 +333,11 @@ function CheckoutCart({ handleCheckOut }) {
           }}
           // onClick={handleOrder}
         >
-          <PaystackButton
+          {/* <PaystackButton
             className={classes.checkoutButton}
             {...componentProps}
-          />
-          {/* <Button
+          /> */}
+          <Button
             variant="h4"
             sx={{
               display: 'flex',
@@ -356,7 +366,7 @@ function CheckoutCart({ handleCheckOut }) {
             PLACE ORDER:
             {`${cart?.cart?.[0]?.currency} ` +
               cart?.cart?.[0]?.charged_total_cost}
-          </Button> */}
+          </Button>
         </Box>
       </Box>
     </>
