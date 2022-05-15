@@ -17,6 +17,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Spinner from '../components/Spinner';
 import withAuth from '../constants/ProtectedRoutes';
 import {
+  getAddress,
   getOrderNumber,
   publicKey,
 } from '../src/redux/checkout/checkoutAction';
@@ -61,12 +62,19 @@ function Checkout() {
   useEffect(() => {
     dispatch(publicKey());
     dispatch(getOrderNumber(country));
+    dispatch(getAddress());
   }, []);
 
   return (
     <Box
       sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'column',
         position: 'relative',
+        height: '100%',
+        width: '100%',
       }}
     >
       {/* ////////////////////// pop up /////////////////////////////////////////////// */}
@@ -79,12 +87,12 @@ function Checkout() {
               height: '100%',
               width: '100%',
               background: 'rgba(0, 0, 0, 0.53)',
-              zIndex: '10000000000000',
+              zIndex: '1000000000',
               top: 0,
             }}
             onClick={onClick}
           ></Box>
-          <CheckOutPopUp onClick={onClick} />
+          <CheckOutPopUp setShowModal={setShowModal} />
         </>
       )}
 
@@ -149,7 +157,7 @@ function Checkout() {
             One last look in your cart
           </Typography>
         </Box>
-        {/* <Box
+        <Box
           sx={{
             padding: { md: '0px 58px' },
             display: { xs: 'flex', md: 'none' },
@@ -204,7 +212,7 @@ function Checkout() {
                   variant="p"
                 ></Typography>
                 <Typography className={styles.cart_details} variant="p">
-                  {`${cart?.cart?.[0]?.currency} ` + item.unit_price}
+                  {`${cart?.cart?.[0]?.currency} ` + item.charged_cost}
                 </Typography>
               </Box>
 
@@ -239,7 +247,7 @@ function Checkout() {
               />
             </Box>
           ))}
-        </Box> */}
+        </Box>
 
         <Divider
           sx={{

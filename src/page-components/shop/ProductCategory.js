@@ -31,6 +31,10 @@ const ProductCategory = () => {
         flexDirection: 'column',
         width: '100%',
         marginBottom: '2rem',
+        h: '100%',
+        height: '100%',
+        paddingTop: '2rem',
+        // border: '1px solid red',
       }}
     >
       <Typography
@@ -42,7 +46,7 @@ const ProductCategory = () => {
           lineHeight: ' 42px',
           textAlign: 'center',
           color: ' #3A3A3A',
-          marginTop: '72px',
+          // marginTop: '72px',
           marginBottom: '9px',
         }}
       >

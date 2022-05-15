@@ -210,6 +210,7 @@ function CheckOutPaymentMethod({ handleModal }) {
             // justifyContent: 'center',
             marginTop: '52px',
             cursor: 'pointer',
+            marginBottom: '2rem',
           }}
           onClick={handleModal}
         >

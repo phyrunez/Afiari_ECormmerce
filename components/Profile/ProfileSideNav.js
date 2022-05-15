@@ -149,7 +149,10 @@ function ProfileSideNav() {
               // border: '2px solid red',
               background:
                 selectedProfileList === item.name ? { md: '#0a503d' } : '#fff',
-              color: selectedProfileList === item.name ? '#fff' : '#000',
+              color:
+                selectedProfileList === item.name
+                  ? { xs: '#000', md: '#fff' }
+                  : '#000',
             }}
             // sx={{
             //   background: selectedProfileList === true ? ' #0A503D' : '#fff',

@@ -237,7 +237,7 @@ function CheckoutCart({ handleCheckOut }) {
                   variant="p"
                 ></Typography>
                 <Typography className={styles.cart_details} variant="p">
-                  {`${cart?.cart?.[0]?.currency} ` + item.unit_price}
+                  {`${cart?.cart?.[0]?.currency} ` + item.charged_cost}
                 </Typography>
               </Box>
 

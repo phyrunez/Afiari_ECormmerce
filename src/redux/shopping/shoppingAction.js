@@ -21,9 +21,7 @@ export const getShoppingHistory = () => async (dispatch) => {
     if (result?.status == true) {
       dispatch({
         type: ShoppingTypes?.GET__SHOPPING__HISTORY,
-        payload: {
-          shopping_history: result?.result,
-        },
+        payload: result?.result,
       });
     }
   } catch (error) {

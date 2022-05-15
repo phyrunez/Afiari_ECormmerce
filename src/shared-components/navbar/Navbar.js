@@ -194,10 +194,15 @@ const Navbar = () => {
               }}
             >
               <Link href="/profile">
-                <img src="/profile.svg" width={24} height={24} alt="profile" />
+                <Image
+                  src="/profile.svg"
+                  width={24}
+                  height={24}
+                  alt="profile"
+                />
               </Link>
               {show === false ? (
-                <img
+                <Image
                   src="/arrowDown.svg"
                   width={12}
                   height={6}
@@ -205,7 +210,7 @@ const Navbar = () => {
                   onClick={() => setShow(!show)}
                 />
               ) : (
-                <img
+                <Image
                   src="/arrowUp.svg"
                   width={12}
                   height={6}
@@ -462,7 +467,7 @@ const Navbar = () => {
                       cursor: 'pointer',
                     }}
                   >
-                    <img
+                    <Image
                       src="/profile.svg"
                       width={24}
                       height={24}
@@ -472,14 +477,14 @@ const Navbar = () => {
                       }}
                     />
                     {show === false ? (
-                      <img
+                      <Image
                         src="/arrowDown.svg"
                         width={12}
                         height={6}
                         alt="arrow down"
                       />
                     ) : (
-                      <img
+                      <Image
                         src="/arrowUp.svg"
                         width={12}
                         height={6}
@@ -599,7 +604,7 @@ const Navbar = () => {
                 }}
               >
                 <li className={styles.nav__service__link}>
-                  <img
+                  <Image
                     src={FreeShipping}
                     alt="Free Shipping"
                     width={15}
@@ -608,7 +613,7 @@ const Navbar = () => {
                   Free Shipping
                 </li>
                 <li className={styles.nav__service__link}>
-                  <img
+                  <Image
                     src={returnsIcon}
                     alt="Easy Returns"
                     width={15}
@@ -617,7 +622,7 @@ const Navbar = () => {
                   Easy Returns
                 </li>
                 <li className={styles.nav__service__link}>
-                  <img
+                  <Image
                     src={CardPayment}
                     alt="Card Payment"
                     width={15}
@@ -626,7 +631,7 @@ const Navbar = () => {
                   Secure Payment
                 </li>
                 <li className={styles.nav__service__link}>
-                  <img
+                  <Image
                     src={OnlineSupport}
                     alt="Online Support"
                     width={15}

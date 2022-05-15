@@ -260,7 +260,7 @@ function Cart() {
                   {item?.charged_unit_price} */}
                       {isLogged_in
                         ? `${cart?.cart?.[0]?.currency}  ` +
-                          `${item?.unit_price}`
+                          `${item?.charged_cost}`
                         : `${item?.currency}`}
                       {!isLogged_in && formatCurrency(item?.price)}
                     </Typography>
