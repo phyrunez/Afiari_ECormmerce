@@ -141,9 +141,9 @@ function CheckoutCart({ handleCheckOut }) {
   const initializePayments = usePaystackPayment(config);
 
   const handleOrder = () => {
-    dispatch(initializePayment(orderNumber));
-
     initializePayments(onSuccess, onClose);
+    dispatch(initializePayment(orderNumber));
+    localStorage.removeItem('ref');
   };
 
   // const componentProps = {

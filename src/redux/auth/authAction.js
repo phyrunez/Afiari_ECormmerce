@@ -284,7 +284,7 @@ export const updateProfile = (data) => async (dispatch) => {
     });
     console.log(result);
 
-    if (result.status === true) {
+    if (result?.status === true) {
       dispatch(setIsLoading(false));
       dispatch({
         type: AuthTypes?.UPDATE__PROFILE,

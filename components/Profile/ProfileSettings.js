@@ -34,6 +34,18 @@ function ProfileSettings() {
     userCountry,
   } = useSelector((state) => state.auth);
 
+  console.log(
+    email,
+    firstName,
+    lastName,
+    dialCode,
+    +birth_month,
+    +birth_day,
+    birth_year,
+    phone_number,
+    picture_url
+  );
+
   const dispatch = useDispatch();
 
   const onChange = (e) => {
@@ -54,9 +66,9 @@ function ProfileSettings() {
     const data = {
       FirstName: firstName,
       LastName: lastName,
-      BirthDay: birth_day,
-      BirthMonth: birth_month,
-      BirthYear: birth_year,
+      BirthDay: +birth_day,
+      BirthMonth: +birth_month,
+      BirthYear: +birth_year,
       PhoneNumber: phone_number,
       ProfilePicture: picture_url,
     };
