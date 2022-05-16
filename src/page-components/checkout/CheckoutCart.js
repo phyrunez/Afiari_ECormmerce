@@ -121,13 +121,17 @@ function CheckoutCart({ handleCheckOut }) {
     console.log(ref);
     dispatch(verifyPayment(ref));
 
-    dispatch(placeOrder(data));
+    if (verify_payment === true) {
+      dispatch(placeOrder(data));
+      toast.success('Order successful');
 
-    toast.success('Order successful');
+      localStorage.removeItem('ref');
 
-    localStorage.removeItem('ref');
-
-    router.push('/payment-complete');
+      router.push('/payment-complete');
+    } else {
+      toast.error('Order Verification failed');
+      router.push('/shop');
+    }
   };
 
   const onClose = () => {

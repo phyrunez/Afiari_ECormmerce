@@ -29,6 +29,8 @@ function AuthProvider({ children }) {
         needToken: true,
       });
 
+      console.log(result);
+
       if (result?.status === true) {
         dispatch({
           type: AuthTypes.GET_CURRENT_USER,

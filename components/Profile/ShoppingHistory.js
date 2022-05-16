@@ -54,8 +54,8 @@ function ShoppingHistory() {
             sx={{
               fontStyle: 'normal',
               fontWeight: '400',
-              fontSize: '16px',
-              lineHeight: '22px',
+              fontSize: { xs: '16px', md: '31px' },
+              lineHeight: { xs: '22px', md: '42px' },
               //   textAlign: 'center',
               letterSpacing: ' 0.04em',
               color: ' #000000',
@@ -64,7 +64,7 @@ function ShoppingHistory() {
           >
             SHOPPING HISTORY
           </Typography>
-          {shoppingHistory &&
+          {shoppingHistory.length !== 0 ? (
             shoppingHistory.map((item) => (
               <Box
                 variant="div"
@@ -200,7 +200,21 @@ function ShoppingHistory() {
                   />
                 </Box>
               </Box>
-            ))}
+            ))
+          ) : (
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '100%',
+                height: '100%',
+                // border: '1px solid red',
+              }}
+            >
+              <h4>Your Shopping history is empty</h4>
+            </Box>
+          )}
         </Box>
       </Box>
       <Box

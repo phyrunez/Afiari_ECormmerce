@@ -12,3 +12,7 @@ export const EMAIL_CONFIRM = 'EMAIL_CONFIRM';
 export const SEND__EMAIL = 'SEND__EMAIL';
 export const RESET_PASSWORD = 'RESET_PASSWORD';
 export const UPDATE__PROFILE = 'UPDATE__PROFILE';
+export const UPLOAD__PICTURE = 'UPLOAD__PICTURE';
+export const SET__DAY = 'SET__DAY';
+export const SET__MONTH = 'SET__MONTH';
+export const SET__YEAR = 'SET__YEAR';
