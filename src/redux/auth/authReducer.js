@@ -19,6 +19,7 @@ const initialState = {
   forget_password: '',
   sent_mail: '',
   reset_password: '',
+  userCountry: '',
 };
 
 const reducer = (state = initialState, action) => {
@@ -65,7 +66,7 @@ const reducer = (state = initialState, action) => {
     case AuthTypes.SELECTED_COUNTRY:
       return {
         ...state,
-        country: action.payload,
+        userCountry: action.payload,
       };
     case AuthTypes.FORGET_PASSWORD:
       return {
@@ -91,6 +92,26 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         updateProfile: action.payload,
+      };
+    case AuthTypes.UPLOAD__PICTURE:
+      return {
+        ...state,
+        [action.payload.name]: action.payload.value,
+      };
+    case AuthTypes.SET__DAY:
+      return {
+        ...state,
+        [action.payload.name]: action.payload.value,
+      };
+    case AuthTypes.SET__MONTH:
+      return {
+        ...state,
+        [action.payload.name]: action.payload.value,
+      };
+    case AuthTypes.SET__YEAR:
+      return {
+        ...state,
+        [action.payload.name]: action.payload.value,
       };
 
     default:

@@ -142,14 +142,18 @@ const ShopCard = () => {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'center',
+        // justifyContent: 'center',
         width: '100%',
+        height: '100%',
+        paddingTop: '2rem',
+        // border: '1px solid red',
       }}
     >
       <Box
         component="div"
         className={styles.shop__card__wrapper}
         sx={{
+          // border: '1px solid red',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',

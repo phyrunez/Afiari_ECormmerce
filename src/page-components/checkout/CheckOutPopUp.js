@@ -13,7 +13,7 @@ import {
 } from '../../redux/checkout/checkoutAction';
 import { toast } from 'react-toastify';
 
-function CheckOutPopUp({ onClick }) {
+function CheckOutPopUp({ setShowModal }) {
   const {
     country,
     dialCode,
@@ -51,7 +51,8 @@ function CheckOutPopUp({ onClick }) {
       };
       dispatch(addAddress(userAddress));
       dispatch(getAddress());
-      onClick();
+      toast.success('Delivery Address added successfully');
+      setShowModal(false);
     }
   };
 
@@ -60,26 +61,11 @@ function CheckOutPopUp({ onClick }) {
       <Box
         sx={{
           position: 'absolute',
-          top: 0,
-          width: ' 50%',
-          height: ' 100%',
-          background: ' rgba(0, 0, 0, 0.53)',
-          zIndex: '100000000',
-          border: '1px solid red',
-        }}
-        className={styles.checkout_pop_up}
-      ></Box>
-      <Box
-        sx={{
-          position: 'absolute',
-          top: 0,
-          width: ' 100%',
-          height: ' 100%',
           display: 'flex',
-          paddingTop: '200px',
           justifyContent: 'center',
           padding: '0px .5rem',
-          zIndex: '100000000000',
+          zIndex: '1000000000000000',
+          top: '0',
         }}
         // onClick={onClick}
       >
@@ -252,10 +238,7 @@ function CheckOutPopUp({ onClick }) {
               width="338px"
               height="48px"
               color="#fff"
-              onClick={() => {
-                onClick();
-                // handleNewAddress();
-              }}
+              onClick={handleNewAddress}
             />
           </Box>
         </Box>

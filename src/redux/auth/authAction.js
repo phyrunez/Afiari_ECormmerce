@@ -20,6 +20,37 @@ export const setUserCountry = (value) => ({
   payload: value,
 });
 
+export const uploadPicture = (name, value) => ({
+  type: AuthTypes.UPLOAD__PICTURE,
+  payload: {
+    name: name,
+    value: value,
+  },
+});
+
+export const setUserDayOfBirth = (name, value) => ({
+  type: AuthTypes.SET__DAY,
+  payload: {
+    name: name,
+    value: value,
+  },
+});
+
+export const setUserMonthOfBirth = (name, value) => ({
+  type: AuthTypes.SET__MONTH,
+  payload: {
+    name: name,
+    value: value,
+  },
+});
+export const setUserYearOfBirth = (name, value) => ({
+  type: AuthTypes.SET__YEAR,
+  payload: {
+    name: name,
+    value: value,
+  },
+});
+
 export const logInUser = (user, router, path) => async (dispatch) => {
   try {
     dispatch(setIsLoading(true));
@@ -253,7 +284,7 @@ export const updateProfile = (data) => async (dispatch) => {
     });
     console.log(result);
 
-    if (result.status === true) {
+    if (result?.status === true) {
       dispatch(setIsLoading(false));
       dispatch({
         type: AuthTypes?.UPDATE__PROFILE,

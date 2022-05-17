@@ -78,6 +78,7 @@ function ProfileSideNav() {
           display: { xs: 'flex', md: 'none' },
           // border: '1px solid red',
           // marginTop: '-13.5rem',
+          cursor: 'pointer',
         }}
       >
         <img src="/menu.svg" alt="" />
@@ -104,7 +105,7 @@ function ProfileSideNav() {
         </Typography>
 
         <img
-          src="/data.svg"
+          src={picture_url ? picture_url : '/user.svg'}
           alt="profile image"
           className={styles.profile__image}
         />
@@ -121,7 +122,7 @@ function ProfileSideNav() {
             color: '#000000',
           }}
         >
-          Bankole Ibrahim
+          {first_name + last_name}
         </Typography>
       </Box>
 
@@ -149,7 +150,10 @@ function ProfileSideNav() {
               // border: '2px solid red',
               background:
                 selectedProfileList === item.name ? { md: '#0a503d' } : '#fff',
-              color: selectedProfileList === item.name ? '#fff' : '#000',
+              color:
+                selectedProfileList === item.name
+                  ? { xs: '#000', md: '#fff' }
+                  : '#000',
             }}
             // sx={{
             //   background: selectedProfileList === true ? ' #0A503D' : '#fff',

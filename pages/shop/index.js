@@ -137,6 +137,7 @@ function Shop() {
         alignItems: 'center',
         justifyContent: 'center',
         width: '100%',
+        // border: '1px solid red',
       }}
     >
       <Navbar />
@@ -267,7 +268,7 @@ function Shop() {
               display: { xs: 'flex', lg: 'none' },
               alignItems: 'center',
               justifyContent: 'space-around',
-              padding: '22px 0',
+              // padding: '22px 0',
               width: '100%',
             }}
           >
@@ -313,7 +314,7 @@ function Shop() {
             flexItem
             sx={{
               display: { xs: 'flex', md: 'none' },
-              margin: { md: '16px 0px 0px 29px', xs: '1rem 0' },
+              // margin: { md: '16px 0px 0px 29px', xs: '1rem 0' },
               border: '1px solid #E6E6E',
             }}
           ></Divider>

@@ -55,7 +55,7 @@ const SignUp = () => {
     } else {
       const userData = {
         email: email,
-        first_name: firstName,
+        firstName: firstName,
         lastName: lastName,
         password: password,
       };
