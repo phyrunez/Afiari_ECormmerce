@@ -55,6 +55,7 @@ function ShoppingHistory() {
               marginBottom: '16px',
             }}
           >
+            {/*  heading*/}
             SHOPPING HISTORY
           </Typography>
           {shoppingHistory.length !== 0 ? (
