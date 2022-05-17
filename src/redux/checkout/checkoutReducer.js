@@ -30,7 +30,8 @@ const initialState = {
   order_number: [],
   selectedAddress: {},
   verify_payment: '',
-  place_order: '',
+  place_order_message: '',
+  place_order_status: '',
 };
 
 const reducer = (state = initialState, action) => {
@@ -40,6 +41,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         loading: action.payload,
       };
+
     case CheckoutTypes.USER_INPUT:
       return {
         ...state,
@@ -99,7 +101,8 @@ const reducer = (state = initialState, action) => {
     case CheckoutTypes?.PLACE_ORDER:
       return {
         ...state,
-        place_order: action.payload,
+        place_order_status: action.payload.status,
+        place_order_message: action.payload.error,
       };
 
     default:

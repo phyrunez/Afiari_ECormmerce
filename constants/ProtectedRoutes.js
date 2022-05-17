@@ -17,8 +17,8 @@ const ProtectedRoutes = ({ router, children }) => {
     appRoutes.PRODUCT,
     appRoutes.CART,
     // appRoutes.PROFILE,
-    appRoutes.PAYMENTCOMPLETE,
-    appRoutes.THANKYOU,
+    // appRoutes.PAYMENTCOMPLETE,
+    // appRoutes.THANKYOU,
   ];
 
   const pathIsProtected = unProtectedRoutes.indexOf(router.pathname) === -1;

@@ -72,18 +72,20 @@ function CheckoutCart({ handleCheckOut }) {
     init_payment,
     order_number,
     public_key,
-    verify_payment,
     payment_meter,
     selectedPhod,
     selectedPayment,
     selectedAddress,
-    place_order,
+    place_order_message,
     init_result,
+    place_order_status,
   } = useSelector((state) => state.checkout);
 
   const { api_error, country, email, password, loading, isLogged_in } =
     useSelector((state) => state?.auth);
-
+  // // console.log(verify_payment);
+  // console.log(place_order_status);
+  // console.log(place_order_message);
   const dispatch = useDispatch();
 
   const router = useRouter();
@@ -118,32 +120,40 @@ function CheckoutCart({ handleCheckOut }) {
 
   // you can call this function anything
   const onSuccess = (reference) => {
-    console.log(ref);
     dispatch(verifyPayment(ref));
+    localStorage.removeItem('verify_status');
 
-    if (verify_payment === true) {
-      dispatch(placeOrder(data));
-      toast.success('Order successful');
+    setTimeout(() => {
+      const verify_status = JSON.parse(localStorage.getItem('verify_status'));
 
-      localStorage.removeItem('ref');
+      if (verify_status === true) {
+        dispatch(placeOrder(data));
 
-      router.push('/payment-complete');
-    } else {
-      toast.error('Order Verification failed');
-      router.push('/shop');
-    }
+        toast.success('Order successful');
+
+        localStorage.removeItem('ref');
+
+        if (place_order_status === false) {
+          toast.error(place_order_message);
+        }
+
+        // router.push('/payment-complete');
+      } else {
+        toast.error('Unable to verify payment');
+      }
+    }, 8000);
   };
 
   const onClose = () => {
     toast.error('Order Cancel');
+    localStorage.removeItem('verify_status');
     // router.push('/shop')
   };
   const initializePayments = usePaystackPayment(config);
 
   const handleOrder = () => {
-    initializePayments(onSuccess, onClose);
     dispatch(initializePayment(orderNumber));
-    localStorage.removeItem('ref');
+    initializePayments(onSuccess, onClose);
   };
 
   // const componentProps = {
@@ -172,12 +182,6 @@ function CheckoutCart({ handleCheckOut }) {
   useEffect(() => {
     dispatch(getCart());
   }, [dispatch]);
-
-  console.log(orderNumber, 'order number');
-  console.log(public_key, 'publickey');
-  console.log(init_payment, 'init_payment');
-  console.log({ ...config }, 'init ');
-  console.log(init_payment?.[0]?.reference);
 
   return (
     <>

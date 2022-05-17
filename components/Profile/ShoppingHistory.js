@@ -12,13 +12,6 @@ function ShoppingHistory() {
     (state) => state.history
   );
 
-  console.log(shoppingHistory);
-  console.log(
-    shoppingHistory?.[0]?.order_items?.map(
-      (value) => value?.product_images?.[0]?.image_url
-    )
-  );
-
   return (
     <Box
       sx={{
@@ -67,6 +60,7 @@ function ShoppingHistory() {
           {shoppingHistory.length !== 0 ? (
             shoppingHistory.map((item) => (
               <Box
+                key={item.id}
                 variant="div"
                 sx={{
                   display: 'flex',

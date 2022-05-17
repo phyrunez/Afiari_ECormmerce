@@ -1,3 +1,4 @@
+import { useTransition } from 'react';
 import { API_ROUTES, authToken, refreshToken } from '../../../constants/config';
 import { httpRequest } from '../../https/http';
 import * as CheckoutTypes from './checkoutTypes';
@@ -194,12 +195,14 @@ export const verifyPayment = (ref) => async (dispatch) => {
       method: API_ROUTES?.verifyPayment?.method,
       needToken: true,
     });
+    localStorage.setItem('verify_status', JSON.stringify(response.status));
 
     if (response?.status === true) {
       dispatch(setIsLoading(false));
+
       dispatch({
         type: CheckoutTypes?.VERIFY_PAYMENT,
-        payload: response?.status,
+        payload: response.status,
       });
     }
   } catch (error) {
@@ -209,6 +212,7 @@ export const verifyPayment = (ref) => async (dispatch) => {
 export const placeOrder = (data) => async (dispatch) => {
   try {
     dispatch(setIsLoading(true));
+
     const response = await httpRequest({
       url: API_ROUTES?.placeOrder?.route,
       method: API_ROUTES?.placeOrder?.method,
@@ -220,16 +224,49 @@ export const placeOrder = (data) => async (dispatch) => {
       },
     });
 
-    console.log(response);
-    console.log(data);
-
     if (response?.status === true) {
       dispatch(setIsLoading(false));
       dispatch({
         type: CheckoutTypes?.PLACE_ORDER,
-        payload: response?.result?.success_message,
+        payload: {
+          error: response?.error_message,
+          status: response?.status,
+        },
       });
     }
+
+    // console.log(verify_status);
+
+    // setTimeout(() => {
+    //   const verify_status = JSON.parse(localStorage.getItem('verify_status'));
+    //   console.log(verify_status);
+    //   if (verify_status === true) {
+    //     const response = httpRequest({
+    //       url: API_ROUTES?.placeOrder?.route,
+    //       method: API_ROUTES?.placeOrder?.method,
+    //       needToken: true,
+    //       body: {
+    //         paymentType: data.paymentType,
+    //         shippingAddress: data.shippingAddress,
+    //         masterRecordId: data.masterRecordId,
+    //       },
+    //     });
+
+    //     console.log(response);
+    //     console.log(data);
+
+    //     if (response?.status === true) {
+    //       dispatch(setIsLoading(false));
+    //       dispatch({
+    //         type: CheckoutTypes?.PLACE_ORDER,
+    //         payload: response?.result?.success_message,
+    //       });
+    //     }
+    //   } else {
+    //     localStorage.removeItem('verify_status');
+    //     console.log('Order Verification failed');
+    //   }
+    // }, 8000);
   } catch (error) {
     console.log(error);
   }
