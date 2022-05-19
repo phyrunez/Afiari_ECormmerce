@@ -5,6 +5,7 @@ import styles from '../../styles/Payment.module.css';
 import { handleUserInput, saveTestimony } from '../redux/general/generalAction';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
+import { useRouter } from 'next/router';
 
 function RateUsPopUp({ handleModal }) {
   const [rating, setRating] = useState(0);
@@ -15,6 +16,8 @@ function RateUsPopUp({ handleModal }) {
   // user_test
   const dispatch = useDispatch();
 
+  const router = useRouter();
+
   const handleSaveTestimony = () => {
     const data = {
       numberOfStars: rating,
@@ -24,6 +27,7 @@ function RateUsPopUp({ handleModal }) {
     dispatch(saveTestimony(data));
     handleModal();
     toast.success('Thank you for your feedback');
+    router.push('/thank-you');
   };
 
   return (

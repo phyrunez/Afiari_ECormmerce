@@ -60,6 +60,7 @@ function CheckOutPaymentMethod({ handleModal }) {
     order_number,
     public_key,
     ref,
+    verify,
   } = useSelector((state) => state.checkout);
   const { cart } = useSelector((state) => state.cart);
   const classes = useStyles();
@@ -94,12 +95,18 @@ function CheckOutPaymentMethod({ handleModal }) {
     publicKey: public_key,
     // reference: getRef,
     // ...config,
-    text: `PLACE ORDER:
+    text: `PAY NOW
     ${`${cart?.cart?.[0]?.currency} ` + cart?.cart?.[0]?.charged_total_cost}`,
 
     onSuccess: (reference) => {
       // verify payment here with the verify route
       dispatch(verifyPayment(reference.reference));
+
+      if (verify === true) {
+        toast.success('Payment received proceed to place order');
+      } else {
+        toast.error('Payment verification Failed');
+      }
       // any action that you want to perform after payment is succesfull
 
       onSuccess(reference);
@@ -328,6 +335,7 @@ function CheckOutPaymentMethod({ handleModal }) {
             // justifyContent: 'center',
             marginTop: '52px',
             cursor: 'pointer',
+
             marginBottom: '2rem',
           }}
           onClick={handleModal}

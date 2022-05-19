@@ -160,7 +160,7 @@ function Checkout() {
         </Box>
         <Box
           sx={{
-            padding: { md: '0px 58px' },
+            padding: { md: '0px 28px' },
             display: { xs: 'flex', md: 'none' },
             flexDirection: 'column',
             alignItems: { xs: 'center', lg: 'flex-start' },
@@ -184,7 +184,7 @@ function Checkout() {
                 borderBottomRightRadius: ' 11.4255px',
                 borderTopLeftRadius: ' 11.4255px',
                 padding: '1rem',
-                marginTop: '21px',
+                marginTop: '9px',
               }}
             >
               <Image
