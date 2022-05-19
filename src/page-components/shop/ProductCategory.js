@@ -78,6 +78,9 @@ const ProductCategory = () => {
           alignItems: 'center',
           justifyContent: 'center',
           width: '100%',
+          height: '400px',
+          overflowX: 'hidden',
+          // border: '1px solid red',
         }}
       >
         {categories.map((item) => (

@@ -313,10 +313,10 @@ const ShopCard = () => {
                         };
                         if (isLogged_in) {
                           dispatch(addCart(data));
-                          toast.success('Cart Added Successfully');
+                          toast.success('Product Added  Cart Successfully');
                         } else {
                           addItem(item);
-                          toast.success('Cart Added Successfully');
+                          toast.success('Product Added  Cart Successfully');
                         }
                       }}
                     >

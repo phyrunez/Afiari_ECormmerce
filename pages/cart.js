@@ -4,7 +4,10 @@ import Footer from '../src/page-components/Footer';
 import Navbar from '../src/shared-components/navbar/Navbar';
 import Image from 'next/image';
 import cart_illustration from '../public/cart_illustration.svg';
-import { AddAndRemoveCartButton } from '../src/shared-components/Button';
+import {
+  AddAndRemoveCartButton,
+  ButtonSmall,
+} from '../src/shared-components/Button';
 import styles from '../styles/Shop.module.css';
 import { Delete } from '@mui/icons-material';
 import { useRouter } from 'next/router';
@@ -25,11 +28,15 @@ import {
 import { useCart } from 'react-use-cart';
 import { formatCurrency } from '../src/utils/utils';
 import Spinner from '../components/Spinner';
+import DeleteNotification from '../src/page-components/shop/DeleteNotification';
 
 function Cart() {
   const { isLogged_in, country, public_key, loading } = useSelector(
     (state) => state.auth
   );
+
+  const [show, setShow] = useState(false);
+  const [itemID, setItemID] = useState('');
 
   const [showLogin, setShowLogin] = useState(false);
 
@@ -74,8 +81,13 @@ function Cart() {
   //   });
   // };
 
-  const handleModal = () => {
-    setShowLogin(!showLogin);
+  const handleModal = (id) => {
+    dispatch(handleDelete(id));
+    setShow(false);
+  };
+
+  const handleCancel = (id) => {
+    setShow(false);
   };
 
   const onClick = () => {
@@ -100,7 +112,15 @@ function Cart() {
     >
       <Navbar />
 
-      {/* {showLogin && (
+      {show && (
+        <DeleteNotification
+          id={itemID}
+          handleCancel={handleCancel}
+          handleModal={handleModal}
+        />
+      )}
+
+      {/* {show && (
         <>
           <Box
             sx={{
@@ -112,9 +132,22 @@ function Cart() {
               zIndex: '10000000000000',
               top: 0,
             }}
-            onClick={handleModal}
-          ></Box>
-          <LoginPopUp />
+          
+          >
+            <Box>
+              <Typography variant='p'>
+                Are you sure want to delete this Product?
+              </Typography>
+
+              <ButtonSmall 
+              text='Cancel'
+              />
+              <ButtonSmall 
+              text='Ok'
+              />
+            </Box>
+          </Box>
+          
         </>
       )} */}
 
@@ -273,9 +306,13 @@ function Cart() {
                           id: item.id,
                           country: country,
                         };
-                        isLogged_in
-                          ? dispatch(handleDelete(data))
-                          : removeItem(item?.id);
+
+                        setItemID(isLogged_in ? data : item?.id);
+                        setShow(true);
+
+                        // isLogged_in
+                        //   ? dispatch(handleDelete(data))
+                        //   : removeItem(item?.id);
                       }}
                     >
                       <Delete />

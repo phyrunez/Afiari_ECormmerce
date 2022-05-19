@@ -26,6 +26,7 @@ const Categories = () => {
     slidesToShow: 5,
     slidesToScroll: 5,
     initialSlide: 0,
+    dots: true,
     responsive: [
       {
         breakpoint: 1024,
@@ -106,7 +107,7 @@ const Categories = () => {
   const Card = ({ src, details, item }) => {
     return (
       <div
-        className={styles.top}
+        className={styles.categories_card}
         onClick={() => {
           dispatch(setSelectedCategory(details)),
             dispatch(getProductsByCategory(country, item));

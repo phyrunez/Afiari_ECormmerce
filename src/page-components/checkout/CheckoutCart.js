@@ -89,17 +89,22 @@ function CheckoutCart({ handleCheckOut }) {
     masterRecordId: masterID,
   };
 
-  console.log(verify);
-  console.log(data);
+  let verifyStatus;
+  if (typeof window !== 'undefined') {
+    verifyStatus = JSON.parse(localStorage.getItem('verify_status'));
+  }
 
   const handleOrder = () => {
     if (verify === true) {
       dispatch(placeOrder(data));
+
       if (orderStatus === false) {
         toast.error(orderErrorMessage);
+        localStorage.setItem('verify_status', false);
         router.push('/shop');
       } else if (orderStatus === true) {
         toast.success(orderSuccessMessage);
+        localStorage.setItem('verify_status', false);
         router.push('/payment-complete');
       }
     } else {
@@ -119,6 +124,7 @@ function CheckoutCart({ handleCheckOut }) {
       <Box
         sx={{
           marginBottom: '15rem',
+          // border: '1px solid red',
         }}
       >
         <Box
@@ -296,7 +302,7 @@ function CheckoutCart({ handleCheckOut }) {
               },
             }}
             onClick={handleOrder}
-            disabled={disable}
+            disabled={!verifyStatus}
           >
             PLACE ORDER:
             {`${cart?.cart?.[0]?.currency} ` +

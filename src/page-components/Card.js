@@ -43,6 +43,7 @@ const Card = () => {
               display: 'flex',
               flexDirection: 'column',
               order: { md: i % 2 !== 0 ? '1' : '2' },
+              marginLeft: { md: i % 2 !== 0 ? '0rem' : '92px' },
             }}
           >
             <Typography

@@ -124,7 +124,7 @@ const Testimony = () => {
   const Card = ({ src, details, star }) => {
     return (
       <div className={styles.top}>
-        {src && <Image src={src} alt="profile" width={80} height={80} />}
+        {src && <img src={src} alt="profile" width={80} height={80} />}
         <div className={styles.star}>{star} </div>
 
         <p className={styles.p}>{details}</p>
@@ -204,12 +204,12 @@ const Testimony = () => {
         }}
       >
         <Slider {...settings} prevArrow={<PrevBtn />} nextArrow={<NextBtn />}>
-          {items.map((item, i) => (
+          {testimonies.map((item, i) => (
             <Card
-              key={i}
-              src={item.image.default}
-              details={item.value}
-              star={item.rate.map((r, i) => (
+              key={item.id}
+              src={item.picture ? item.picture : '/tes2.svg'}
+              details={item.comment}
+              star={[...Array(item.stars)].map((r, i) => (
                 <IconButton
                   key={i}
                   sx={{

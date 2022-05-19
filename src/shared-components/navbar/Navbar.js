@@ -92,7 +92,7 @@ const Navbar = () => {
             component="ul"
             className={styles.nav}
             sx={{
-              width: { xs: '283px', md: '50%' },
+              width: { xs: '283px', md: '100%', lg: '50%' },
               // border: '1px solid red',
             }}
           >

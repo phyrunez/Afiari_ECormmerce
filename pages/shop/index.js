@@ -27,7 +27,8 @@ import {
   setSelectedCategory,
 } from '../../src/redux/general/generalAction';
 import Spinner from '../../components/Spinner';
-import { setIsLoading } from '../../src/redux/cart/cartAction';
+import { handleDelete, setIsLoading } from '../../src/redux/cart/cartAction';
+import DeleteNotification from '../../src/page-components/shop/DeleteNotification';
 
 function Shop() {
   const { categories } = useSelector((state) => state.general);
@@ -35,6 +36,9 @@ function Shop() {
   const { country, loading } = useSelector((state) => state.auth);
 
   const [selectedOption, setSelectedOption] = useState(null);
+
+  const [show, setShow] = useState(false);
+  const [itemID, setItemID] = useState('');
 
   const dispatch = useDispatch();
 
@@ -123,6 +127,19 @@ function Shop() {
 
   const router = useRouter();
 
+  const setId = (id) => {
+    setItemID(id);
+  };
+
+  const handleModal = (id) => {
+    setShow(!show);
+    dispatch(handleDelete(id));
+  };
+
+  const handleCancel = (id) => {
+    setShow(!show);
+  };
+
   const onChange = (selectedOption) => {
     setSelectedOption(selectedOption);
     dispatch(getProductsByCategory(country, selectedOption.id));
@@ -132,6 +149,7 @@ function Shop() {
   return (
     <Box
       sx={{
+        position: 'relative',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -141,6 +159,13 @@ function Shop() {
       }}
     >
       <Navbar />
+      {show && (
+        <DeleteNotification
+          id={itemID}
+          handleCancel={handleCancel}
+          handleModal={handleModal}
+        />
+      )}
       <Box
         className={styles.shop__header}
         sx={{
@@ -183,9 +208,30 @@ function Shop() {
               width: { xs: '100%', md: '445px', lg: '632px' },
               height: { xs: '100%', md: 'auto' },
               background: { xs: ' rgba(0, 34, 25, 0.824)', md: 'none' },
+              padding: { xs: '2rem', md: '0rem' },
             }}
           >
-            Want to buy foodstuff needed in the kitchen? <br />
+            Want to buy foodstuff needed in the kitchen?
+          </Typography>
+          <Typography
+            variant="p"
+            sx={{
+              fontWeight: '400',
+              fontSize: { xs: '16px', md: '24px' },
+              lineHeight: { xs: '33px' },
+              textAlign: { xs: 'center', md: 'justify' },
+              color: { xs: ' #FFFFFF', md: '#3a3a3a' },
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: { xs: 'center', md: 'flex-start' },
+              justifyContent: 'center',
+              width: { xs: '100%', md: '445px', lg: '632px' },
+              height: { xs: '100%', md: 'auto' },
+              background: { xs: ' rgba(0, 34, 25, 0.824)', md: 'none' },
+              padding: { xs: '2rem', md: '0rem' },
+            }}
+          >
+            {' '}
             Send us. We buy, package and deliver to you the next day
           </Typography>
 
@@ -271,6 +317,7 @@ function Shop() {
               justifyContent: 'space-around',
               // padding: '22px 0',
               width: '100%',
+              marginBottom: '1rem',
             }}
           >
             <Select
@@ -327,7 +374,7 @@ function Shop() {
           {/* //////////////////////////////////////////////// end of the next and prev arrows //////////////////////////////////////////////// */}
         </Box>
 
-        <CartComponent />
+        <CartComponent setId={setId} handleCancel={handleCancel} />
       </Box>
       <Box
         sx={{
