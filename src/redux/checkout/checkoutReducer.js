@@ -25,13 +25,13 @@ const initialState = {
   user_address: [],
   public_key: '',
   ...emptyUserAddress,
-  init_payment: [],
-  init_result: [],
   order_number: [],
   selectedAddress: {},
-  verify_payment: '',
-  place_order_message: '',
-  place_order_status: '',
+  orderErrorMessage: '',
+  orderSuccessMessage: '',
+  verify: '',
+  orderStatus: '',
+  ref: '',
 };
 
 const reducer = (state = initialState, action) => {
@@ -63,6 +63,11 @@ const reducer = (state = initialState, action) => {
         ...state,
         payment_method: action.payload,
       };
+    case CheckoutTypes.REF_NO:
+      return {
+        ...state,
+        ref: action.payload,
+      };
     case CheckoutTypes.ADD_ADDRESS:
       return {
         ...state,
@@ -83,15 +88,11 @@ const reducer = (state = initialState, action) => {
           phoneNumber: action?.payload?.phoneNumber,
         },
       };
-    case CheckoutTypes?.INITIALIZE_PAYMENT:
-      return {
-        ...state,
-        init_payment: action.payload,
-      };
+
     case CheckoutTypes?.VERIFY_PAYMENT:
       return {
         ...state,
-        verify_payment: action.payload,
+        verify: action.payload,
       };
     case CheckoutTypes?.ORDER_NUMBER:
       return {
@@ -101,8 +102,9 @@ const reducer = (state = initialState, action) => {
     case CheckoutTypes?.PLACE_ORDER:
       return {
         ...state,
-        place_order_status: action.payload.status,
-        place_order_message: action.payload.error,
+        orderStatus: action.payload.status,
+        orderErrorMessage: action.payload.error,
+        orderSuccessMessage: action.payload.successMessage,
       };
 
     default:

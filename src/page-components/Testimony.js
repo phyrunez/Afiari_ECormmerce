@@ -180,7 +180,7 @@ const Testimony = () => {
       }}
     >
       <Typography variant="h4" className={styles.testimony_details}>
-        Testimonies
+        Feedback
       </Typography>
 
       <Typography

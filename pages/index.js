@@ -39,7 +39,7 @@ const Home = () => {
             color: ' #000000',
           }}
         >
-          We want to serve you better
+          We ALWAYS want to serve you better
         </Typography>
         <Card />
       </Box>
@@ -78,8 +78,8 @@ const Home = () => {
             height: { xs: '100%', md: 'auto' },
           }}
         >
-          We will be at your door step
-          <br /> right on TIME
+          We deliver all your food items to your location
+          <br /> in 24 HOURS
         </Typography>
         <Box
           component="div"

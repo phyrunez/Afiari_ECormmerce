@@ -89,9 +89,9 @@ const reducer = (state = initialState, action) => {
         sent_mail: action.payload,
       };
     case AuthTypes.UPDATE__PROFILE:
+      const newUpdate = [...state, action.payload];
       return {
-        ...state,
-        updateProfile: action.payload,
+        newUpdate,
       };
     case AuthTypes.UPLOAD__PICTURE:
       return {

@@ -27,7 +27,7 @@ const Login = () => {
 
   const router = useRouter();
   const path = router.query;
-  console.log(path);
+  // console.log(path);
   const [showpassword, setShowpassword] = useState(false);
 
   // useEffect(() => {
@@ -47,7 +47,9 @@ const Login = () => {
   //handling form submittion
   const onSubmit = (e) => {
     e.preventDefault();
-    if (email === '' || password === '') {
+    if (api_error) {
+      toast.error(api_error);
+    } else if (email === '' || password === '') {
       toast.error('Fields can not be empty');
     } else {
       const userData = {
@@ -187,7 +189,7 @@ const Login = () => {
           >
             <Link href="/forget-password"> Forgot Password?</Link>
           </Typography>
-
+          {/* 
           {api_error && (
             <Typography
               variant="caption"
@@ -198,14 +200,14 @@ const Login = () => {
             >
               {api_error}
             </Typography>
-          )}
+          )} */}
 
           <Button
             text="LOGIN"
             color="#fff"
             backgroundColor="#0A503D"
             onClick={(e) => onSubmit(e)}
-            isLoading={loading}
+            // isLoading={loading}
           />
 
           <LoginBtnComponent

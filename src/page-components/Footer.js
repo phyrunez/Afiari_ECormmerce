@@ -80,27 +80,27 @@ const Footer = () => {
               flexDirection: 'row',
             }}
           >
-            <Link href="/youtube">
+            <Link href="https://www.youtube.com/channel/UC77LGMgeVqSEvIehzKAO_sw">
               <IconButton>
                 <YouTube className="social__icons" />
               </IconButton>
             </Link>
-            <Link href="/facebook">
+            <Link href="https://www.facebook.com/afiaridotcom">
               <IconButton>
                 <Facebook className="social__icons" />
               </IconButton>
             </Link>
-            <Link href="/insta">
+            <Link href="https://www.instagram.com/afiaridotcom/">
               <IconButton>
                 <Instagram className="social__icons" />
               </IconButton>
             </Link>
-            <Link href="/twitter">
+            <Link href="https://twitter.com/afiaridotcom">
               <IconButton>
                 <Twitter className="social__icons" />
               </IconButton>
             </Link>
-            <Link href="/whatsapp">
+            <Link href="https://wa.link/crfwt9">
               <IconButton>
                 <WhatsApp className="social__icons" />
               </IconButton>
@@ -144,33 +144,33 @@ const Footer = () => {
           }}
         >
           <Box component="ul" className={styles.footer__list}>
-            <Link href="/about">
-              <li>About Afiari</li>
+            <Link href="/shop">
+              <li>Food Market</li>
             </Link>
-            <Link href="/contact">
-              <li>Contact Us</li>
+            <Link href="/">
+              <li>Stores Around You</li>
             </Link>
-            <Link href="/help">
+            {/* <Link href="/help">
               <li>Get Help</li>
             </Link>
             <Link href="/near">
               <li>Stores near me</li>
-            </Link>
+            </Link> */}
           </Box>
           <Box component="ul" className={styles.footer__list}>
-            <Link href="/linkedin">
+            <Link href="https://www.linkedin.com/company/afiari/">
               <li>LinkedIn </li>
             </Link>
-            <Link href="/store">
-              <li>Sign up your store</li>
+            <Link href="https://www.afiari.com/blog">
+              <li>Blog</li>
             </Link>
-            <Link href="/blog">
-              <li>Afiari Blog</li>
-            </Link>
+            {/* <Link href="mailto:info@afiari.com">
+              <li>Email</li>
+            </Link> */}
           </Box>
           <Box component="ul" className={styles.footer__list}>
             <Box component="li">
-              <Link href="/email">
+              <Link href="mailto:info@afiari.com">
                 <Box className="social__icons__wrapper">
                   <IconButton>
                     <Email className="social__icons" />
@@ -188,7 +188,7 @@ const Footer = () => {
                   </IconButton>
                   <Typography variant="span">Location :</Typography>
                   <Typography variant="span">
-                    Apapa, Lagos, Nigeria, 15 Okito Street
+                    294, Herbert Macaulay, Yaba, Lagos, Nigeria
                   </Typography>
                 </Box>
               </Link>
@@ -216,7 +216,7 @@ const Footer = () => {
             <li>Terms of Service</li>
           </Link>
 
-          <li> &copy; 2021 Afiari</li>
+          <li> &copy; 2022 Afiari</li>
         </Box>
       </Box>
     </Box>

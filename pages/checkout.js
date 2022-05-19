@@ -11,7 +11,7 @@ import { useState } from 'react';
 import CheckOutOldPayment from '../src/page-components/checkout/CheckOutOldPaymentPopUp';
 import { AddAndRemoveCartButton } from '../src/shared-components/Button';
 import { Delete } from '@mui/icons-material';
-import { handleDelete } from '../src/redux/cart/cartAction';
+import { getCart, handleDelete } from '../src/redux/cart/cartAction';
 import { useCart } from 'react-use-cart';
 import { useDispatch, useSelector } from 'react-redux';
 import Spinner from '../components/Spinner';
@@ -63,6 +63,7 @@ function Checkout() {
     dispatch(publicKey());
     dispatch(getOrderNumber(country));
     dispatch(getAddress());
+    dispatch(getCart());
   }, []);
 
   return (

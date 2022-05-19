@@ -213,20 +213,23 @@ const Header = () => {
           {/* ////////////////////// HEADER TITLE TEXT FOR LANDING PAGE /////////////////////////////////// */}
           <Typography
             sx={{
+              display: 'flex',
+              // justifyContent: { xs: 'center', md: 'flex-start' },
               fontWeight: '600',
-              fontSize: { xs: '39px', md: '48px' },
+              fontSize: { xs: '39px', md: '58px' },
               lineHeight: { xs: '57px', md: '70px' },
               letterSpacing: { xs: '0.06em', lg: '0.15em' },
               textAlign: { xs: 'center', md: 'justify' },
               color: { md: '#000000', xs: ' #FFFFFF' },
               marginTop: { xs: '15px', lg: '40px' },
               marginButtom: '8px',
-              width: { xs: '300px', sm: '350px', md: '450px', lg: '550px' },
+              width: { xs: '300px', sm: '350px', md: '450px', lg: '500px' },
               // border: '1px solid red',
             }}
+            className={styles.header__header}
             variant="h1"
           >
-            We give you the best QUALITY
+            Foodstuff and Groceries at your Fingertips
           </Typography>
           <Typography
             sx={{
@@ -242,7 +245,7 @@ const Header = () => {
             }}
             variant="p"
           >
-            Buy all your food items at your convenience
+            Get all your quality food items right from where you are
           </Typography>
 
           {/* ////////////////////// END OF HEADER TITLE TEXT FOR LANDING PAGE /////////////////////////////////// */}

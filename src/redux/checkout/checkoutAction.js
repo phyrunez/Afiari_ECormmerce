@@ -150,13 +150,18 @@ export const initializePayment = (orderNumber) => async (dispatch) => {
       body: { orderNumber: orderNumber },
     });
 
+    console.log(response);
+
+    localStorage.setItem(
+      'ref',
+      JSON.stringify(response?.result?.[0]?.reference)
+    );
+
     if (response?.status === true) {
-      console.log(response.result);
       dispatch(setIsLoading(false));
-      localStorage.setItem('ref', JSON.stringify(response?.result));
       dispatch({
-        type: CheckoutTypes?.INITIALIZE_PAYMENT,
-        payload: response?.result,
+        type: CheckoutTypes?.REF_NO,
+        payload: response?.result?.[0]?.reference,
       });
     }
   } catch (error) {
@@ -190,11 +195,13 @@ export const getOrderNumber = (country_id) => async (dispatch) => {
 export const verifyPayment = (ref) => async (dispatch) => {
   try {
     dispatch(setIsLoading(true));
+
     const response = await httpRequest({
       url: API_ROUTES?.verifyPayment?.route + ref,
       method: API_ROUTES?.verifyPayment?.method,
       needToken: true,
     });
+    console.log(response);
     localStorage.setItem('verify_status', JSON.stringify(response.status));
 
     if (response?.status === true) {
@@ -224,8 +231,18 @@ export const placeOrder = (data) => async (dispatch) => {
       },
     });
 
+    console.log(response.error_message);
+    console.log(response.success_message);
+
     if (response?.status === true) {
-      dispatch(setIsLoading(false));
+      dispatch({
+        type: CheckoutTypes?.PLACE_ORDER,
+        payload: {
+          status: response?.status,
+          successMessage: response?.success_message,
+        },
+      });
+    } else {
       dispatch({
         type: CheckoutTypes?.PLACE_ORDER,
         payload: {
@@ -234,39 +251,6 @@ export const placeOrder = (data) => async (dispatch) => {
         },
       });
     }
-
-    // console.log(verify_status);
-
-    // setTimeout(() => {
-    //   const verify_status = JSON.parse(localStorage.getItem('verify_status'));
-    //   console.log(verify_status);
-    //   if (verify_status === true) {
-    //     const response = httpRequest({
-    //       url: API_ROUTES?.placeOrder?.route,
-    //       method: API_ROUTES?.placeOrder?.method,
-    //       needToken: true,
-    //       body: {
-    //         paymentType: data.paymentType,
-    //         shippingAddress: data.shippingAddress,
-    //         masterRecordId: data.masterRecordId,
-    //       },
-    //     });
-
-    //     console.log(response);
-    //     console.log(data);
-
-    //     if (response?.status === true) {
-    //       dispatch(setIsLoading(false));
-    //       dispatch({
-    //         type: CheckoutTypes?.PLACE_ORDER,
-    //         payload: response?.result?.success_message,
-    //       });
-    //     }
-    //   } else {
-    //     localStorage.removeItem('verify_status');
-    //     console.log('Order Verification failed');
-    //   }
-    // }, 8000);
   } catch (error) {
     console.log(error);
   }

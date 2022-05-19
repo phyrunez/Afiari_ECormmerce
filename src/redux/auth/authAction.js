@@ -81,19 +81,19 @@ export const logInUser = (user, router, path) => async (dispatch) => {
         router.push('/shop');
       }
     } else {
-      dispatch(setIsLoading(false));
+      // dispatch(setIsLoading(false));
       dispatch({
         type: AuthTypes.LOGIN_FAILED,
         payload: result.error_message,
       });
-      setTimeout(
-        () =>
-          dispatch({
-            type: AuthTypes.LOGIN_FAILED,
-            payload: '',
-          }),
-        4000
-      );
+      // setTimeout(
+      //   () =>
+      //     dispatch({
+      //       type: AuthTypes.LOGIN_FAILED,
+      //       payload: '',
+      //     }),
+      //   4000
+      // );
     }
   } catch (error) {
     console.log(error);
