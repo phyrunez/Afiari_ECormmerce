@@ -7,15 +7,15 @@ const Card = () => {
   const data = [
     {
       img: require('../../public/foodrecipe.png'),
-      heading: 'Food recipe',
+      heading: 'Shop By Food Recipe [Coming Soon]',
       details:
-        ' You can view our list of recipes and shop for the ingredients of that meal instantly',
+        'You can view our list of recipes and shop for the ingredients of that meal in one click.',
     },
     {
       img: require('../../public/order by health challenge.png'),
-      heading: 'Health Challenge',
+      heading: 'Food Based on Health Conditions[Coming Soon]',
       details:
-        'We care so much about your health as we have a list of healthy food items that help manage certain health conditions',
+        'We care so much about your health as we have a list of healthy food items that help manage certain health Your health is a priority to us and we have a list of healthy food items that help manage certain health conditions.',
     },
   ];
   return (

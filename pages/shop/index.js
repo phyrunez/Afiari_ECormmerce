@@ -172,8 +172,8 @@ function Shop() {
             variant="h1"
             sx={{
               fontWeight: '600',
-              fontSize: { xs: '20px', md: '48px' },
-              lineHeight: { xs: '37px', md: '65px' },
+              fontSize: { xs: '20px', md: '38px' },
+              lineHeight: { xs: '37px', md: '45px' },
               textAlign: { xs: 'center', md: 'justify' },
               color: { xs: ' #FFFFFF', md: '#3a3a3a' },
               display: 'flex',
@@ -185,7 +185,8 @@ function Shop() {
               background: { xs: ' rgba(0, 34, 25, 0.824)', md: 'none' },
             }}
           >
-            Experience Shopping with <br /> premium taste
+            Want to buy foodstuff needed in the kitchen? <br />
+            Send us. We buy, package and deliver to you the next day
           </Typography>
 
           <Box

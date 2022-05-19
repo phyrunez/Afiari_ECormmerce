@@ -60,7 +60,7 @@ function CheckOutPopUp({ setShowModal }) {
     <>
       <Box
         sx={{
-          position: 'absolute',
+          position: 'fixed',
           display: 'flex',
           justifyContent: 'center',
           padding: '0px .5rem',

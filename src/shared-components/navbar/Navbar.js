@@ -118,7 +118,7 @@ const Navbar = () => {
                 color: active ? '#000000' : '3a3a3a',
               }}
             >
-              <Link href="/shop">Shops </Link>
+              <Link href="/shop">Food Market</Link>
             </li>
 
             <li

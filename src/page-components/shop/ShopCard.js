@@ -22,6 +22,7 @@ import { addCart } from '../../redux/cart/cartAction';
 
 import { useCart } from 'react-use-cart';
 import { formatCurrency, getNumber } from '../../utils/utils';
+import { toast } from 'react-toastify';
 
 const ShopCard = () => {
   const {
@@ -312,8 +313,10 @@ const ShopCard = () => {
                         };
                         if (isLogged_in) {
                           dispatch(addCart(data));
+                          toast.success('Cart Added Successfully');
                         } else {
                           addItem(item);
+                          toast.success('Cart Added Successfully');
                         }
                       }}
                     >

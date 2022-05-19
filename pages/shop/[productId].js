@@ -181,7 +181,7 @@ function ProductDetail() {
               background: { xs: ' rgba(0, 34, 25, 0.824)', md: 'none' },
             }}
           >
-            A full description of the item
+            Item Description
           </Typography>
         </Box>
 

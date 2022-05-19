@@ -1,7 +1,7 @@
 import { Delete } from '@mui/icons-material';
 import { Button, Divider, IconButton, Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   AddAndRemoveCartButton,
   ButtonSmall,
@@ -11,13 +11,7 @@ import styles from '../../../styles/Shop.module.css';
 import { makeStyles } from '@mui/styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { useCart } from 'react-use-cart';
-import {
-  getOrderNumber,
-  initializePayment,
-  placeOrder,
-  processPayment,
-  verifyPayment,
-} from '../../redux/checkout/checkoutAction';
+import { placeOrder } from '../../redux/checkout/checkoutAction';
 import { formatCurrency } from '../../utils/utils';
 import {
   addMultipleCart,
@@ -25,7 +19,7 @@ import {
   handleDelete,
 } from '../../redux/cart/cartAction';
 import { useRouter } from 'next/router';
-import { usePaystackPayment, PaystackButton } from 'react-paystack';
+
 import { toast } from 'react-toastify';
 
 const useStyles = makeStyles((theme) => ({
@@ -69,48 +63,25 @@ function CheckoutCart({ handleCheckOut }) {
   } = useCart();
 
   const {
-    init_payment,
     order_number,
-    public_key,
-    payment_meter,
-    selectedPhod,
+    orderStatus,
+    orderErrorMessage,
+    orderSuccessMessage,
     selectedPayment,
     selectedAddress,
-    place_order_message,
-    init_result,
-    place_order_status,
+    verify,
   } = useSelector((state) => state.checkout);
+
+  const [disable, setDisable] = useState(true);
 
   const { api_error, country, email, password, loading, isLogged_in } =
     useSelector((state) => state?.auth);
-  // // console.log(verify_payment);
-  // console.log(place_order_status);
-  // console.log(place_order_message);
+
   const dispatch = useDispatch();
 
   const router = useRouter();
 
-  const orderNumber = order_number?.[0]?.order_number;
-
-  const totalAmount = order_number?.[0]?.total_cost;
-
-  const finalAmount = +totalAmount?.replace(/,/g, '') * 100;
-
   const masterID = order_number?.[0]?.order_master_id;
-
-  let getRef;
-  if (typeof window !== 'undefined') {
-    getRef = JSON.parse(localStorage.getItem('ref'));
-  }
-
-  const ref = getRef?.[0]?.reference;
-
-  const config = {
-    reference: ref,
-    email: email,
-    amount: finalAmount,
-    publicKey: public_key,
-  };
 
   const data = {
     paymentType: selectedPayment,
@@ -118,69 +89,29 @@ function CheckoutCart({ handleCheckOut }) {
     masterRecordId: masterID,
   };
 
-  // you can call this function anything
-  const onSuccess = (reference) => {
-    dispatch(verifyPayment(ref));
-    localStorage.removeItem('verify_status');
-
-    setTimeout(() => {
-      const verify_status = JSON.parse(localStorage.getItem('verify_status'));
-
-      if (verify_status === true) {
-        dispatch(placeOrder(data));
-
-        toast.success('Order successful');
-
-        localStorage.removeItem('ref');
-
-        if (place_order_status === false) {
-          toast.error(place_order_message);
-        }
-
-        // router.push('/payment-complete');
-      } else {
-        toast.error('Unable to verify payment');
-      }
-    }, 8000);
-  };
-
-  const onClose = () => {
-    toast.error('Order Cancel');
-    localStorage.removeItem('verify_status');
-    // router.push('/shop')
-  };
-  const initializePayments = usePaystackPayment(config);
+  console.log(verify);
+  console.log(data);
 
   const handleOrder = () => {
-    dispatch(initializePayment(orderNumber));
-    initializePayments(onSuccess, onClose);
+    if (verify === true) {
+      dispatch(placeOrder(data));
+      if (orderStatus === false) {
+        toast.error(orderErrorMessage);
+        router.push('/shop');
+      } else if (orderStatus === true) {
+        toast.success(orderSuccessMessage);
+        router.push('/payment-complete');
+      }
+    } else {
+      toast.error('We can not verify your payment');
+    }
   };
-
-  // const componentProps = {
-  //   ...config,
-  //   text: `PLACE ORDER:
-  //   ${`${cart?.cart?.[0]?.currency} ` + cart?.cart?.[0]?.charged_total_cost}`,
-
-  //   onSuccess: (reference) => {
-  //     // verify payment here with the verify route
-  //     dispatch(initializePayment(orderNumber));
-  //     console.log(orderNumber);
-  //     console.log({ ...config }, 'init payment');
-  //     console.log(config.reference, 'in');
-
-  //     // any action that you want to perform after payment is succesfull
-  //     onSuccess(reference);
-  //     console.log('success');
-  //   },
-
-  //   onClose: () => {
-  //     //terminate payment here with the terminate route
-  //     onClose();
-  //   },
-  // };
 
   useEffect(() => {
     dispatch(getCart());
+    if (verify === true) {
+      setDisable(false);
+    }
   }, [dispatch]);
 
   return (
@@ -339,12 +270,7 @@ function CheckoutCart({ handleCheckOut }) {
             marginTop: '27px',
             cursor: 'pointer',
           }}
-          // onClick={handleOrder}
         >
-          {/* <PaystackButton
-            className={classes.checkoutButton}
-            {...componentProps}
-          /> */}
           <Button
             variant="h4"
             sx={{
@@ -370,6 +296,7 @@ function CheckoutCart({ handleCheckOut }) {
               },
             }}
             onClick={handleOrder}
+            disabled={disable}
           >
             PLACE ORDER:
             {`${cart?.cart?.[0]?.currency} ` +

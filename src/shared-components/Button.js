@@ -220,12 +220,11 @@ export const AddAndRemoveCartButton = ({
           const data = {
             country: country,
             id: cartId,
-            quantity: quantity - 1,
+            quantity: quantity > 1 && quantity - 1,
             product_id: prodId,
           };
           if (isLogged_in) {
             dispatch(handleUpdate(data));
-            console.log('tttt');
           } else {
             updateItemQuantity(item.id, item.quantity - 1);
           }

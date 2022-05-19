@@ -7,25 +7,116 @@ import {
   getPaymentOptions,
   handleSelectedAddress,
   handleSelectedPaymentMethod,
+  initializePayment,
+  placeOrder,
   publicKey,
+  verifyPayment,
 } from '../../redux/checkout/checkoutAction';
 import { useDispatch, useSelector } from 'react-redux';
+import { ButtonSmall } from '../../shared-components/Button';
+import { usePaystackPayment, PaystackButton } from 'react-paystack';
+import { toast } from 'react-toastify';
+import { makeStyles } from '@mui/styles';
+
+const useStyles = makeStyles((theme) => ({
+  checkoutButton: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: { xs: '263', md: '515px' },
+    height: { xs: '40px', md: '79px' },
+    background: '#0A503D',
+    borderRadius: {
+      xs: '0px 0px 31.5402px 31.5402px',
+      md: '0px 0px 61.8375px 61.8375px',
+    },
+    fontWeight: '600',
+    fontSize: { xs: '12px', md: ' 25px' },
+    lineHeight: ' 19px',
+    textAlign: 'center',
+    letterSpacing: ' 0.04em',
+    cursor: 'pointer',
+    color: ' #FFFFFF',
+    '&:hover': {
+      backgroundColor: '#0a3d30',
+    },
+  },
+}));
+
+// const config = {
+//   reference: JSON.parse(localStorage.getItem('ref')),
+//   // email: email,
+//   // amount: finalAmount,
+//   // publicKey: public_key,
+// };
 
 function CheckOutPaymentMethod({ handleModal }) {
   const {
     selectedPayment,
-    name,
+
     payment_method,
     user_address,
     selectedAddress,
+    order_number,
+    public_key,
+    ref,
   } = useSelector((state) => state.checkout);
-
-  const { country } = useSelector((state) => state.auth);
+  const { cart } = useSelector((state) => state.cart);
+  const classes = useStyles();
   const dispatch = useDispatch();
+
+  const orderNumber = order_number?.[0]?.order_number;
+
+  const totalAmount = order_number?.[0]?.total_cost;
+
+  const finalAmount = +totalAmount?.replace(/,/g, '') * 100;
+
+  const { country, email } = useSelector((state) => state.auth);
+
+  console.log(ref);
+
+  // you can call this function anything
+  const onSuccess = (reference) => {
+    console.log(reference);
+    localStorage.removeItem('ref');
+  };
+
+  const onClose = () => {
+    toast.error('Order Cancel');
+  };
+
+  // toast.success(place_order);
+
+  const componentProps = {
+    reference: ref,
+    email: email,
+    amount: finalAmount,
+    publicKey: public_key,
+    // reference: getRef,
+    // ...config,
+    text: `PLACE ORDER:
+    ${`${cart?.cart?.[0]?.currency} ` + cart?.cart?.[0]?.charged_total_cost}`,
+
+    onSuccess: (reference) => {
+      // verify payment here with the verify route
+      dispatch(verifyPayment(reference.reference));
+      // any action that you want to perform after payment is succesfull
+
+      onSuccess(reference);
+      console.log('success');
+      // console.log(config);
+    },
+
+    onClose: () => {
+      //terminate payment here with the terminate route
+      onClose();
+    },
+  };
 
   useEffect(() => {
     dispatch(getPaymentOptions());
     dispatch(getAddress());
+    localStorage.removeItem('ref');
   }, [dispatch]);
 
   return (
@@ -58,6 +149,7 @@ function CheckOutPaymentMethod({ handleModal }) {
           <Box
             sx={{
               display: { xs: 'flex', md: 'flex' },
+              flexDirection: 'column',
               gridTemplateColumns: { xs: 'repeat(2, 1fr)' },
               gap: 5,
               alignItems: 'center',
@@ -70,32 +162,58 @@ function CheckOutPaymentMethod({ handleModal }) {
               padding: '0px 37px',
             }}
           >
-            {payment_method.map((item, i) => (
-              <Box
-                key={item.id}
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  width: { xs: '100%', sm: ' 120.11px' },
-                  height: '80px',
-                  background: selectedPayment === item.id ? '#0A503D' : '#fff',
-                  borderRadius: ' 7.74011px',
-                  color: selectedPayment === item.id ? '#fff' : '#000',
-                  fontSize: '10px',
-                  cursor: 'pointer',
-                  boxShadow: '0px 8px 16px rgba(0, 0, 0, 0.08)',
-                }}
-                onClick={() => {
-                  dispatch(handleSelectedPaymentMethod(item.id));
-                  dispatch(publicKey());
-                  dispatch(getOrderNumber(country));
-                  console.log(selectedPayment);
-                }}
-              >
-                {item.item_value.toUpperCase()}
-              </Box>
-            ))}
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '100%',
+              }}
+            >
+              {payment_method.map((item, i) => (
+                <Box
+                  key={item.id}
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: { xs: '100%', sm: ' 120.11px' },
+                    height: '80px',
+                    background:
+                      selectedPayment === item.id ? '#0A503D' : '#fff',
+                    borderRadius: ' 7.74011px',
+                    color: selectedPayment === item.id ? '#fff' : '#000',
+                    fontSize: '10px',
+                    cursor: 'pointer',
+                    boxShadow: '0px 8px 16px rgba(0, 0, 0, 0.08)',
+                  }}
+                  onClick={() => {
+                    dispatch(handleSelectedPaymentMethod(item.id));
+                    dispatch(publicKey());
+                    dispatch(getOrderNumber(country));
+                    dispatch(initializePayment(orderNumber));
+                    console.log(selectedPayment);
+                  }}
+                >
+                  {item.item_value.toUpperCase()}
+                </Box>
+              ))}
+            </Box>
+
+            <PaystackButton
+              className={classes.checkoutButton}
+              {...componentProps}
+            />
+
+            {/* <ButtonSmall
+              text="PAY NOW"
+              backgroundColor="#0A503D"
+              width="90px"
+              height="30px"
+              color="#fff"
+              fontSize="12px"
+              onClick={payWithPayStack}
+            /> */}
           </Box>
         </Box>
 
