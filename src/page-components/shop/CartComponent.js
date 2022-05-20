@@ -38,8 +38,6 @@ const CartComponent = ({ handleCancel, setId }) => {
 
   const { cart } = useSelector((state) => state.cart);
 
-  console.log(cart);
-
   const cartItems = isLogged_in ? cart?.cart?.[0]?.cart_items : items;
 
   const currency = cartItems?.map((item) => item?.currency);
@@ -122,6 +120,7 @@ const CartComponent = ({ handleCancel, setId }) => {
             marginTop: '1rem',
             // border: '1px solid red',
           }}
+          className={styles.cart__warraper}
         >
           {cartItems?.map((item, i) => (
             <Box

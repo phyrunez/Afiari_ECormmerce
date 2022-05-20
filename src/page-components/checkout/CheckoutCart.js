@@ -95,7 +95,7 @@ function CheckoutCart({ handleCheckOut }) {
   }
 
   const handleOrder = () => {
-    if (verify === true) {
+    if (verifyStatus === true) {
       dispatch(placeOrder(data));
 
       if (orderStatus === false) {
@@ -114,9 +114,6 @@ function CheckoutCart({ handleCheckOut }) {
 
   useEffect(() => {
     dispatch(getCart());
-    if (verify === true) {
-      setDisable(false);
-    }
   }, [dispatch]);
 
   return (
@@ -138,6 +135,7 @@ function CheckoutCart({ handleCheckOut }) {
             overflowX: 'hidden',
             paddingTop: '3rem',
           }}
+          className={styles.cart__warraper}
         >
           {cart?.cart?.[0]?.cart_items?.map((item, i) => (
             <Box

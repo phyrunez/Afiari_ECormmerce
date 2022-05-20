@@ -47,10 +47,10 @@ const Login = () => {
   //handling form submittion
   const onSubmit = (e) => {
     e.preventDefault();
-    if (api_error) {
-      toast.error(api_error);
-    } else if (email === '' || password === '') {
+    if (email === '' || password === '') {
       toast.error('Fields can not be empty');
+    } else if (api_error) {
+      toast.error(api_error);
     } else {
       const userData = {
         username: email,

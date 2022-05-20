@@ -63,6 +63,9 @@ function CheckOutPaymentMethod({ handleModal }) {
     verify,
   } = useSelector((state) => state.checkout);
   const { cart } = useSelector((state) => state.cart);
+
+  const { country, email } = useSelector((state) => state.auth);
+
   const classes = useStyles();
   const dispatch = useDispatch();
 
@@ -70,9 +73,8 @@ function CheckOutPaymentMethod({ handleModal }) {
 
   const totalAmount = order_number?.[0]?.total_cost;
 
-  const finalAmount = +totalAmount?.replace(/,/g, '') * 100;
-
-  const { country, email } = useSelector((state) => state.auth);
+  // hhh
+  const finalAmount = Math.round(+totalAmount?.replace(/,/g, '') * 100);
 
   console.log(ref);
 
@@ -95,18 +97,21 @@ function CheckOutPaymentMethod({ handleModal }) {
     publicKey: public_key,
     // reference: getRef,
     // ...config,
-    text: `PAY NOW
-    ${`${cart?.cart?.[0]?.currency} ` + cart?.cart?.[0]?.charged_total_cost}`,
+    text: `PAY NOW ${
+      `${cart?.cart?.[0]?.currency} ` + cart?.cart?.[0]?.charged_total_cost
+    }`,
 
     onSuccess: (reference) => {
       // verify payment here with the verify route
       dispatch(verifyPayment(reference.reference));
 
-      if (verify === true) {
-        toast.success('Payment received proceed to place order');
-      } else {
-        toast.error('Payment verification Failed');
-      }
+      setTimeout(() => {
+        if (verify === true) {
+          toast.success('Payment received proceed to place order');
+        } else {
+          toast.error('Payment verification Failed');
+        }
+      }, 2000);
       // any action that you want to perform after payment is succesfull
 
       onSuccess(reference);

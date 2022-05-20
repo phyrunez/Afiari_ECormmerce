@@ -225,9 +225,8 @@ function Cart() {
               sx={{
                 display: 'flex',
                 flexDirection: 'column',
-                padding: { xs: '1rem', md: '53px 83px' },
+                padding: { xs: '3rem', md: '53px 83px' },
                 height: '300px',
-                overflow: 'scroll',
                 overflowX: 'hidden',
 
                 // width: '30%',

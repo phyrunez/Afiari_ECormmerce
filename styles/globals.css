@@ -87,8 +87,10 @@ li {
 }
 
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 8px;
+  display: none;
 }
+
 ::-webkit-scrollbar-track {
   background: #f1f1f1;
   border-radius: 50px;

@@ -164,14 +164,21 @@ const ShopCard = () => {
           overflowX: 'hidden',
           // marginTop: { md: "-15rem", xs: "1rem" },
           width: { sx: '100%', sm: '50%', lg: '100%' },
-          '&:hover': {
-            overflowX: 'scroll',
-          },
         }}
       >
         {products().length === 0 ? (
-          <Box>
-            <h1>Category Empty</h1>
+          <Box
+            sx={{
+              display: 'flex',
+              // flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              // marginTop: '29px',
+              width: '100%',
+              padding: '29px 16px',
+            }}
+          >
+            <Typography variant="p">items not available</Typography>
           </Box>
         ) : (
           products()?.map((item, i) => (

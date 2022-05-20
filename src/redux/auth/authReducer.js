@@ -20,6 +20,7 @@ const initialState = {
   sent_mail: '',
   reset_password: '',
   userCountry: '',
+  signup_api_error: '',
 };
 
 const reducer = (state = initialState, action) => {
@@ -54,7 +55,7 @@ const reducer = (state = initialState, action) => {
     case AuthTypes.SIGNUP_FAILED:
       return {
         ...state,
-        api_error: action.payload,
+        signup_api_error: action.payload,
       };
 
     case AuthTypes.GET_CURRENT_USER:
