@@ -29,6 +29,7 @@ import {
 import Spinner from '../../components/Spinner';
 import { handleDelete, setIsLoading } from '../../src/redux/cart/cartAction';
 import DeleteNotification from '../../src/page-components/shop/DeleteNotification';
+import ReactTypingEffect from 'react-typing-effect';
 
 function Shop() {
   const { categories } = useSelector((state) => state.general);
@@ -192,6 +193,50 @@ function Shop() {
             height: '100%',
           }}
         >
+          {/* <ReactTypingEffect text={['Hello.', 'World!']} /> */}
+
+          <ReactTypingEffect
+            text={[
+              '    Want to buy foodstuff needed in the kitchen?',
+              'Send us. We buy, package and deliver to you the next day!!!',
+            ]}
+            cursorRenderer={(cursor) => <h1>{cursor}</h1>}
+            className={styles.typing_text}
+            speed={100}
+            displayTextRenderer={(text, i) => {
+              return (
+                <Typography
+                  variant="h1"
+                  sx={{
+                    fontWeight: '600',
+                    fontSize: { xs: '20px', md: '38px' },
+                    lineHeight: { xs: '37px', md: '45px' },
+                    textAlign: { xs: 'center', md: 'justify' },
+                    color: ' #FFFFFF',
+
+                    alignItems: { xs: 'center', md: 'flex-start' },
+                    justifyContent: 'center',
+                    width: { xs: '100%', md: '445px', lg: '632px' },
+                    height: { xs: '100%', md: 'auto' },
+                    // background: { xs: ' rgba(0, 34, 25, 0.824)', md: 'none' },
+                    padding: { xs: '2rem', md: '0rem' },
+                  }}
+                >
+                  {text.split('').map((char, i) => {
+                    const key = `${i}`;
+                    return (
+                      <span
+                        key={key}
+                        // style={i % 2 === 0 ? { color: 'magenta' } : {}}
+                      >
+                        {char}
+                      </span>
+                    );
+                  })}
+                </Typography>
+              );
+            }}
+          />
           <Typography
             //   className={styles.shop__header__text}
             variant="h1"
@@ -201,7 +246,7 @@ function Shop() {
               lineHeight: { xs: '37px', md: '45px' },
               textAlign: { xs: 'center', md: 'justify' },
               color: { xs: ' #FFFFFF', md: '#3a3a3a' },
-              display: 'flex',
+              display: { xs: 'none', md: 'flex' },
               flexDirection: 'column',
               alignItems: { xs: 'center', md: 'flex-start' },
               justifyContent: 'center',
@@ -221,7 +266,7 @@ function Shop() {
               lineHeight: { xs: '33px' },
               textAlign: { xs: 'center', md: 'justify' },
               color: { xs: ' #FFFFFF', md: '#3a3a3a' },
-              display: 'flex',
+              display: { xs: 'none', md: 'flex' },
               flexDirection: 'column',
               alignItems: { xs: 'center', md: 'flex-start' },
               justifyContent: 'center',

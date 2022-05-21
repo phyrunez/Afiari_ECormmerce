@@ -25,7 +25,7 @@ const SignUp = () => {
 
   const dispatch = useDispatch();
 
-  const { email, firstName, lastName, password, loading, api_error } =
+  const { email, firstName, lastName, password, loading, signup_api_error } =
     useSelector((state) => state.auth);
   const router = useRouter();
 
@@ -51,8 +51,8 @@ const SignUp = () => {
     e.preventDefault();
     if (checked === false) {
       toast.error('You need to accept the terms');
-    } else if (api_error) {
-      toast.error(api_error);
+    } else if (signup_api_error) {
+      toast.error(signup_api_error);
     } else {
       const userData = {
         email: email,

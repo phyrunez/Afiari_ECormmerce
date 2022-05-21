@@ -69,6 +69,7 @@ const ProductCategory = () => {
       <Divider
         sx={{
           border: '1px solid #E6E6E',
+          marginBottom: '1rem',
         }}
       />
       <List
@@ -82,6 +83,7 @@ const ProductCategory = () => {
           overflowX: 'hidden',
           // border: '1px solid red',
         }}
+        className={styles.cart__warraper}
       >
         {categories.map((item) => (
           <ListItem

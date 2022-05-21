@@ -64,6 +64,7 @@ function Checkout() {
     dispatch(getOrderNumber(country));
     dispatch(getAddress());
     dispatch(getCart());
+    localStorage.setItem('verify_status', false);
   }, []);
 
   return (
@@ -79,6 +80,10 @@ function Checkout() {
       }}
     >
       {/* ////////////////////// pop up /////////////////////////////////////////////// */}
+
+      {/* ////////////////////// end pop up /////////////////////////////////////////////// */}
+
+      <Navbar />
       {showModal && (
         <>
           <Box
@@ -96,15 +101,12 @@ function Checkout() {
           <CheckOutPopUp setShowModal={setShowModal} />
         </>
       )}
-
-      {/* ////////////////////// end pop up /////////////////////////////////////////////// */}
-
-      <Navbar />
       <Box
         sx={{
           display: 'flex',
           flexDirection: 'column',
-          padding: '0px 21px',
+          padding: { xs: '0px 2px', md: '0px 21px' },
+          // border: '1px solid red',
         }}
       >
         {/*/////////////////////////// up //////////////////////////////////////*/}
@@ -160,15 +162,16 @@ function Checkout() {
         </Box>
         <Box
           sx={{
-            padding: { md: '0px 28px' },
+            padding: { xs: '2rem', md: '2rem 28px' },
             display: { xs: 'flex', md: 'none' },
             flexDirection: 'column',
             alignItems: { xs: 'center', lg: 'flex-start' },
             justifyContent: { xs: 'center', md: 'flex-start' },
             height: { xs: '450px', md: '400px' },
             overflowX: 'hidden',
-            paddingTop: '2rem',
+            // paddingTop: '2rem',
           }}
+          className={styles.cart__warraper}
         >
           {cart?.cart?.[0]?.cart_items?.map((item, i) => (
             <Box
@@ -254,7 +257,7 @@ function Checkout() {
           sx={{
             display: { xs: 'flex', md: 'none' },
             border: '1px solid rgba(0, 0, 0, 0.2)',
-            marginBottom: '3rem',
+            margin: '3rem 0rem',
           }}
         />
 
