@@ -213,7 +213,11 @@ function CheckOutPaymentMethod({ handleModal }) {
             </Box>
 
             <PaystackButton
-              className={styles.paystackButton}
+              className={
+                selectedPayment === ''
+                  ? styles.paystackButtonDisabled
+                  : styles.paystackButton
+              }
               {...componentProps}
             />
 

@@ -152,7 +152,11 @@ function RateUsPopUp({ handleModal }) {
         fontSize="8px"
         fontWeight="400"
         color="#fff"
-        className={styles.payment__review__btn__popup}
+        className={
+          disable
+            ? styles.payment__review__btn__popupDisale
+            : styles.payment__review__btn__popup
+        }
         disabled={disable}
         onClick={handleSaveTestimony}
       />
