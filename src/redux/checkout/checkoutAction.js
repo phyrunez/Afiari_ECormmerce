@@ -255,3 +255,25 @@ export const placeOrder = (data) => async (dispatch) => {
     console.log(error);
   }
 };
+
+export const getDialCode = () => async (dispatch) => {
+  try {
+    dispatch(setIsLoading(true));
+
+    const response = await httpRequest({
+      url: API_ROUTES?.getDialCode?.route,
+      method: API_ROUTES?.getDialCode?.method,
+    });
+
+    console.log(response.result);
+
+    if (response?.status === true) {
+      dispatch({
+        type: CheckoutTypes?.DIAL_CODE,
+        payload: response?.result,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};

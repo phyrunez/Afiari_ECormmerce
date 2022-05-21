@@ -19,6 +19,25 @@
   padding-left: 1rem;
 }
 
+.paystackButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 250px;
+  height: 50px;
+  background: #0a503d;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 25px;
+  line-height: 19px;
+  text-align: center;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  color: #ffffff;
+  border: none;
+  outline: none;
+}
+
 @media (max-width: 899px) {
   .payment__img__star {
     width: 11.97px;
@@ -43,5 +62,12 @@
   .payment__review__btn__popup {
     width: 73px;
     height: 30px;
+  }
+
+  .paystackButton {
+    width: 263px;
+    height: 40px;
+    border-radius: 0px 0px 31.5402px 31.5402px;
+    font-size: 12px;
   }
 }

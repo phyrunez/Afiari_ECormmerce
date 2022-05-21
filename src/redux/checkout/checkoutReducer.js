@@ -32,6 +32,7 @@ const initialState = {
   verify: '',
   orderStatus: '',
   ref: '',
+  dialCodes: [],
 };
 
 const reducer = (state = initialState, action) => {
@@ -98,6 +99,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         order_number: action.payload,
+      };
+    case CheckoutTypes?.DIAL_CODE:
+      return {
+        ...state,
+        dialCodes: action.payload,
       };
     case CheckoutTypes?.PLACE_ORDER:
       return {

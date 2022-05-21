@@ -1,5 +1,5 @@
 import { Box, Typography, Divider } from '@mui/material';
-import React from 'react';
+import React, { useState } from 'react';
 import styles from '../../../styles/Shop.module.css';
 import { Input } from '../../shared-components/InputComponent';
 import { IconButton } from '@mui/material';
@@ -14,9 +14,11 @@ import {
 import { toast } from 'react-toastify';
 
 function CheckOutPopUp({ setShowModal }) {
+  const [countrySelected, setCountrySelected] = useState();
   const {
     country,
     dialCode,
+    dialCodes,
     state,
     city,
     street,
@@ -26,6 +28,8 @@ function CheckOutPopUp({ setShowModal }) {
   } = useSelector((state) => state.checkout);
 
   const dispatch = useDispatch();
+
+  console.log(countrySelected);
 
   const handleNewAddress = (e) => {
     e.preventDefault();
@@ -63,16 +67,16 @@ function CheckOutPopUp({ setShowModal }) {
         sx={{
           display: 'flex',
           justifyContent: 'center',
-          width: { xs: '100%', md: '720px' },
+          width: { xs: '250px', sm: '330px', md: '720px' },
           height: '750px',
           background: '#fff',
           borderRadius: '25px',
           padding: '30px 0px',
           marginTop: '3rem',
           zIndex: '1000000000000',
-          top: '2rem',
+          top: '0',
           flexDirection: 'column',
-          position: 'absolute',
+          position: 'sticky',
         }}
       >
         <Typography
@@ -82,7 +86,7 @@ function CheckOutPopUp({ setShowModal }) {
             alignItems: 'center',
             justifyContent: 'center',
             fontWeight: '400',
-            fontSize: '20px',
+            fontSize: { xs: '14px', md: '20px' },
             lineHeight: '27px',
             textAlign: 'center',
             letterSpacing: '0.04em',
@@ -94,7 +98,10 @@ function CheckOutPopUp({ setShowModal }) {
 
         <Divider
           sx={{
-            border: '1px solid rgba(0, 0, 0, 0.2)',
+            border: {
+              xs: '0.46063px solid rgba(0, 0, 0, 0.3)',
+              md: '1px solid rgba(0, 0, 0, 0.2)',
+            },
           }}
         />
 
@@ -105,7 +112,7 @@ function CheckOutPopUp({ setShowModal }) {
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
-            marginTop: '58px',
+            marginTop: { xs: '26px', md: '58px' },
             padding: '0px 1rem',
           }}
         >
@@ -172,7 +179,27 @@ function CheckOutPopUp({ setShowModal }) {
             //   </IconButton>
             // }
           />
-          <Input
+
+          <select
+            label="Country"
+            placeholder="Nigeria"
+            htmlFor="Country"
+            type="text"
+            onChange={(e) => {
+              dispatch(handleUserInput('country', e.target.value));
+              setCountrySelected(e.target.value);
+            }}
+            name="country"
+            id="Country"
+            value={country}
+            className={styles.checkout_select_options}
+          >
+            {dialCodes.map((item) => (
+              <option key={item.id}>{item.country_text}</option>
+            ))}
+          </select>
+
+          <select
             label="dialCode"
             placeholder="08099999887"
             htmlFor="dialCode"
@@ -183,24 +210,23 @@ function CheckOutPopUp({ setShowModal }) {
             name="dialCode"
             id="dialCode"
             value={dialCode}
+            className={styles.checkout_select_options}
             // icon={
             //   <IconButton>
             //     <Phone />
             //   </IconButton>
             // }
-          />
-          <Input
-            label="Country"
-            placeholder="Nigeria"
-            htmlFor="Country"
-            type="text"
-            onChange={(e) => {
-              dispatch(handleUserInput('country', e.target.value));
-            }}
-            name="country"
-            id="Country"
-            value={country}
-          />
+          >
+            {countrySelected &&
+              dialCodes.filter((item) => {
+                countrySelected === item.country_text ? (
+                  <option key={item.id}>{item.dial_code}</option>
+                ) : (
+                  ''
+                );
+              })}
+          </select>
+
           <Input
             label="State"
             placeholder="Lagos"
@@ -230,10 +256,11 @@ function CheckOutPopUp({ setShowModal }) {
             text="ADD NEW DETAILS"
             backgroundColor="#0A503D"
             borderRadius="50px"
-            width="100%"
+            width="338px"
             height="48px"
             color="#fff"
             onClick={handleNewAddress}
+            className={styles.checkout_pop_btn}
           />
         </Box>
       </Box>

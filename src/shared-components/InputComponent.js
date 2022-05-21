@@ -21,7 +21,7 @@ export const Input = ({
     <Box
       className={styles.input__wrapper}
       sx={{
-        width: { lg: ' 360px', sm: '360px', xs: '100%', md: '360px' },
+        width: { lg: ' 360px', sm: '251px', xs: '100%', md: '360px' },
       }}
       onClick={onClick}
     >

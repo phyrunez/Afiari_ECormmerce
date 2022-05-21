@@ -16,32 +16,32 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ButtonSmall } from '../../shared-components/Button';
 import { usePaystackPayment, PaystackButton } from 'react-paystack';
 import { toast } from 'react-toastify';
-import { makeStyles } from '@mui/styles';
+import styles from '../../../styles/Payment.module.css';
 
-const useStyles = makeStyles((theme) => ({
-  checkoutButton: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: { xs: '263', md: '515px' },
-    height: { xs: '40px', md: '79px' },
-    background: '#0A503D',
-    borderRadius: {
-      xs: '0px 0px 31.5402px 31.5402px',
-      md: '0px 0px 61.8375px 61.8375px',
-    },
-    fontWeight: '600',
-    fontSize: { xs: '12px', md: ' 25px' },
-    lineHeight: ' 19px',
-    textAlign: 'center',
-    letterSpacing: ' 0.04em',
-    cursor: 'pointer',
-    color: ' #FFFFFF',
-    '&:hover': {
-      backgroundColor: '#0a3d30',
-    },
-  },
-}));
+// const useStyles = makeStyles((theme) => ({
+//   checkoutButton: {
+//     display: 'flex',
+//     justifyContent: 'center',
+//     alignItems: 'center',
+//     width: { xs: '263px', md: '515px' },
+//     height: { xs: '40px', md: '79px' },
+//     background: '#0A503D',
+//     borderRadius: {
+//       xs: '0px 0px 31.5402px 31.5402px',
+//       md: '0px 0px 61.8375px 61.8375px',
+//     },
+//     fontWeight: '600',
+//     fontSize: { xs: '12px', md: ' 25px' },
+//     lineHeight: ' 19px',
+//     textAlign: 'center',
+//     letterSpacing: ' 0.04em',
+//     cursor: 'pointer',
+//     color: ' #FFFFFF',
+//     '&:hover': {
+//       backgroundColor: '#0a3d30',
+//     },
+//   },
+// }));
 
 // const config = {
 //   reference: JSON.parse(localStorage.getItem('ref')),
@@ -66,7 +66,6 @@ function CheckOutPaymentMethod({ handleModal }) {
 
   const { country, email } = useSelector((state) => state.auth);
 
-  const classes = useStyles();
   const dispatch = useDispatch();
 
   const orderNumber = order_number?.[0]?.order_number;
@@ -97,9 +96,10 @@ function CheckOutPaymentMethod({ handleModal }) {
     publicKey: public_key,
     // reference: getRef,
     // ...config,
-    text: `PAY NOW ${
-      `${cart?.cart?.[0]?.currency} ` + cart?.cart?.[0]?.charged_total_cost
-    }`,
+    text: `PAY NOW `,
+    // ${
+    //   `${cart?.cart?.[0]?.currency} ` + cart?.cart?.[0]?.charged_total_cost
+    // }
 
     onSuccess: (reference) => {
       // verify payment here with the verify route
@@ -213,7 +213,7 @@ function CheckOutPaymentMethod({ handleModal }) {
             </Box>
 
             <PaystackButton
-              className={classes.checkoutButton}
+              className={styles.paystackButton}
               {...componentProps}
             />
 

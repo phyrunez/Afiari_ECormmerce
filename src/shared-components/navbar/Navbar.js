@@ -73,10 +73,13 @@ const Navbar = () => {
             padding: '1rem 1rem',
             cursor: 'pointer',
           }}
+          onClick={() => {
+            router.push('/');
+          }}
         >
-          <Link href="/">
-            <Box>{logo}</Box>
-          </Link>
+          {/* <Link href="/"> */}
+          <Box>{logo}</Box>
+          {/* </Link> */}
         </Box>
 
         <Toolbar
@@ -322,15 +325,18 @@ const Navbar = () => {
           border: ' 0.259542px solid #B9B9B9',
         }}
       >
-        <Link href="/">
-          <Box
-            sx={{
-              marginLeft: '1rem',
-            }}
-          >
-            {logo}
-          </Box>
-        </Link>
+        {/* <Link href="/"> */}
+        <Box
+          sx={{
+            marginLeft: '1rem',
+          }}
+          onClick={() => {
+            router.push('/');
+          }}
+        >
+          {logo}
+        </Box>
+        {/* </Link> */}
 
         <Box
           sx={{
@@ -440,7 +446,7 @@ const Navbar = () => {
                 </li>
 
                 <li className={styles.nav__links} onClick={handleClose}>
-                  <Link href="/shop"> Shops </Link>
+                  <Link href="/shop"> Food Market </Link>
                 </li>
 
                 <li className={styles.nav__links} onClick={handleClose}>
