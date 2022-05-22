@@ -19,6 +19,8 @@ import withAuth from '../constants/ProtectedRoutes';
 import {
   getAddress,
   getOrderNumber,
+  handleSelectedAddress,
+  handleSelectedPaymentMethod,
   publicKey,
 } from '../src/redux/checkout/checkoutAction';
 
@@ -64,6 +66,8 @@ function Checkout() {
     dispatch(getOrderNumber(country));
     dispatch(getAddress());
     dispatch(getCart());
+    dispatch(handleSelectedPaymentMethod(''));
+    dispatch(handleSelectedAddress(''));
     localStorage.setItem('verify_status', false);
   }, []);
 

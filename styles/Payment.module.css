@@ -19,6 +19,84 @@
   padding-left: 1rem;
 }
 
+.payment__review__btn__popup {
+  width: 123px;
+  height: 53px;
+  background-color: #0a503d;
+  border: 0.399062px solid #0a503d;
+  border-radius: 21.5331px;
+  font-size: 8px;
+  font-weight: 400;
+  color: #ffffff;
+}
+
+.payment__review__btn__popupDisale {
+  width: 123px;
+  height: 53px;
+  color: #000;
+  background-color: #91e0cb;
+  border-radius: 21.5331px;
+  font-size: 8px;
+  font-weight: 400;
+}
+
+.paystackButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 250px;
+  height: 50px;
+  background: #0a503d;
+  border-radius: 0px 0px 61.8375px 61.8375px;
+  font-weight: 600;
+  font-size: 25px;
+  line-height: 19px;
+  text-align: center;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  color: #ffffff;
+  border: none;
+  outline: none;
+}
+
+.paystackButtonDisabled {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 250px;
+  height: 50px;
+  background: #0a503d;
+  border-radius: 0px 0px 61.8375px 61.8375px;
+  font-weight: 600;
+  font-size: 25px;
+  line-height: 19px;
+  text-align: center;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  color: #000;
+  border: none;
+  outline: none;
+}
+
+/* .paystackButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 250px;
+  height: 50px;
+  background: #0a503d;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 25px;
+  line-height: 19px;
+  text-align: center;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  color: #ffffff;
+  border: none;
+  outline: none;
+} */
+
 @media (max-width: 899px) {
   .payment__img__star {
     width: 11.97px;
@@ -40,8 +118,29 @@
 
     margin-bottom: 16px;
   }
+
   .payment__review__btn__popup {
     width: 73px;
     height: 30px;
+  }
+  .payment__review__btn__popupDisale {
+    width: 73px;
+    height: 30px;
+    color: #000;
+    background-color: #91e0cb;
+  }
+
+  .paystackButton {
+    width: 263px;
+    height: 40px;
+    border-radius: 0px 0px 31.5402px 31.5402px;
+    font-size: 12px;
+  }
+
+  .paystackButtonDisabled {
+    width: 263px;
+    height: 40px;
+    border-radius: 0px 0px 31.5402px 31.5402px;
+    font-size: 12px;
   }
 }

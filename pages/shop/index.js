@@ -202,7 +202,10 @@ function Shop() {
             ]}
             cursorRenderer={(cursor) => <h1>{cursor}</h1>}
             className={styles.typing_text}
-            speed={100}
+            speed={50}
+            eraseSpeed={50}
+            eraseDelay={1200}
+            typingDelay={500}
             displayTextRenderer={(text, i) => {
               return (
                 <Typography

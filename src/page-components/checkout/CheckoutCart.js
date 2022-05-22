@@ -11,7 +11,11 @@ import styles from '../../../styles/Shop.module.css';
 import { makeStyles } from '@mui/styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { useCart } from 'react-use-cart';
-import { placeOrder } from '../../redux/checkout/checkoutAction';
+import {
+  handleSelectedAddress,
+  handleSelectedPaymentMethod,
+  placeOrder,
+} from '../../redux/checkout/checkoutAction';
 import { formatCurrency } from '../../utils/utils';
 import {
   addMultipleCart,
@@ -102,13 +106,19 @@ function CheckoutCart({ handleCheckOut }) {
         toast.error(orderErrorMessage);
         localStorage.setItem('verify_status', false);
         router.push('/shop');
+        dispatch(handleSelectedPaymentMethod(''));
+        dispatch(handleSelectedAddress(''));
       } else if (orderStatus === true) {
         toast.success(orderSuccessMessage);
         localStorage.setItem('verify_status', false);
         router.push('/payment-complete');
+        dispatch(handleSelectedPaymentMethod(''));
+        dispatch(handleSelectedAddress(''));
       }
     } else {
       toast.error('We can not verify your payment');
+      dispatch(handleSelectedPaymentMethod(''));
+      dispatch(handleSelectedAddress(''));
     }
   };
 

@@ -11,6 +11,7 @@ import {
 import { addMultipleCart, getCart } from '../redux/cart/cartAction';
 import { useCart } from 'react-use-cart';
 import { getShoppingHistory } from '../redux/shopping/shoppingAction';
+import { getDialCode } from '../redux/checkout/checkoutAction';
 
 function AuthProvider({ children }) {
   const { isLogged_in, country, loading } = useSelector((state) => state.auth);
@@ -54,6 +55,8 @@ function AuthProvider({ children }) {
     dispatch(getAllCategories());
 
     dispatch(getAllProducts(country, PageNumber));
+
+    dispatch(getDialCode());
 
     // dispatch(getCart());
   }, [dispatch]);

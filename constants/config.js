@@ -138,6 +138,10 @@ const API_ROUTES = {
     route: 'Testimony',
     method: 'GET',
   },
+  getDialCode: {
+    route: 'Lookup/dial-code',
+    method: 'GET',
+  },
 };
 
 const authToken = 'Afiari_access';
