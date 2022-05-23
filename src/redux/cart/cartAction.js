@@ -41,7 +41,6 @@ export const addCart = (data) => async (dispatch) => {
     });
 
     if (response?.status === true) {
-      console.log('added to cart');
       dispatch({
         type: CartTypes?.ADD_TO_CART,
         payload: {

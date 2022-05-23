@@ -150,8 +150,6 @@ export const initializePayment = (orderNumber) => async (dispatch) => {
       body: { orderNumber: orderNumber },
     });
 
-    console.log(response);
-
     localStorage.setItem(
       'ref',
       JSON.stringify(response?.result?.[0]?.reference)
@@ -201,7 +199,6 @@ export const verifyPayment = (ref) => async (dispatch) => {
       method: API_ROUTES?.verifyPayment?.method,
       needToken: true,
     });
-    console.log(response);
     localStorage.setItem('verify_status', JSON.stringify(response.status));
 
     if (response?.status === true) {
@@ -230,9 +227,6 @@ export const placeOrder = (data) => async (dispatch) => {
         masterRecordId: data.masterRecordId,
       },
     });
-
-    console.log(response.error_message);
-    console.log(response.success_message);
 
     if (response?.status === true) {
       dispatch({
@@ -264,8 +258,6 @@ export const getDialCode = () => async (dispatch) => {
       url: API_ROUTES?.getDialCode?.route,
       method: API_ROUTES?.getDialCode?.method,
     });
-
-    console.log(response.result);
 
     if (response?.status === true) {
       dispatch({

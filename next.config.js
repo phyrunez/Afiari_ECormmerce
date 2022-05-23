@@ -12,6 +12,10 @@ const nextConfig = {
       'countriesnow.space',
     ],
   },
+
+  env: {
+    BASE_URL: process.env.NEXT_PUBLIC_API_ENDPOINT,
+  },
 };
 
 module.exports = nextConfig;

@@ -8,6 +8,9 @@ import Navbar from '../src/shared-components/navbar/Navbar';
 import ServicesNavbar from '../src/shared-components/navbar/ServicesNavbar';
 import Testimony from '../src/page-components/Testimony';
 import afiari__bus from '../public/afiari__bus.svg';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { getTestimony } from '../src/redux/general/generalAction';
 
 const Home = () => {
   return (

@@ -7,6 +7,7 @@ import {
   getAllCategories,
   getAllCountries,
   getAllProducts,
+  getTestimony,
 } from '../redux/general/generalAction';
 import { addMultipleCart, getCart } from '../redux/cart/cartAction';
 import { useCart } from 'react-use-cart';

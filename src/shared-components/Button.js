@@ -76,13 +76,14 @@ export const ButtonBig = ({
   onClick,
   disabled,
   isLoading = false,
-
+  type,
   href,
 }) => {
   return (
     <Button
       onClick={onClick}
       disabled={disabled}
+      type={type}
       sx={{
         width: { lg: ' 360px', sm: '360px', xs: '100%', md: '360px' },
         height: '57.55px',

@@ -60,11 +60,15 @@ function CheckOutPaymentMethod({ handleModal }) {
     order_number,
     public_key,
     ref,
-    verify,
+    // verify,
   } = useSelector((state) => state.checkout);
   const { cart } = useSelector((state) => state.cart);
 
   const { country, email } = useSelector((state) => state.auth);
+
+  console.log(email);
+
+  console.log(selectedAddress, selectedPayment);
 
   const dispatch = useDispatch();
 
@@ -96,7 +100,7 @@ function CheckOutPaymentMethod({ handleModal }) {
     publicKey: public_key,
     // reference: getRef,
     // ...config,
-    text: `PAY NOW `,
+    text: `Pay now `,
     // ${
     //   `${cart?.cart?.[0]?.currency} ` + cart?.cart?.[0]?.charged_total_cost
     // }
@@ -106,10 +110,18 @@ function CheckOutPaymentMethod({ handleModal }) {
       dispatch(verifyPayment(reference.reference));
 
       setTimeout(() => {
+        let verify;
+        if (typeof window !== 'undefined') {
+          verify = JSON.parse(localStorage.getItem('verify_status'));
+        }
+
+        console.log(verify);
         if (verify === true) {
           toast.success('Payment received proceed to place order');
         } else {
           toast.error('Payment verification Failed');
+          dispatch(handleSelectedPaymentMethod(''));
+          dispatch(handleSelectedAddress(''));
         }
       }, 2000);
       // any action that you want to perform after payment is succesfull
@@ -123,6 +135,10 @@ function CheckOutPaymentMethod({ handleModal }) {
       //terminate payment here with the terminate route
       onClose();
     },
+  };
+
+  const handlePayNow = () => {
+    toast.error('You need to select a payment method and delivery address');
   };
 
   useEffect(() => {
@@ -212,14 +228,16 @@ function CheckOutPaymentMethod({ handleModal }) {
               ))}
             </Box>
 
-            <PaystackButton
-              className={
-                selectedPayment === ''
-                  ? styles.paystackButtonDisabled
-                  : styles.paystackButton
-              }
-              {...componentProps}
-            />
+            {selectedPayment === '' || selectedAddress.id === undefined ? (
+              <button className={styles.paystackButton} onClick={handlePayNow}>
+                Pay now
+              </button>
+            ) : (
+              <PaystackButton
+                className={styles.paystackButton}
+                {...componentProps}
+              />
+            )}
 
             {/* <ButtonSmall
               text="PAY NOW"

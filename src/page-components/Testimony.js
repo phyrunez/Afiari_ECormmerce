@@ -13,8 +13,6 @@ import { getTestimony } from '../redux/general/generalAction';
 const Testimony = () => {
   const { testimonies } = useSelector((state) => state.general);
 
-  console.log(testimonies);
-
   const dispatch = useDispatch();
 
   useEffect(() => {

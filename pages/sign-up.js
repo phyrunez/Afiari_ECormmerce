@@ -25,7 +25,7 @@ const SignUp = () => {
 
   const dispatch = useDispatch();
 
-  const { email, firstName, lastName, password, loading, signup_api_error } =
+  const { email, firstName, lastName, password, loading, signup_api_message } =
     useSelector((state) => state.auth);
   const router = useRouter();
 
@@ -49,21 +49,33 @@ const SignUp = () => {
   // };
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (checked === false) {
-      toast.error('You need to accept the terms');
-    } else if (signup_api_error) {
-      toast.error(signup_api_error);
-    } else {
-      const userData = {
-        email: email,
-        firstName: firstName,
-        lastName: lastName,
-        password: password,
-      };
+    const userData = {
+      email: email,
+      firstName: firstName,
+      lastName: lastName,
+      password: password,
+    };
+    dispatch(signUpUser(userData, router));
 
-      dispatch(signUpUser(userData, router));
-    }
+    setTimeout(() => {
+      let signupMessage;
+      if (typeof window !== 'undefined') {
+        signupMessage = JSON.parse(localStorage.getItem('signupMessage'));
+      }
+
+      console.log(signupMessage);
+
+      if (signupMessage.status === true) {
+        toast.success(signupMessage.success_message);
+        router.push('/shop');
+        localStorage.removeItem('signupMessage');
+      } else {
+        toast.error(signupMessage.error_message);
+      }
+    }, 3000);
   };
+
+  console.log(signup_api_message);
 
   // if (loading) {
   //   return <Spinner />;
@@ -262,6 +274,8 @@ const SignUp = () => {
             }
             onClick={handleSubmit}
             disabled={btnDisabled}
+            isLoading={loading}
+            type="submit"
           />
 
           <LoginBtnComponent

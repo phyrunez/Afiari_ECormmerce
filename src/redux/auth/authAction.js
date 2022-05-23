@@ -51,7 +51,7 @@ export const setUserYearOfBirth = (name, value) => ({
   },
 });
 
-export const logInUser = (user, router, path) => async (dispatch) => {
+export const logInUser = (user, router, query) => async (dispatch) => {
   try {
     dispatch(setIsLoading(true));
 
@@ -72,9 +72,12 @@ export const logInUser = (user, router, path) => async (dispatch) => {
 
       JSON.stringify(localStorage.setItem(authToken, result?.result[0]?.token));
 
+      JSON.stringify(localStorage.setItem(authToken, result?.result[0]?.token));
+
       JSON.stringify(
         localStorage.setItem(refreshToken, result?.result[0]?.refresh_token)
       );
+
       if (router?.query?.from !== undefined) {
         router.push(router?.query?.from);
       } else {
@@ -104,11 +107,15 @@ export const signUpUser = (user, router) => async (dispatch) => {
       body: { ...user },
     });
 
+    localStorage.setItem('signupMessage', JSON.stringify(result));
+
+    console.log(result);
+
     if (result.status === true) {
       dispatch(setIsLoading(false));
       dispatch({
         type: AuthTypes.SIGNUP_SUCCESS,
-        payload: true,
+        payload: result,
       });
 
       JSON.stringify(localStorage.setItem(authToken, result?.result[0]?.token));
@@ -116,14 +123,14 @@ export const signUpUser = (user, router) => async (dispatch) => {
       JSON.stringify(
         localStorage.setItem(refreshToken, result?.result[0]?.refresh_token)
       );
-
-      router.push('/shop');
     } else {
+      dispatch(setIsLoading(false));
       dispatch({
         type: AuthTypes.SIGNUP_FAILED,
-        payload: result.error_message,
+        payload: result,
       });
     }
+
     console.log(user);
   } catch (error) {
     console.log(error);
