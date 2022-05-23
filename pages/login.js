@@ -207,7 +207,7 @@ const Login = () => {
             color="#fff"
             backgroundColor="#0A503D"
             onClick={(e) => onSubmit(e)}
-            // isLoading={loading}
+            isLoading={loading}
           />
 
           <LoginBtnComponent

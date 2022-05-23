@@ -166,10 +166,7 @@ export const getTestimony = () => async (dispatch) => {
     const response = await httpRequest({
       url: API_ROUTES?.getTestimony?.route,
       method: API_ROUTES?.getTestimony.method,
-      needToken: true,
     });
-
-    console.log(response);
 
     if (response?.status === true) {
       dispatch({

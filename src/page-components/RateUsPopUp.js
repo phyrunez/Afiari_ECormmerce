@@ -33,7 +33,7 @@ function RateUsPopUp({ handleModal }) {
   return (
     <Box
       sx={{
-        position: 'absolute',
+        position: 'sticky',
         zIndex: '10000000000000000',
         top: '250px',
         display: 'flex',
@@ -45,6 +45,7 @@ function RateUsPopUp({ handleModal }) {
         background: '#FFFFFF',
         boxShadow: ' 0px 2.76557px 11.0623px rgba(0, 0, 0, 0.25)',
         borderRadius: '13.8278px',
+        top: '0',
       }}
     >
       <Typography

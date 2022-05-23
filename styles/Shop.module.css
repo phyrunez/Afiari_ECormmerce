@@ -127,6 +127,9 @@
   outline: none;
 }
 
+.deletePopUpBtn {
+}
+
 @media only screen and (max-width: 899px) {
   .typing_text {
     display: flex;
@@ -144,6 +147,11 @@
   }
   .checkout_select_options {
     width: 251px;
+  }
+
+  .deletePopUpBtn {
+    width: 100px;
+    height: 30px;
   }
 }
 
