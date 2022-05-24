@@ -26,7 +26,7 @@ const Categories = () => {
     slidesToShow: 5,
     slidesToScroll: 5,
     initialSlide: 0,
-    dots: true,
+    // dots: true,
     responsive: [
       {
         breakpoint: 1024,
@@ -34,7 +34,7 @@ const Categories = () => {
           slidesToShow: 3,
           slidesToScroll: 3,
           infinite: true,
-          dots: true,
+          // dots: true,
         },
       },
       {
@@ -111,7 +111,7 @@ const Categories = () => {
         onClick={() => {
           dispatch(setSelectedCategory(details)),
             dispatch(getProductsByCategory(country, item));
-          router.push({ pathname: '/shop', state: { category: item } });
+          router.push({ pathname: '/FoodMarket', state: { category: item } });
         }}
       >
         <img

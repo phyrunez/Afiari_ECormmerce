@@ -1,9 +1,11 @@
 import { Typography, Grid, Box } from '@mui/material';
 import Image from 'next/image';
-import React from 'react';
+import { useState } from 'react';
 import { ButtonSmall as Button } from '../shared-components/Button';
 
 const Card = () => {
+  const [disable, setDisable] = useState(true);
+
   const data = [
     {
       img: require('../../public/foodrecipe.png'),
@@ -15,7 +17,7 @@ const Card = () => {
       img: require('../../public/order by health challenge.png'),
       heading: 'Food Based on Health Conditions[Coming Soon]',
       details:
-        'We care so much about your health as we have a list of healthy food items that help manage certain health Your health is a priority to us and we have a list of healthy food items that help manage certain health conditions.',
+        'Your health is a priority to us and we have a list of healthy food items that help manage certain health conditions.',
     },
   ];
   return (
@@ -80,8 +82,9 @@ const Card = () => {
               height="40px"
               fontWeight="400"
               fontSize="10px"
-              color="#FFFFFF"
-              href="/FoodMarket"
+              color={disable && '#FFFFFF'}
+              // href="/FoodMarket"
+              // disabled={disable}
             />
           </Box>
         </Box>
