@@ -32,7 +32,7 @@ const Navbar = () => {
 
   const { isLogged_in } = useSelector((state) => state.auth);
   const { cart } = useSelector((state) => state.cart);
-  const [cartItems, setCartItems] = useState([]);
+  const [active, setActive] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -73,10 +73,13 @@ const Navbar = () => {
             padding: '1rem 1rem',
             cursor: 'pointer',
           }}
+          onClick={() => {
+            router.push('/');
+          }}
         >
-          <Link href="/">
-            <Box>{logo}</Box>
-          </Link>
+          {/* <Link href="/"> */}
+          <Box>{logo}</Box>
+          {/* </Link> */}
         </Box>
 
         <Toolbar
@@ -92,26 +95,43 @@ const Navbar = () => {
             component="ul"
             className={styles.nav}
             sx={{
-              width: { xs: '283px', md: '50%' },
+              width: { xs: '283px', md: '100%', lg: '50%' },
               // border: '1px solid red',
             }}
           >
             <li
               className={styles.nav__list}
               style={{
-                fontWeight: '600',
+                fontWeight: active ? '600' : '400',
 
-                color: '#000000',
+                color: active ? '#000000' : '3a3a3a',
+              }}
+              onClick={() => {
+                setActive(true);
               }}
             >
               <Link href="/">Home </Link>
             </li>
 
-            <li className={styles.nav__list}>
-              <Link href="/shop">Shops </Link>
+            <li
+              className={styles.nav__list}
+              style={{
+                fontWeight: active ? '600' : '400',
+
+                color: active ? '#000000' : '3a3a3a',
+              }}
+            >
+              <Link href="/FoodMarket">Food Market</Link>
             </li>
 
-            <li className={styles.nav__list}>
+            <li
+              className={styles.nav__list}
+              style={{
+                fontWeight: active ? '600' : '400',
+
+                color: active ? '#000000' : '3a3a3a',
+              }}
+            >
               <Link href="/">Stores around you </Link>
             </li>
           </Box>
@@ -176,7 +196,14 @@ const Navbar = () => {
                 cursor: 'pointer',
               }}
             >
-              <Image src="/profile.svg" width={24} height={24} alt="profile" />
+              <Link href="/profile">
+                <Image
+                  src="/profile.svg"
+                  width={24}
+                  height={24}
+                  alt="profile"
+                />
+              </Link>
               {show === false ? (
                 <Image
                   src="/arrowDown.svg"
@@ -265,7 +292,9 @@ const Navbar = () => {
                 lineHeight="8px"
                 height="30px"
                 border=" 1px solid #0A503D"
-                href="/login"
+                onClick={() => {
+                  router.push('/login');
+                }}
               />
 
               <Button
@@ -298,15 +327,18 @@ const Navbar = () => {
           border: ' 0.259542px solid #B9B9B9',
         }}
       >
-        <Link href="/">
-          <Box
-            sx={{
-              marginLeft: '1rem',
-            }}
-          >
-            {logo}
-          </Box>
-        </Link>
+        {/* <Link href="/"> */}
+        <Box
+          sx={{
+            marginLeft: '1rem',
+          }}
+          onClick={() => {
+            router.push('/');
+          }}
+        >
+          {logo}
+        </Box>
+        {/* </Link> */}
 
         <Box
           sx={{
@@ -416,7 +448,7 @@ const Navbar = () => {
                 </li>
 
                 <li className={styles.nav__links} onClick={handleClose}>
-                  <Link href="/shop"> Shops </Link>
+                  <Link href="/FoodMarket"> Food Market </Link>
                 </li>
 
                 <li className={styles.nav__links} onClick={handleClose}>
@@ -540,7 +572,9 @@ const Navbar = () => {
                       lineHeight="8px"
                       height="30px"
                       border=" 1px solid #0A503D"
-                      href="/login"
+                      onClick={() => {
+                        router.push('/login');
+                      }}
                     />
 
                     <Button

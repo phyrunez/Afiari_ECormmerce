@@ -9,13 +9,14 @@
   width: 100%;
 }
 
-.top {
+.categories_card {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 100%;
   padding: 1rem;
+  cursor: pointer;
 }
 
 .p {
@@ -27,4 +28,11 @@
 
 .img {
   border-radius: 25px !important;
+}
+
+@media only screen and (max-width: 899px) {
+  .img {
+    width: 150px;
+    height: 220px;
+  }
 }

@@ -1,3 +1,4 @@
+import { useTransition } from 'react';
 import { API_ROUTES, authToken, refreshToken } from '../../../constants/config';
 import { httpRequest } from '../../https/http';
 import * as CheckoutTypes from './checkoutTypes';
@@ -20,7 +21,6 @@ export const handleSelectedPaymentMethod = (value) => async (dispatch) => {
     type: CheckoutTypes.SELECTED_PAYMENT,
     payload: value,
   });
-  console.log(value);
 };
 
 // address?.id,
@@ -140,87 +140,32 @@ export const getAddress = () => async (dispatch) => {
   }
 };
 
-export const initializePayment =
-  (orderNumber, verify, masterID, ref, data) => async (dispatch) => {
-    try {
-      dispatch(setIsLoading(true));
-      const response = await httpRequest({
-        url: API_ROUTES?.initializePayment?.route,
-        method: API_ROUTES?.initializePayment?.method,
-        needToken: true,
-        body: { orderNumber: orderNumber },
+export const initializePayment = (orderNumber) => async (dispatch) => {
+  try {
+    dispatch(setIsLoading(true));
+    const response = await httpRequest({
+      url: API_ROUTES?.initializePayment?.route,
+      method: API_ROUTES?.initializePayment?.method,
+      needToken: true,
+      body: { orderNumber: orderNumber },
+    });
+
+    localStorage.setItem(
+      'ref',
+      JSON.stringify(response?.result?.[0]?.reference)
+    );
+
+    if (response?.status === true) {
+      dispatch(setIsLoading(false));
+      dispatch({
+        type: CheckoutTypes?.REF_NO,
+        payload: response?.result?.[0]?.reference,
       });
-
-      if (response?.status === true) {
-        dispatch({
-          type: CheckoutTypes?.INITIALIZE_PAYMENT,
-          payload: {
-            init_payment: response?.result,
-            init_result: response?.status,
-          },
-        });
-
-        dispatch(setIsLoading(true));
-
-        const res = await httpRequest({
-          url: API_ROUTES?.verifyPayment?.route + ref,
-          method: API_ROUTES?.verifyPayment?.method,
-          needToken: true,
-        });
-
-        console.log(res);
-        console.log(ref);
-
-        if (res?.status === true) {
-          dispatch({
-            type: CheckoutTypes?.VERIFY_PAYMENT,
-            payload: res?.status,
-          });
-
-          dispatch(setIsLoading(true));
-          const resp = await httpRequest({
-            url: API_ROUTES?.verifyPayment?.route + ref,
-            method: API_ROUTES?.verifyPayment?.method,
-            needToken: true,
-          });
-
-          console.log(resp);
-          console.log(ref);
-
-          if (resp?.status === true) {
-            dispatch({
-              type: CheckoutTypes?.VERIFY_PAYMENT,
-              payload: response?.status,
-            });
-
-            dispatch(setIsLoading(true));
-            const response = await httpRequest({
-              url: API_ROUTES?.placeOrder?.route,
-              method: API_ROUTES?.placeOrder?.method,
-              needToken: true,
-              body: {
-                paymentType: data.paymentType,
-                shippingAddress: data.shippingAddress,
-                masterRecordId: data.masterRecordId,
-              },
-            });
-
-            console.log(response);
-            console.log(data);
-
-            if (response?.status === true) {
-              dispatch({
-                type: CheckoutTypes?.PLACE_ORDER,
-                payload: response?.result?.success_message,
-              });
-            }
-          }
-        }
-      }
-    } catch (error) {
-      console.log(error);
     }
-  };
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export const getOrderNumber = (country_id) => async (dispatch) => {
   try {
@@ -232,8 +177,6 @@ export const getOrderNumber = (country_id) => async (dispatch) => {
       needToken: true,
       isFormData: false,
     });
-
-    console.log(result);
 
     if (result.status === true) {
       dispatch(setIsLoading(false));
@@ -250,19 +193,20 @@ export const getOrderNumber = (country_id) => async (dispatch) => {
 export const verifyPayment = (ref) => async (dispatch) => {
   try {
     dispatch(setIsLoading(true));
+
     const response = await httpRequest({
       url: API_ROUTES?.verifyPayment?.route + ref,
       method: API_ROUTES?.verifyPayment?.method,
       needToken: true,
     });
-
-    console.log(response);
-    console.log(ref);
+    localStorage.setItem('verify_status', JSON.stringify(response.status));
 
     if (response?.status === true) {
+      dispatch(setIsLoading(false));
+
       dispatch({
         type: CheckoutTypes?.VERIFY_PAYMENT,
-        payload: response?.status,
+        payload: response.status,
       });
     }
   } catch (error) {
@@ -272,6 +216,7 @@ export const verifyPayment = (ref) => async (dispatch) => {
 export const placeOrder = (data) => async (dispatch) => {
   try {
     dispatch(setIsLoading(true));
+
     const response = await httpRequest({
       url: API_ROUTES?.placeOrder?.route,
       method: API_ROUTES?.placeOrder?.method,
@@ -282,14 +227,43 @@ export const placeOrder = (data) => async (dispatch) => {
         masterRecordId: data.masterRecordId,
       },
     });
-
-    console.log(response);
-    console.log(data);
+    localStorage.setItem('orderStatus', JSON.stringify(response));
 
     if (response?.status === true) {
       dispatch({
         type: CheckoutTypes?.PLACE_ORDER,
-        payload: response?.result?.success_message,
+        payload: {
+          status: response?.status,
+          successMessage: response?.success_message,
+        },
+      });
+    } else {
+      dispatch({
+        type: CheckoutTypes?.PLACE_ORDER_ERROR,
+        payload: {
+          error: response?.error_message,
+          status: response?.status,
+        },
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getDialCode = () => async (dispatch) => {
+  try {
+    dispatch(setIsLoading(true));
+
+    const response = await httpRequest({
+      url: API_ROUTES?.getDialCode?.route,
+      method: API_ROUTES?.getDialCode?.method,
+    });
+
+    if (response?.status === true) {
+      dispatch({
+        type: CheckoutTypes?.DIAL_CODE,
+        payload: response?.result,
       });
     }
   } catch (error) {

@@ -19,6 +19,10 @@ export const setSelectedCategory = (value) => ({
   type: GeneralTypes.GET_SELECTED_CATEGORY,
   payload: value,
 });
+export const getSelectedProfileMenu = (value) => ({
+  type: GeneralTypes.GET_SELECTED_PROFILE_MENU,
+  payload: value,
+});
 
 export const getAllCountries = () => async (dispatch) => {
   try {
@@ -162,10 +166,7 @@ export const getTestimony = () => async (dispatch) => {
     const response = await httpRequest({
       url: API_ROUTES?.getTestimony?.route,
       method: API_ROUTES?.getTestimony.method,
-      needToken: true,
     });
-
-    console.log(response);
 
     if (response?.status === true) {
       dispatch({

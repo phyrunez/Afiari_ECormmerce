@@ -27,7 +27,7 @@ const Login = () => {
 
   const router = useRouter();
   const path = router.query;
-  console.log(path);
+  // console.log(path);
   const [showpassword, setShowpassword] = useState(false);
 
   // useEffect(() => {
@@ -47,20 +47,49 @@ const Login = () => {
   //handling form submittion
   const onSubmit = (e) => {
     e.preventDefault();
-    if (email === '' || password === '') {
-      toast.error('message');
-    } else {
-      const userData = {
-        username: email,
-        password: password,
-      };
+    const userData = {
+      username: email,
+      password: password,
+    };
 
-      // dispatch(login(userData));
-      dispatch(logInUser(userData, router, path));
+    // dispatch(login(userData));
+    dispatch(logInUser(userData, router, path));
 
-      console.log(userData);
-    }
+    setTimeout(() => {
+      let loginResult;
+      if (typeof window !== 'undefined') {
+        loginResult = JSON.parse(localStorage.getItem('loginResult'));
+      }
+      console.log(loginResult);
+
+      if (loginResult.status === false) {
+        toast.error(loginResult.error_message);
+      } else if (email === '' || password === '') {
+        toast.error('Fields can not be empty');
+      } else if (!router?.query?.from) {
+        router?.push('/FoodMarket');
+      } else {
+        router?.push(router?.query?.from);
+        toast.success(loginResult.success_message);
+      }
+    }, 2000);
   };
+  // const onSubmit = (e) => {
+  //   e.preventDefault();
+  //   if (email === '' || password === '') {
+  //     toast.error('Fields can not be empty');
+  //   } else if (api_error) {
+  //     toast.error(api_error);
+  //   } else {
+  //     const userData = {
+  //       username: email,
+  //       password: password,
+  //     };
+
+  //     // dispatch(login(userData));
+  //     dispatch(logInUser(userData, router, path));
+  //   }
+  // };
 
   return (
     <>
@@ -189,7 +218,7 @@ const Login = () => {
           >
             <Link href="/forget-password"> Forgot Password?</Link>
           </Typography>
-
+          {/* 
           {api_error && (
             <Typography
               variant="caption"
@@ -200,7 +229,7 @@ const Login = () => {
             >
               {api_error}
             </Typography>
-          )}
+          )} */}
 
           <Button
             text="LOGIN"

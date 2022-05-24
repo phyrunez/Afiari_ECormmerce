@@ -5,8 +5,9 @@ import styles from '../../styles/Payment.module.css';
 import { handleUserInput, saveTestimony } from '../redux/general/generalAction';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
+import { useRouter } from 'next/router';
 
-function RateUsPopUp() {
+function RateUsPopUp({ handleModal }) {
   const [rating, setRating] = useState(0);
   const [disable, setDisable] = useState(true);
 
@@ -15,6 +16,8 @@ function RateUsPopUp() {
   // user_test
   const dispatch = useDispatch();
 
+  const router = useRouter();
+
   const handleSaveTestimony = () => {
     const data = {
       numberOfStars: rating,
@@ -22,12 +25,15 @@ function RateUsPopUp() {
     };
 
     dispatch(saveTestimony(data));
+    handleModal();
+    toast.success('Thank you for your feedback');
+    router.push('/thank-you');
   };
 
   return (
     <Box
       sx={{
-        position: 'absolute',
+        position: 'sticky',
         zIndex: '10000000000000000',
         top: '250px',
         display: 'flex',
@@ -39,6 +45,7 @@ function RateUsPopUp() {
         background: '#FFFFFF',
         boxShadow: ' 0px 2.76557px 11.0623px rgba(0, 0, 0, 0.25)',
         borderRadius: '13.8278px',
+        top: '0',
       }}
     >
       <Typography
@@ -146,7 +153,11 @@ function RateUsPopUp() {
         fontSize="8px"
         fontWeight="400"
         color="#fff"
-        className={styles.payment__review__btn__popup}
+        className={
+          disable
+            ? styles.payment__review__btn__popupDisale
+            : styles.payment__review__btn__popup
+        }
         disabled={disable}
         onClick={handleSaveTestimony}
       />

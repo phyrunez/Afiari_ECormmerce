@@ -22,6 +22,7 @@ import { addCart } from '../../redux/cart/cartAction';
 
 import { useCart } from 'react-use-cart';
 import { formatCurrency, getNumber } from '../../utils/utils';
+import { toast } from 'react-toastify';
 
 const ShopCard = () => {
   const {
@@ -30,6 +31,8 @@ const ShopCard = () => {
     selectedCategory,
     meta_data: metaData,
   } = useSelector((state) => state?.general);
+
+  console.log(metaData);
 
   const { country, isLogged_in } = useSelector((state) => state?.auth);
 
@@ -42,6 +45,11 @@ const ShopCard = () => {
   const [pageNumber, setPageNumber] = useState(1);
 
   const { addItem } = useCart();
+  let startIndex;
+  let endIndex = page_size * page_index;
+
+  endIndex = endIndex >= total_count ? total_count : endIndex;
+  startIndex = page_size * page_index + 1 - page_size;
 
   let displayedProduct = product;
 
@@ -142,131 +150,100 @@ const ShopCard = () => {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'center',
+        // justifyContent: 'center',
         width: '100%',
+        height: '100%',
+        paddingTop: '2rem',
+        // border: '1px solid red',
       }}
     >
       <Box
         component="div"
         className={styles.shop__card__wrapper}
         sx={{
+          // border: '1px solid red',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
           // justifyContent: 'center',
           height: '900px',
+
           overflowX: 'hidden',
           // marginTop: { md: "-15rem", xs: "1rem" },
           width: { sx: '100%', sm: '50%', lg: '100%' },
         }}
       >
-        {products()?.map((item, i) => (
+        {products().length === 0 ? (
           <Box
-            key={item.id}
             sx={{
               display: 'flex',
-              flexDirection: 'column',
+              // flexDirection: 'column',
               alignItems: 'center',
-              justifyContent: 'space-around',
+              justifyContent: 'center',
               // marginTop: '29px',
               width: '100%',
               padding: '29px 16px',
-              cursor: 'pointer',
             }}
           >
+            <Typography variant="p">items not available</Typography>
+          </Box>
+        ) : (
+          products()?.map((item, i) => (
             <Box
-              component="div"
+              key={item.id}
               sx={{
                 display: 'flex',
-                justifyContent: 'space-evenly',
-                width: { md: '80%', xs: '100%' },
-                height: { md: '200px', xs: '139.06px' },
-                background: '#FFFFFF',
-                boxShadow: '0px 4.16667px 8.33333px rgba(0, 0, 0, 0.08)',
-                borderRadius: ' 5.20833px',
-                padding: '1rem 1rem',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'space-around',
+                // marginTop: '29px',
+                width: '100%',
+                padding: '29px 16px',
+                cursor: 'pointer',
               }}
             >
-              {/* <Link href={`/shop/${item.id}`}> */}
-              <Box
-                sx={{
-                  height: '100%',
-                }}
-                onClick={() => {
-                  router.push(`/shop/${item.id}`);
-                }}
-              >
-                {item?.images[0]?.image_url ? (
-                  <Image
-                    key={item?.images[0]?.id}
-                    loader={() => item?.images[0]?.image_url}
-                    src={item?.images[0]?.image_url}
-                    alt="product"
-                    width={222}
-                    height={140}
-                    className={styles.product_img}
-                    unoptimized={true}
-                  />
-                ) : (
-                  <Image
-                    src="/fish.png"
-                    alt="product"
-                    width={50}
-                    height={50}
-                    className={styles.product_img}
-                  />
-                )}
-              </Box>
-              {/* </Link> */}
-
               <Box
                 component="div"
                 sx={{
                   display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'flex-start',
-                  justifyContent: 'center',
-                  width: '50%',
-                  // marginLeft: '1rem',
-                  padding: '0 1rem',
+                  justifyContent: 'space-evenly',
+                  width: { md: '80%', xs: '100%' },
+                  height: { md: '200px', xs: '139.06px' },
+                  background: '#FFFFFF',
+                  boxShadow: '0px 4.16667px 8.33333px rgba(0, 0, 0, 0.08)',
+                  borderRadius: ' 5.20833px',
+                  padding: '1rem 1rem',
                 }}
               >
                 {/* <Link href={`/shop/${item.id}`}> */}
                 <Box
                   sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'flex-start',
+                    height: '100%',
                   }}
                   onClick={() => {
-                    router.push(`/shop/${item.id}`);
+                    router.push(`/FoodMarket/${item.id}`);
                   }}
                 >
-                  <Typography
-                    variant="p"
-                    className={styles.cart_product_details}
-                  >
-                    {item.name}
-                  </Typography>
-                  <Typography
-                    variant="p"
-                    className={styles.cart_product_details}
-                    sx={{
-                      fontWeight: '400',
-                      marginBottom: { xs: '10px', md: '30px' },
-                    }}
-                  >
-                    {item.description}
-                  </Typography>
-                  <Typography
-                    variant="p"
-                    className={styles.cart_product_details}
-                    sx={{
-                      marginBottom: { xs: '0px', md: '13px' },
-                    }}
-                  >
-                    NGN {formatCurrency(item?.price)}
-                  </Typography>
+                  {item?.images[0]?.image_url ? (
+                    <Image
+                      key={item?.images[0]?.id}
+                      loader={() => item?.images[0]?.image_url}
+                      src={item?.images[0]?.image_url}
+                      alt="product"
+                      width={222}
+                      height={140}
+                      className={styles.product_img}
+                      unoptimized={true}
+                    />
+                  ) : (
+                    <Image
+                      src="/fish.png"
+                      alt="product"
+                      width={50}
+                      height={50}
+                      className={styles.product_img}
+                    />
+                  )}
                 </Box>
                 {/* </Link> */}
 
@@ -274,43 +251,97 @@ const ShopCard = () => {
                   component="div"
                   sx={{
                     display: 'flex',
-                    width: '100%',
-                    marginTop: '16px',
+                    flexDirection: 'column',
+                    alignItems: 'flex-start',
+                    justifyContent: 'center',
+                    width: '50%',
+                    // marginLeft: '1rem',
+                    padding: '0 1rem',
                   }}
                 >
-                  <Button
+                  {/* <Link href={`/FoodMarket/${item.id}`}> */}
+                  <Box
                     sx={{
-                      width: { xs: '56px', md: '85px' },
-                      height: { xs: '18px', md: '35px' },
-                      borderRadius: '50px',
-                      fontSize: { xs: '9px', md: '12px' },
-                      backgroundColor: ' #0A503D',
-                      color: '#fff',
-                      '&:hover': {
-                        backgroundColor: '#0a3d30',
-                        color: '#fff',
-                      },
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'flex-start',
                     }}
                     onClick={() => {
-                      const data = {
-                        country: country,
-                        id: item.id,
-                        isLogged_in: isLogged_in,
-                      };
-                      if (isLogged_in) {
-                        dispatch(addCart(data));
-                      } else {
-                        addItem(item);
-                      }
+                      router.push(`/FoodMarket/${item.id}`);
                     }}
                   >
-                    ADD
-                  </Button>
+                    <Typography
+                      variant="p"
+                      className={styles.cart_product_details}
+                    >
+                      {item.name}
+                    </Typography>
+                    <Typography
+                      variant="p"
+                      className={styles.cart_product_details}
+                      sx={{
+                        fontWeight: '400',
+                        marginBottom: { xs: '10px', md: '30px' },
+                      }}
+                    >
+                      {item.description}
+                    </Typography>
+                    <Typography
+                      variant="p"
+                      className={styles.cart_product_details}
+                      sx={{
+                        marginBottom: { xs: '0px', md: '13px' },
+                      }}
+                    >
+                      NGN {formatCurrency(item?.price)}
+                    </Typography>
+                  </Box>
+                  {/* </Link> */}
+
+                  <Box
+                    component="div"
+                    sx={{
+                      display: 'flex',
+                      width: '100%',
+                      marginTop: '16px',
+                    }}
+                  >
+                    <Button
+                      sx={{
+                        width: { xs: '56px', md: '85px' },
+                        height: { xs: '18px', md: '35px' },
+                        borderRadius: '50px',
+                        fontSize: { xs: '9px', md: '12px' },
+                        backgroundColor: ' #0A503D',
+                        color: '#fff',
+                        '&:hover': {
+                          backgroundColor: '#0a3d30',
+                          color: '#fff',
+                        },
+                      }}
+                      onClick={() => {
+                        const data = {
+                          country: country,
+                          id: item.id,
+                          isLogged_in: isLogged_in,
+                        };
+                        if (isLogged_in) {
+                          dispatch(addCart(data));
+                          toast.success('Product Added  Cart Successfully');
+                        } else {
+                          addItem(item);
+                          toast.success('Product Added  Cart Successfully');
+                        }
+                      }}
+                    >
+                      ADD
+                    </Button>
+                  </Box>
                 </Box>
               </Box>
             </Box>
-          </Box>
-        ))}
+          ))
+        )}
       </Box>
 
       <Box
@@ -351,8 +382,8 @@ const ShopCard = () => {
           }}
           disabled={pageNumber === 1}
           onClick={() => {
-            setPageNumber(pageNumber - 1);
-            dispatch(getAllProducts(country, pageNumber - 1));
+            setPageNumber(page_index - 1);
+            dispatch(getAllProducts(country, page_index - 1));
           }}
           // onClick={handlePrev}
         >
@@ -364,17 +395,13 @@ const ShopCard = () => {
           sx={{
             backgroundColor: '#fff',
             fontSize: '10px',
+            padding: '5px',
           }}
         >
-          {`Product ${
-            pageNumber === 1 ? '1' : pageNumber * page_size - page_size + 1
-          } to ${
-            pageNumber === 1
-              ? page_size
-              : number_of_pages === pageNumber
-              ? total_count
-              : pageNumber * page_size
-          } `}
+          {console.log(
+            `Products ${startIndex} to ${endIndex} of ${total_count}`
+          )}
+          {`Products ${startIndex} to ${endIndex} of ${total_count}`}
           {/* Products 1 to 7 of {total_count} */}
         </Typography>
 
@@ -407,8 +434,8 @@ const ShopCard = () => {
           }}
           disabled={pageNumber === number_of_pages}
           onClick={() => {
-            setPageNumber(pageNumber + 1);
-            dispatch(getAllProducts(country, pageNumber + 1));
+            setPageNumber(page_index + 1);
+            dispatch(getAllProducts(country, page_index + 1));
           }}
           // onClick={handleNext}
         >

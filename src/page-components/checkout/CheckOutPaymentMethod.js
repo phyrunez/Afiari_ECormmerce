@@ -3,26 +3,150 @@ import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import {
   getAddress,
+  getOrderNumber,
   getPaymentOptions,
   handleSelectedAddress,
   handleSelectedPaymentMethod,
+  initializePayment,
+  placeOrder,
+  publicKey,
+  verifyPayment,
 } from '../../redux/checkout/checkoutAction';
 import { useDispatch, useSelector } from 'react-redux';
+import { ButtonSmall } from '../../shared-components/Button';
+import { usePaystackPayment, PaystackButton } from 'react-paystack';
+import { toast } from 'react-toastify';
+import styles from '../../../styles/Payment.module.css';
+
+// const useStyles = makeStyles((theme) => ({
+//   checkoutButton: {
+//     display: 'flex',
+//     justifyContent: 'center',
+//     alignItems: 'center',
+//     width: { xs: '263px', md: '515px' },
+//     height: { xs: '40px', md: '79px' },
+//     background: '#0A503D',
+//     borderRadius: {
+//       xs: '0px 0px 31.5402px 31.5402px',
+//       md: '0px 0px 61.8375px 61.8375px',
+//     },
+//     fontWeight: '600',
+//     fontSize: { xs: '12px', md: ' 25px' },
+//     lineHeight: ' 19px',
+//     textAlign: 'center',
+//     letterSpacing: ' 0.04em',
+//     cursor: 'pointer',
+//     color: ' #FFFFFF',
+//     '&:hover': {
+//       backgroundColor: '#0a3d30',
+//     },
+//   },
+// }));
+
+// const config = {
+//   reference: JSON.parse(localStorage.getItem('ref')),
+//   // email: email,
+//   // amount: finalAmount,
+//   // publicKey: public_key,
+// };
 
 function CheckOutPaymentMethod({ handleModal }) {
   const {
     selectedPayment,
-    name,
+
     payment_method,
     user_address,
     selectedAddress,
+    order_number,
+    public_key,
+    ref,
+    // verify,
   } = useSelector((state) => state.checkout);
+  const { cart } = useSelector((state) => state.cart);
+
+  const { country, email } = useSelector((state) => state.auth);
+
+  console.log(email);
+
+  console.log(selectedAddress, selectedPayment);
 
   const dispatch = useDispatch();
+
+  const orderNumber = order_number?.[0]?.order_number;
+
+  const totalAmount = order_number?.[0]?.total_cost;
+
+  // hhh
+  const finalAmount = Math.round(+totalAmount?.replace(/,/g, '') * 100);
+
+  console.log(ref);
+
+  // you can call this function anything
+  const onSuccess = (reference) => {
+    console.log(reference);
+    localStorage.removeItem('ref');
+  };
+
+  const onClose = () => {
+    toast.error('Order Cancel');
+  };
+
+  // toast.success(place_order);
+
+  const componentProps = {
+    reference: ref,
+    email: email,
+    amount: finalAmount,
+    publicKey: public_key,
+    // reference: getRef,
+    // ...config,
+    text: `Pay now `,
+    // ${
+    //   `${cart?.cart?.[0]?.currency} ` + cart?.cart?.[0]?.charged_total_cost
+    // }
+
+    onSuccess: (reference) => {
+      // verify payment here with the verify route
+      //debugger;
+      dispatch(verifyPayment(reference.reference));
+
+      setTimeout(() => {
+        let verify;
+        if (typeof window !== 'undefined') {
+          verify = JSON.parse(localStorage.getItem('verify_status'));
+        }
+
+        console.log(verify);
+        //debugger;
+        if (verify === true) {
+          toast.success('Payment received proceed to place order');
+        } else {
+          toast.error('Payment verification Failed');
+          dispatch(handleSelectedPaymentMethod(''));
+          dispatch(handleSelectedAddress(''));
+        }
+      }, 4000);
+      // any action that you want to perform after payment is succesfull
+
+      onSuccess(reference);
+      console.log('success');
+      // console.log(config);
+    },
+
+    onClose: () => {
+      //terminate payment here with the terminate route
+      onClose();
+    },
+  };
+
+  const handlePayNow = () => {
+    toast.error('You need to select a payment method and delivery address');
+  };
 
   useEffect(() => {
     dispatch(getPaymentOptions());
     dispatch(getAddress());
+    localStorage.removeItem('ref');
   }, [dispatch]);
 
   return (
@@ -55,6 +179,7 @@ function CheckOutPaymentMethod({ handleModal }) {
           <Box
             sx={{
               display: { xs: 'flex', md: 'flex' },
+              flexDirection: 'column',
               gridTemplateColumns: { xs: 'repeat(2, 1fr)' },
               gap: 5,
               alignItems: 'center',
@@ -67,30 +192,64 @@ function CheckOutPaymentMethod({ handleModal }) {
               padding: '0px 37px',
             }}
           >
-            {payment_method.map((item, i) => (
-              <Box
-                key={item.id}
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  width: { xs: '100%', sm: ' 120.11px' },
-                  height: '80px',
-                  background: selectedPayment === item.id ? '#0A503D' : '#fff',
-                  borderRadius: ' 7.74011px',
-                  color: selectedPayment === item.id ? '#fff' : '#000',
-                  fontSize: '10px',
-                  cursor: 'pointer',
-                  boxShadow: '0px 8px 16px rgba(0, 0, 0, 0.08)',
-                }}
-                onClick={() => {
-                  dispatch(handleSelectedPaymentMethod(item.id));
-                  console.log(selectedPayment);
-                }}
-              >
-                {item.item_value.toUpperCase()}
-              </Box>
-            ))}
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '100%',
+              }}
+            >
+              {payment_method.map((item, i) => (
+                <Box
+                  key={item.id}
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: { xs: '100%', sm: ' 120.11px' },
+                    height: '80px',
+                    background:
+                      selectedPayment === item.id ? '#0A503D' : '#fff',
+                    borderRadius: ' 7.74011px',
+                    color: selectedPayment === item.id ? '#fff' : '#000',
+                    fontSize: '10px',
+                    cursor: 'pointer',
+                    boxShadow: '0px 8px 16px rgba(0, 0, 0, 0.08)',
+                  }}
+                  onClick={() => {
+                    dispatch(handleSelectedPaymentMethod(item.id));
+                    dispatch(publicKey());
+                    dispatch(getOrderNumber(country));
+                    dispatch(initializePayment(orderNumber));
+                    console.log(selectedPayment);
+                  }}
+                >
+                  {item.item_value.toUpperCase()}
+                </Box>
+              ))}
+            </Box>
+
+            {selectedPayment === '' || selectedAddress.id === undefined ? (
+              <button className={styles.paystackButton} onClick={handlePayNow}>
+                Pay now
+              </button>
+            ) : (
+              <PaystackButton
+                className={styles.paystackButton}
+                {...componentProps}
+              />
+            )}
+
+            {/* <ButtonSmall
+              text="PAY NOW"
+              backgroundColor="#0A503D"
+              width="90px"
+              height="30px"
+              color="#fff"
+              fontSize="12px"
+              onClick={payWithPayStack}
+            /> */}
           </Box>
         </Box>
 
@@ -205,6 +364,8 @@ function CheckOutPaymentMethod({ handleModal }) {
             // justifyContent: 'center',
             marginTop: '52px',
             cursor: 'pointer',
+
+            marginBottom: '2rem',
           }}
           onClick={handleModal}
         >

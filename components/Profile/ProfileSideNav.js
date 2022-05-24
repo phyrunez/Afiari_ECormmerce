@@ -13,7 +13,8 @@ import {
   Typography,
 } from '@mui/material';
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { getSelectedProfileMenu } from '../../src/redux/general/generalAction';
 import styles from '../../styles/Profile.module.css';
 
 function ProfileSideNav() {
@@ -22,7 +23,11 @@ function ProfileSideNav() {
 
   const [active, setActive] = useState(false);
 
-  const [selectedProfileList, setSelectedProfileList] = useState(false);
+  const [selectedProfileList, setSelectedProfileList] = useState('');
+
+  console.log(selectedProfileList);
+
+  const dispatch = useDispatch();
 
   const profileItems = [
     {
@@ -51,22 +56,29 @@ function ProfileSideNav() {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        width: active ? '45%' : '25%',
+        width: { xs: active ? '45%' : '25%', md: '45%' },
         background: ' #FFFFFF',
         border: '1px solid rgba(0, 0, 0, 0.3)',
         // marginLeft: '3rem',
         padding: '24px 0px',
-        // borderTopRightRadius: '15px',
-        // borderBottomRightRadius: '15px',
-        borderTop: 'none',
-        borderBottom: 'none',
-        zIndex: '10000000000  ',
+        borderTop: { xs: 'none' },
+        borderBottom: { xs: 'none' },
+        borderTopRightRadius: { md: '15px' },
+        borderBottomRightRadius: { md: '15px' },
+        zIndex: { xs: '10000000000000000000000  ', md: '0' },
+        // border: '1px solid red',
       }}
       className={styles.profile__side__nav__wrapper}
     >
       <Box
         onClick={() => {
           setActive(!active);
+        }}
+        sx={{
+          display: { xs: 'flex', md: 'none' },
+          // border: '1px solid red',
+          // marginTop: '-13.5rem',
+          cursor: 'pointer',
         }}
       >
         <img src="/menu.svg" alt="" />
@@ -77,15 +89,23 @@ function ProfileSideNav() {
           flexDirection: 'column',
           alignItems: 'center',
           width: '100%',
-          marginBottom: '67px',
+          // marginBottom: '67px',
         }}
       >
-        <Typography variant="h2" className={styles.profile__header}>
+        <Typography
+          variant="h2"
+          className={styles.profile__header}
+          sx={
+            {
+              // marginTop: '-8rem',
+            }
+          }
+        >
           MY PROFILE
         </Typography>
 
         <img
-          src="/data.svg"
+          src={picture_url ? picture_url : '/user.svg'}
           alt="profile image"
           className={styles.profile__image}
         />
@@ -102,7 +122,7 @@ function ProfileSideNav() {
             color: '#000000',
           }}
         >
-          Bankole Ibrahim
+          {first_name + last_name}
         </Typography>
       </Box>
 
@@ -110,9 +130,9 @@ function ProfileSideNav() {
       <Box
         component="ul"
         className={styles.profile__side__nav__list}
-        onClick={() => {
-          setSelectedProfileList(!selectedProfileList);
-        }}
+        // onClick={() => {
+        //   setSelectedProfileList(!selectedProfileList);
+        // }}
         sx={{
           marginBottom: '500px',
         }}
@@ -122,24 +142,39 @@ function ProfileSideNav() {
             component="li"
             key={i}
             className={styles.profile__side__nav__list_item}
+            onClick={() => {
+              setSelectedProfileList(item.name);
+              dispatch(getSelectedProfileMenu(item.name));
+            }}
+            sx={{
+              // border: '2px solid red',
+              background:
+                selectedProfileList === item.name ? { md: '#0a503d' } : '#fff',
+              color:
+                selectedProfileList === item.name
+                  ? { xs: '#000', md: '#fff' }
+                  : '#000',
+            }}
             // sx={{
             //   background: selectedProfileList === true ? ' #0A503D' : '#fff',
             // }}
           >
             <IconButton
               sx={{
+                // border: '2px solid red',
                 color:
-                  selectedProfileList === item.name ? '#F7A929' : '#3A4942',
+                  selectedProfileList === item.name
+                    ? { xs: '#F7A929', md: '#3A4942' }
+                    : '#3A4942',
               }}
-              onClick={() => setSelectedProfileList(item.name)}
             >
               {item.icon}
             </IconButton>
             <Typography
               variant="p"
               sx={{
-                display: active ? 'flex' : 'none',
-                width: { xs: '100%', sm: '70%' },
+                display: { xs: active ? 'flex' : 'none', md: 'flex' },
+                width: { xs: '100%', sm: '70%', md: '50%' },
                 fontStyle: 'normal',
                 fontWeight: '400',
                 fontSize: '14px',

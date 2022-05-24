@@ -29,8 +29,19 @@ function MyApp({ Component, pageProps, router }) {
         <title>
           Afiari - Afiari is your best shop to buy food items anytime.
         </title>
+        <meta
+          name="Description"
+          content="Access our Afiari food market and grocery stores close to you where you can buy foodstuff and groceries from the comfort of your home or office"
+        />
 
-        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <meta
+          name="Keywords"
+          content="Foodstuff in Nigeria,
+Foodstuff in Lagos,
+Where can I buy foodstuff near me,
+Foodstuff shop,
+Foodstuff market in Lagos"
+        />
       </Head>
 
       <Provider store={store}>

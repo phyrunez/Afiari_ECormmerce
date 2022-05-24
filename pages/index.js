@@ -8,6 +8,9 @@ import Navbar from '../src/shared-components/navbar/Navbar';
 import ServicesNavbar from '../src/shared-components/navbar/ServicesNavbar';
 import Testimony from '../src/page-components/Testimony';
 import afiari__bus from '../public/afiari__bus.svg';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { getTestimony } from '../src/redux/general/generalAction';
 
 const Home = () => {
   return (
@@ -39,7 +42,7 @@ const Home = () => {
             color: ' #000000',
           }}
         >
-          We want to serve you better
+          We ALWAYS want to serve you better
         </Typography>
         <Card />
       </Box>
@@ -78,8 +81,8 @@ const Home = () => {
             height: { xs: '100%', md: 'auto' },
           }}
         >
-          We will be at your door step
-          <br /> right on TIME
+          We deliver all your food items to your location
+          <br /> in 24 HOURS
         </Typography>
         <Box
           component="div"

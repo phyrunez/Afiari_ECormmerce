@@ -1,5 +1,5 @@
 import { Box, Divider, IconButton, Typography } from '@mui/material';
-import React from 'react';
+import React, { useEffect } from 'react';
 import Footer from '../src/page-components/Footer';
 import Navbar from '../src/shared-components/navbar/Navbar';
 import styles from '../styles/Shop.module.css';
@@ -11,11 +11,18 @@ import { useState } from 'react';
 import CheckOutOldPayment from '../src/page-components/checkout/CheckOutOldPaymentPopUp';
 import { AddAndRemoveCartButton } from '../src/shared-components/Button';
 import { Delete } from '@mui/icons-material';
-import { handleDelete } from '../src/redux/cart/cartAction';
+import { getCart, handleDelete } from '../src/redux/cart/cartAction';
 import { useCart } from 'react-use-cart';
 import { useDispatch, useSelector } from 'react-redux';
 import Spinner from '../components/Spinner';
 import withAuth from '../constants/ProtectedRoutes';
+import {
+  getAddress,
+  getOrderNumber,
+  handleSelectedAddress,
+  handleSelectedPaymentMethod,
+  publicKey,
+} from '../src/redux/checkout/checkoutAction';
 
 function Checkout() {
   const [showModal, setShowModal] = useState(false);
@@ -54,13 +61,33 @@ function Checkout() {
     setShowPaymentForm(true);
   };
 
+  useEffect(() => {
+    dispatch(publicKey());
+    dispatch(getOrderNumber(country));
+    dispatch(getAddress());
+    dispatch(getCart());
+    dispatch(handleSelectedPaymentMethod(''));
+    dispatch(handleSelectedAddress(''));
+    localStorage.setItem('verify_status', false);
+  }, []);
+
   return (
     <Box
       sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'column',
         position: 'relative',
+        height: '100%',
+        width: '100%',
       }}
     >
       {/* ////////////////////// pop up /////////////////////////////////////////////// */}
+
+      {/* ////////////////////// end pop up /////////////////////////////////////////////// */}
+
+      <Navbar />
       {showModal && (
         <>
           <Box
@@ -70,23 +97,20 @@ function Checkout() {
               height: '100%',
               width: '100%',
               background: 'rgba(0, 0, 0, 0.53)',
-              zIndex: '10000000000000',
+              zIndex: '1000000000',
               top: 0,
             }}
             onClick={onClick}
           ></Box>
-          <CheckOutPopUp onClick={onClick} />
+          <CheckOutPopUp setShowModal={setShowModal} />
         </>
       )}
-
-      {/* ////////////////////// end pop up /////////////////////////////////////////////// */}
-
-      <Navbar />
       <Box
         sx={{
           display: 'flex',
           flexDirection: 'column',
-          padding: '0px 21px',
+          padding: { xs: '0px 2px', md: '0px 21px' },
+          // border: '1px solid red',
         }}
       >
         {/*/////////////////////////// up //////////////////////////////////////*/}
@@ -142,15 +166,16 @@ function Checkout() {
         </Box>
         <Box
           sx={{
-            padding: { md: '0px 58px' },
+            padding: { xs: '2rem', md: '2rem 28px' },
             display: { xs: 'flex', md: 'none' },
             flexDirection: 'column',
             alignItems: { xs: 'center', lg: 'flex-start' },
             justifyContent: { xs: 'center', md: 'flex-start' },
             height: { xs: '450px', md: '400px' },
             overflowX: 'hidden',
-            paddingTop: '2rem',
+            // paddingTop: '2rem',
           }}
+          className={styles.cart__warraper}
         >
           {cart?.cart?.[0]?.cart_items?.map((item, i) => (
             <Box
@@ -166,7 +191,7 @@ function Checkout() {
                 borderBottomRightRadius: ' 11.4255px',
                 borderTopLeftRadius: ' 11.4255px',
                 padding: '1rem',
-                marginTop: '21px',
+                marginTop: '9px',
               }}
             >
               <Image
@@ -195,7 +220,7 @@ function Checkout() {
                   variant="p"
                 ></Typography>
                 <Typography className={styles.cart_details} variant="p">
-                  {`${cart?.cart?.[0]?.currency} ` + item.unit_price}
+                  {`${cart?.cart?.[0]?.currency} ` + item.charged_cost}
                 </Typography>
               </Box>
 
@@ -236,7 +261,7 @@ function Checkout() {
           sx={{
             display: { xs: 'flex', md: 'none' },
             border: '1px solid rgba(0, 0, 0, 0.2)',
-            marginBottom: '3rem',
+            margin: '3rem 0rem',
           }}
         />
 

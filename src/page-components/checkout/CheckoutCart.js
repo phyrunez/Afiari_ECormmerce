@@ -1,22 +1,20 @@
 import { Delete } from '@mui/icons-material';
 import { Button, Divider, IconButton, Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   AddAndRemoveCartButton,
   ButtonSmall,
 } from '../../shared-components/Button';
 import Image from 'next/image';
 import styles from '../../../styles/Shop.module.css';
-
+import { makeStyles } from '@mui/styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { useCart } from 'react-use-cart';
 import {
-  getOrderNumber,
-  initializePayment,
+  handleSelectedAddress,
+  handleSelectedPaymentMethod,
   placeOrder,
-  processPayment,
-  verifyPayment,
 } from '../../redux/checkout/checkoutAction';
 import { formatCurrency } from '../../utils/utils';
 import {
@@ -24,11 +22,38 @@ import {
   getCart,
   handleDelete,
 } from '../../redux/cart/cartAction';
-import { usePaystackPayment } from 'react-paystack';
+import { useRouter } from 'next/router';
+
 import { toast } from 'react-toastify';
+
+const useStyles = makeStyles((theme) => ({
+  checkoutButton: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: { xs: '263', md: '515px' },
+    height: { xs: '40px', md: '79px' },
+    background: '#0A503D',
+    borderRadius: {
+      xs: '0px 0px 31.5402px 31.5402px',
+      md: '0px 0px 61.8375px 61.8375px',
+    },
+    fontWeight: '600',
+    fontSize: { xs: '12px', md: ' 25px' },
+    lineHeight: ' 19px',
+    textAlign: 'center',
+    letterSpacing: ' 0.04em',
+    cursor: 'pointer',
+    color: ' #FFFFFF',
+    '&:hover': {
+      backgroundColor: '#0a3d30',
+    },
+  },
+}));
 
 function CheckoutCart({ handleCheckOut }) {
   const { cart } = useSelector((state) => state.cart);
+  const classes = useStyles();
   const {
     isEmpty,
     totalUniqueItems,
@@ -42,92 +67,78 @@ function CheckoutCart({ handleCheckOut }) {
   } = useCart();
 
   const {
-    init_payment,
     order_number,
-    public_key,
-    verify_payment,
-    payment_meter,
-    selectedPhod,
+    // orderStatus,
+    orderErrorMessage,
+    orderSuccessMessage,
     selectedPayment,
     selectedAddress,
-    place_order,
-    init_result,
+    verify,
   } = useSelector((state) => state.checkout);
+
+  const [disable, setDisable] = useState(true);
 
   const { api_error, country, email, password, loading, isLogged_in } =
     useSelector((state) => state?.auth);
 
   const dispatch = useDispatch();
-  const orderNumber = order_number?.[0]?.order_number;
 
-  const totalAmount = order_number?.[0]?.total_cost;
+  const router = useRouter();
 
-  const finalAmount = +totalAmount?.replace(/,/g, '') * 100;
+  const masterID = order_number?.[0]?.order_master_id;
 
-  const config = {
-    reference: init_payment?.[0]?.reference,
-    email: email,
-    amount: finalAmount,
-    publicKey: public_key,
+  const data = {
+    paymentType: selectedPayment,
+    shippingAddress: selectedAddress.id,
+    masterRecordId: masterID,
   };
 
-  // you can call this function anything
-  const onSuccess = (reference) => {
-    console.log(reference);
-    // const ref = init_payment?.[0]?.reference;
-    // const masterID = order_number?.[0]?.order_master_id;
+  let verifyStatus;
+  if (typeof window !== 'undefined') {
+    verifyStatus = JSON.parse(localStorage.getItem('verify_status'));
+  }
 
-    // const verify = verify_payment;
-
-    // dispatch(verifyPayment(ref));
-
-    // if (verify === true) {
-    //   const data = {
-    //     paymentType: selectedPayment,
-    //     shippingAddress: selectedAddress.id,
-    //     masterRecordId: masterID,
-    //   };
-
-    //   dispatch(placeOrder(data));
-    //   toast.success(place_order);
-    //   console.log(data);
-    // }
-  };
-
-  const onClose = () => {
-    toast.error('Order Cancel');
-  };
-  const initializePayments = usePaystackPayment(config);
-
-  const handleOrder = async () => {
-    const ref = init_payment?.[0]?.reference;
-    const masterID = order_number?.[0]?.order_master_id;
-
-    const verify = verify_payment;
-
-    const data = {
-      paymentType: selectedPayment,
-      shippingAddress: selectedAddress.id,
-      masterRecordId: masterID,
-    };
-    initializePayments(onSuccess, onClose);
-    dispatch(initializePayment(orderNumber, verify, masterID, ref, data));
+  const handleOrder = () => {
+    if (verifyStatus === true) {
+      //set loading icon
+      dispatch(placeOrder(data));
+      setTimeout(() => {
+        let orderStatus;
+        if (typeof window !== 'undefined') {
+          orderStatus = JSON.parse(localStorage.getItem('orderStatus'));
+        }
+        console.log(orderStatus);
+        if (orderStatus.status === false) {
+          toast.error(orderStatus.error_message);
+          localStorage.setItem('verify_status', false);
+          router.push('/FoodMarket');
+          dispatch(handleSelectedPaymentMethod(''));
+          dispatch(handleSelectedAddress(''));
+        } else {
+          toast.success(orderStatus.success_message);
+          localStorage.setItem('verify_status', false);
+          router.push('/payment-complete');
+          dispatch(handleSelectedPaymentMethod(''));
+          dispatch(handleSelectedAddress(''));
+        }
+      }, 4000);
+    } else {
+      toast.error('We can not verify your payment');
+      dispatch(handleSelectedPaymentMethod(''));
+      dispatch(handleSelectedAddress(''));
+    }
   };
 
   useEffect(() => {
     dispatch(getCart());
   }, [dispatch]);
 
-  console.log(orderNumber);
-  console.log(verify_payment);
-  console.log(selectedAddress.id);
-  console.log(init_payment);
-
   return (
     <>
       <Box
         sx={{
           marginBottom: '15rem',
+          // border: '1px solid red',
         }}
       >
         <Box
@@ -141,6 +152,7 @@ function CheckoutCart({ handleCheckOut }) {
             overflowX: 'hidden',
             paddingTop: '3rem',
           }}
+          className={styles.cart__warraper}
         >
           {cart?.cart?.[0]?.cart_items?.map((item, i) => (
             <Box
@@ -185,7 +197,7 @@ function CheckoutCart({ handleCheckOut }) {
                   variant="p"
                 ></Typography>
                 <Typography className={styles.cart_details} variant="p">
-                  {`${cart?.cart?.[0]?.currency} ` + item.unit_price}
+                  {`${cart?.cart?.[0]?.currency} ` + item.charged_cost}
                 </Typography>
               </Box>
 
@@ -279,7 +291,6 @@ function CheckoutCart({ handleCheckOut }) {
             marginTop: '27px',
             cursor: 'pointer',
           }}
-          onClick={handleOrder}
         >
           <Button
             variant="h4"
@@ -306,6 +317,7 @@ function CheckoutCart({ handleCheckOut }) {
               },
             }}
             onClick={handleOrder}
+            disabled={!verifyStatus}
           >
             PLACE ORDER:
             {`${cart?.cart?.[0]?.currency} ` +

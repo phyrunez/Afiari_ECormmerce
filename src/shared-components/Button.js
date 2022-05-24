@@ -76,13 +76,14 @@ export const ButtonBig = ({
   onClick,
   disabled,
   isLoading = false,
-
+  type,
   href,
 }) => {
   return (
     <Button
       onClick={onClick}
       disabled={disabled}
+      type={type}
       sx={{
         width: { lg: ' 360px', sm: '360px', xs: '100%', md: '360px' },
         height: '57.55px',
@@ -220,12 +221,11 @@ export const AddAndRemoveCartButton = ({
           const data = {
             country: country,
             id: cartId,
-            quantity: quantity - 1,
+            quantity: quantity > 1 && quantity - 1,
             product_id: prodId,
           };
           if (isLogged_in) {
             dispatch(handleUpdate(data));
-            console.log('tttt');
           } else {
             updateItemQuantity(item.id, item.quantity - 1);
           }

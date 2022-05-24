@@ -1,5 +1,8 @@
 const BASE_URL = 'https://afiariwebapi.centralus.cloudapp.azure.com:444/api';
 
+const ETERNAL_URL =
+  ' https://www.googleapis.com/calendar/v3/users/me/calendarList';
+
 const MAP_API_KEY = 'unknown';
 
 const API_ROUTES = {
@@ -11,17 +14,26 @@ const API_ROUTES = {
     route: 'Account/get/my-profile',
     method: 'GET',
   },
+  updateProfile: {
+    route: 'Account/update-profile',
+    method: 'PUT',
+  },
   signup: {
     route: 'Auth/signup',
     method: 'POST',
   },
 
-  forgot: {
-    route: 'auth/forgot-password',
+  forgetPassword: {
+    route: 'Account/forgot-password',
     method: 'POST',
   },
-  reset: {
-    route: 'auth/reset-forgotten-password',
+
+  verifyPasswordReset: {
+    route: 'Account/verify/password-reset/',
+    method: 'GET',
+  },
+  resetPassword: {
+    route: 'Account/reset-password',
     method: 'POST',
   },
 
@@ -29,9 +41,9 @@ const API_ROUTES = {
     route: 'Auth/refresh/access-token',
     method: 'POST',
   },
-  confirmation: {
-    route: 'auth/confirm-registration',
-    method: 'POST',
+  sendConfirmationMail: {
+    route: 'Auth/verification/email-confirmation/send-mail',
+    method: 'GET',
   },
   resendConfirmation: {
     route: 'auth/resend-confirmation-code',
@@ -124,6 +136,10 @@ const API_ROUTES = {
   },
   getTestimony: {
     route: 'Testimony',
+    method: 'GET',
+  },
+  getDialCode: {
+    route: 'Lookup/dial-code',
     method: 'GET',
   },
 };

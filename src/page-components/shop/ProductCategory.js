@@ -11,6 +11,7 @@ import styles from '../../../styles/Shop.module.css';
 import Link from 'next/link';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+  getAllProducts,
   getProductsByCategory,
   setSelectedCategory,
 } from '../../redux/general/generalAction';
@@ -19,6 +20,8 @@ const ProductCategory = () => {
   const { categories } = useSelector((state) => state.general);
 
   const { country } = useSelector((state) => state.auth);
+
+  const [pageNumber, setPageNumber] = useState(1);
 
   const [selected, setSelected] = useState('');
 
@@ -31,6 +34,10 @@ const ProductCategory = () => {
         flexDirection: 'column',
         width: '100%',
         marginBottom: '2rem',
+        h: '100%',
+        height: '100%',
+        paddingTop: '2rem',
+        // border: '1px solid red',
       }}
     >
       <Typography
@@ -42,7 +49,7 @@ const ProductCategory = () => {
           lineHeight: ' 42px',
           textAlign: 'center',
           color: ' #3A3A3A',
-          marginTop: '72px',
+          // marginTop: '72px',
           marginBottom: '9px',
         }}
       >
@@ -65,6 +72,7 @@ const ProductCategory = () => {
       <Divider
         sx={{
           border: '1px solid #E6E6E',
+          marginBottom: '1rem',
         }}
       />
       <List
@@ -74,7 +82,11 @@ const ProductCategory = () => {
           alignItems: 'center',
           justifyContent: 'center',
           width: '100%',
+          height: '400px',
+          overflowX: 'hidden',
+          // border: '1px solid red',
         }}
+        className={styles.cart__warraper}
       >
         {categories.map((item) => (
           <ListItem

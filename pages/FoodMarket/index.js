@@ -27,7 +27,9 @@ import {
   setSelectedCategory,
 } from '../../src/redux/general/generalAction';
 import Spinner from '../../components/Spinner';
-import { setIsLoading } from '../../src/redux/cart/cartAction';
+import { handleDelete, setIsLoading } from '../../src/redux/cart/cartAction';
+import DeleteNotification from '../../src/page-components/shop/DeleteNotification';
+import ReactTypingEffect from 'react-typing-effect';
 
 function Shop() {
   const { categories } = useSelector((state) => state.general);
@@ -35,6 +37,9 @@ function Shop() {
   const { country, loading } = useSelector((state) => state.auth);
 
   const [selectedOption, setSelectedOption] = useState(null);
+
+  const [show, setShow] = useState(false);
+  const [itemID, setItemID] = useState('');
 
   const dispatch = useDispatch();
 
@@ -123,6 +128,19 @@ function Shop() {
 
   const router = useRouter();
 
+  const setId = (id) => {
+    setItemID(id);
+  };
+
+  const handleModal = (id) => {
+    setShow(!show);
+    dispatch(handleDelete(id));
+  };
+
+  const handleCancel = (id) => {
+    setShow(!show);
+  };
+
   const onChange = (selectedOption) => {
     setSelectedOption(selectedOption);
     dispatch(getProductsByCategory(country, selectedOption.id));
@@ -132,14 +150,23 @@ function Shop() {
   return (
     <Box
       sx={{
+        position: 'relative',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
         width: '100%',
+        // border: '1px solid red',
       }}
     >
       <Navbar />
+      {show && (
+        <DeleteNotification
+          id={itemID}
+          handleCancel={handleCancel}
+          handleModal={handleModal}
+        />
+      )}
       <Box
         className={styles.shop__header}
         sx={{
@@ -166,25 +193,94 @@ function Shop() {
             height: '100%',
           }}
         >
+          {/* <ReactTypingEffect text={['Hello.', 'World!']} /> */}
+
+          <ReactTypingEffect
+            text={[
+              '    Want to buy foodstuff needed in the kitchen?',
+              'Send us. We buy, package and deliver to you the next day!!!',
+            ]}
+            cursorRenderer={(cursor) => <h1>{cursor}</h1>}
+            className={styles.typing_text}
+            speed={50}
+            eraseSpeed={50}
+            eraseDelay={1200}
+            typingDelay={500}
+            displayTextRenderer={(text, i) => {
+              return (
+                <Typography
+                  variant="h1"
+                  sx={{
+                    fontWeight: '600',
+                    fontSize: { xs: '20px', md: '38px' },
+                    lineHeight: { xs: '37px', md: '45px' },
+                    textAlign: { xs: 'center', md: 'justify' },
+                    color: ' #FFFFFF',
+
+                    alignItems: { xs: 'center', md: 'flex-start' },
+                    justifyContent: 'center',
+                    width: { xs: '100%', md: '445px', lg: '632px' },
+                    height: { xs: '100%', md: 'auto' },
+                    // background: { xs: ' rgba(0, 34, 25, 0.824)', md: 'none' },
+                    padding: { xs: '2rem', md: '0rem' },
+                  }}
+                >
+                  {text.split('').map((char, i) => {
+                    const key = `${i}`;
+                    return (
+                      <span
+                        key={key}
+                        // style={i % 2 === 0 ? { color: 'magenta' } : {}}
+                      >
+                        {char}
+                      </span>
+                    );
+                  })}
+                </Typography>
+              );
+            }}
+          />
           <Typography
             //   className={styles.shop__header__text}
             variant="h1"
             sx={{
               fontWeight: '600',
-              fontSize: { xs: '20px', md: '48px' },
-              lineHeight: { xs: '37px', md: '65px' },
+              fontSize: { xs: '20px', md: '38px' },
+              lineHeight: { xs: '37px', md: '45px' },
               textAlign: { xs: 'center', md: 'justify' },
               color: { xs: ' #FFFFFF', md: '#3a3a3a' },
-              display: 'flex',
+              display: { xs: 'none', md: 'flex' },
               flexDirection: 'column',
               alignItems: { xs: 'center', md: 'flex-start' },
               justifyContent: 'center',
               width: { xs: '100%', md: '445px', lg: '632px' },
               height: { xs: '100%', md: 'auto' },
               background: { xs: ' rgba(0, 34, 25, 0.824)', md: 'none' },
+              padding: { xs: '2rem', md: '0rem' },
             }}
           >
-            Experience Shopping with <br /> premium taste
+            Want to buy foodstuff needed in the kitchen?
+          </Typography>
+          <Typography
+            variant="p"
+            sx={{
+              fontWeight: '400',
+              fontSize: { xs: '16px', md: '24px' },
+              lineHeight: { xs: '33px' },
+              textAlign: { xs: 'center', md: 'justify' },
+              color: { xs: ' #FFFFFF', md: '#3a3a3a' },
+              display: { xs: 'none', md: 'flex' },
+              flexDirection: 'column',
+              alignItems: { xs: 'center', md: 'flex-start' },
+              justifyContent: 'center',
+              width: { xs: '100%', md: '445px', lg: '632px' },
+              height: { xs: '100%', md: 'auto' },
+              background: { xs: ' rgba(0, 34, 25, 0.824)', md: 'none' },
+              padding: { xs: '2rem', md: '0rem' },
+            }}
+          >
+            {' '}
+            Send us. We buy, package and deliver to you the next day
           </Typography>
 
           <Box
@@ -267,8 +363,9 @@ function Shop() {
               display: { xs: 'flex', lg: 'none' },
               alignItems: 'center',
               justifyContent: 'space-around',
-              padding: '22px 0',
+              // padding: '22px 0',
               width: '100%',
+              marginBottom: '1rem',
             }}
           >
             <Select
@@ -313,7 +410,7 @@ function Shop() {
             flexItem
             sx={{
               display: { xs: 'flex', md: 'none' },
-              margin: { md: '16px 0px 0px 29px', xs: '1rem 0' },
+              // margin: { md: '16px 0px 0px 29px', xs: '1rem 0' },
               border: '1px solid #E6E6E',
             }}
           ></Divider>
@@ -325,7 +422,7 @@ function Shop() {
           {/* //////////////////////////////////////////////// end of the next and prev arrows //////////////////////////////////////////////// */}
         </Box>
 
-        <CartComponent />
+        <CartComponent setId={setId} handleCancel={handleCancel} />
       </Box>
       <Box
         sx={{

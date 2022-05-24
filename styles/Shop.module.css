@@ -1,9 +1,21 @@
-/* .shop__header {
-  background-image: url("/shop-bg.svg");
-} */
+.typing_text {
+  display: none;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 37px;
+  text-align: center;
+  color: #ffffff;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 34, 25, 0.824);
+  /* padding: 2rem; */
+}
 
 .shop__card__wrapper::-webkit-scrollbar {
-  width: 5px;
+  width: 2px;
+  display: flex;
 }
 .shop__card__wrapper::-webkit-scrollbar-track {
   background: #f1f1f1;
@@ -13,7 +25,8 @@
 .shop__card__wrapper::-webkit-scrollbar-thumb {
   background: #888;
   border-radius: 50px;
-  height: 10px;
+  height: 2px;
+  width: 2px;
 }
 
 .shop__filter__list {
@@ -42,7 +55,7 @@
 .cart_details {
   font-weight: 600;
   font-size: 12px;
-  line-height: 8px;
+  line-height: 15px;
   text-align: center;
   letter-spacing: 0.04em;
   margin-bottom: 12px !important;
@@ -75,7 +88,86 @@
   margin-bottom: 29px;
 }
 
+.product__detail__review_btn {
+  width: 184px;
+  height: 56px;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 22px;
+  border-radius: 50px;
+  background: #0a503d;
+  color: #ffffff;
+  outline: none;
+  border: none;
+}
+
+.product__detail__review_input {
+  width: 420px;
+  height: 62px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  border-radius: 15px;
+  margin-bottom: 29px;
+  outline: none;
+  padding-left: 1rem;
+}
+
+.cart__warraper::-webkit-scrollbar {
+  width: 3px;
+  display: flex;
+}
+
+.checkout_select_options {
+  width: 360px;
+  height: 50px;
+  margin-bottom: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  border-radius: 13px;
+  outline: none;
+}
+
+.deletePopUpBtn {
+}
+
+@media only screen and (max-width: 899px) {
+  .typing_text {
+    display: flex;
+  }
+  .checkout_select_options {
+    width: 251px;
+    height: 50px;
+    border: 0.46063px solid rgba(0, 0, 0, 0.3);
+
+    padding: 1rem;
+  }
+
+  .checkout_pop_btn {
+    width: 251px;
+  }
+  .checkout_select_options {
+    width: 251px;
+  }
+
+  .deletePopUpBtn {
+    width: 100px;
+    height: 30px;
+  }
+}
+
 @media only screen and (max-width: 600px) {
+  .product__detail__review_input {
+    width: 100px;
+    height: 30px;
+  }
+  .product__detail__review_btn {
+    width: 80px;
+    height: 20px;
+    font-size: 12px;
+    line-height: 4px;
+    border-radius: 8.74233px;
+  }
+
   .cart_product_details {
     font-size: 9px;
     line-height: 10px;
@@ -89,10 +181,28 @@
 
   .cart_details {
     font-size: 9px;
-    line-height: 8px;
+    line-height: 15px;
   }
 
   .checkout_input {
     width: 200px;
+  }
+
+  .checkout_select_options {
+    width: 100%;
+  }
+
+  .checkout_pop_btn {
+    width: 100%;
+    height: 50px;
+    background: #0a503d;
+    border-radius: 23.0315px;
+    font-size: 12px;
+  }
+}
+
+@media only screen and (max-width: 369px) {
+  .cart__warraper {
+    padding: 1rem;
   }
 }

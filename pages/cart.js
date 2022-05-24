@@ -4,7 +4,10 @@ import Footer from '../src/page-components/Footer';
 import Navbar from '../src/shared-components/navbar/Navbar';
 import Image from 'next/image';
 import cart_illustration from '../public/cart_illustration.svg';
-import { AddAndRemoveCartButton } from '../src/shared-components/Button';
+import {
+  AddAndRemoveCartButton,
+  ButtonSmall,
+} from '../src/shared-components/Button';
 import styles from '../styles/Shop.module.css';
 import { Delete } from '@mui/icons-material';
 import { useRouter } from 'next/router';
@@ -25,11 +28,15 @@ import {
 import { useCart } from 'react-use-cart';
 import { formatCurrency } from '../src/utils/utils';
 import Spinner from '../components/Spinner';
+import DeleteNotification from '../src/page-components/shop/DeleteNotification';
 
 function Cart() {
   const { isLogged_in, country, public_key, loading } = useSelector(
     (state) => state.auth
   );
+
+  const [show, setShow] = useState(false);
+  const [itemID, setItemID] = useState('');
 
   const [showLogin, setShowLogin] = useState(false);
 
@@ -74,15 +81,17 @@ function Cart() {
   //   });
   // };
 
-  const handleModal = () => {
-    setShowLogin(!showLogin);
+  const handleModal = (id) => {
+    dispatch(handleDelete(id));
+    setShow(false);
+  };
+
+  const handleCancel = (id) => {
+    setShow(false);
   };
 
   const onClick = () => {
     if (isLogged_in) {
-      dispatch(publicKey());
-      dispatch(getOrderNumber(country));
-
       router.push('/checkout');
     } else {
       toast.error('You need to be logged in');
@@ -98,11 +107,22 @@ function Cart() {
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'column',
+        width: '100%',
+        height: '100%',
+        // border: '1px solid red',
       }}
     >
       <Navbar />
 
-      {/* {showLogin && (
+      {show && (
+        <DeleteNotification
+          id={itemID}
+          handleCancel={handleCancel}
+          handleModal={handleModal}
+        />
+      )}
+
+      {/* {show && (
         <>
           <Box
             sx={{
@@ -114,9 +134,22 @@ function Cart() {
               zIndex: '10000000000000',
               top: 0,
             }}
-            onClick={handleModal}
-          ></Box>
-          <LoginPopUp />
+          
+          >
+            <Box>
+              <Typography variant='p'>
+                Are you sure want to delete this Product?
+              </Typography>
+
+              <ButtonSmall 
+              text='Cancel'
+              />
+              <ButtonSmall 
+              text='Ok'
+              />
+            </Box>
+          </Box>
+          
         </>
       )} */}
 
@@ -125,7 +158,8 @@ function Cart() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          padding: '3rem 3rem',
+          padding: { md: '3rem 3rem' },
+          // border: '1px solid red',
         }}
       >
         <Box
@@ -189,12 +223,14 @@ function Cart() {
             </Box>
           ) : (
             <Box
+              className={styles.cart__warraper}
               sx={{
                 display: 'flex',
                 flexDirection: 'column',
-                padding: { xs: '1rem', md: '53px 83px' },
+                padding: { xs: '3rem', md: '53px 83px' },
                 height: '300px',
                 overflowX: 'hidden',
+
                 // width: '30%',
                 marginBottom: '2rem',
                 marginTop: '3rem',
@@ -257,8 +293,9 @@ function Cart() {
                       {/* {isLogged_in ? cart?.cart?.[0]?.currency : 'NGN'}{' '}
                   {item?.charged_unit_price} */}
                       {isLogged_in
-                        ? `${cart?.cart?.[0]?.currency} ` + item.unit_price
-                        : item?.currency}
+                        ? `${cart?.cart?.[0]?.currency}  ` +
+                          `${item?.charged_cost}`
+                        : `${item?.currency}`}
                       {!isLogged_in && formatCurrency(item?.price)}
                     </Typography>
                   </Box>
@@ -270,9 +307,13 @@ function Cart() {
                           id: item.id,
                           country: country,
                         };
-                        isLogged_in
-                          ? dispatch(handleDelete(data))
-                          : removeItem(item?.id);
+
+                        setItemID(isLogged_in ? data : item?.id);
+                        setShow(true);
+
+                        // isLogged_in
+                        //   ? dispatch(handleDelete(data))
+                        //   : removeItem(item?.id);
                       }}
                     >
                       <Delete />

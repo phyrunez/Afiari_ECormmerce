@@ -1,7 +1,7 @@
 import * as ShoppingTypes from './shoppingTypes';
 
 const initialState = {
-  shopping_history: [],
+  shoppingHistory: [],
   user_address: [],
   loading: false,
   address: '',
@@ -18,7 +18,7 @@ const reducer = (state = initialState, action) => {
     case ShoppingTypes.GET__SHOPPING__HISTORY:
       return {
         ...state,
-        shopping_history: action.payload.shopping_history,
+        shoppingHistory: action.payload,
       };
 
     case ShoppingTypes.UPDATE__ADDRESS:

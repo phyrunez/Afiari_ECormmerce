@@ -1,6 +1,6 @@
 import { Box, Divider, Typography } from '@mui/material';
 import Image from 'next/image';
-import React from 'react';
+import React, { Fragment } from 'react';
 import { ButtonSmall } from '../../src/shared-components/Button';
 import styles from '../../styles/Profile.module.css';
 import leftArrow from '../../public/leftArrow.svg';
@@ -8,167 +8,209 @@ import rightArrow from '../../public/rightArrow.svg';
 import { useSelector } from 'react-redux';
 
 function ShoppingHistory() {
-  const { loading, shopping_history, user_address } = useSelector(
+  const { loading, shoppingHistory, user_address } = useSelector(
     (state) => state.history
   );
-
-  console.log(shopping_history);
 
   return (
     <Box
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        // alignItems: 'center',
+        alignItems: 'center',
+        width: '100%',
         marginLeft: '1rem',
         justifyContent: 'center',
         paddingTop: '25px',
       }}
       className={styles.profile__shipping__history__wrapper}
     >
-      <Typography
-        variant="h2"
-        sx={{
-          fontStyle: 'normal',
-          fontWeight: '400',
-          fontSize: '16px',
-          lineHeight: '22px',
-          //   textAlign: 'center',
-          letterSpacing: ' 0.04em',
-          color: ' #000000',
-          marginBottom: '16px',
-        }}
-      >
-        SHOPPING HISTORY
-      </Typography>
-
       {/* card wrapper */}
-
       <Box
         sx={{
           display: 'flex',
-          flexDirection: 'column',
-          //   height: '350px',
-          overflowX: 'hidden',
-          //   border: '1px solid red',
+          alignItems: 'center',
+          // justifyContent: 'center',
         }}
       >
-        {[...Array(5)].map((item, i) => (
-          <Box
-            key={i}
-            variant="div"
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            height: '650px',
+            overflowX: 'hidden',
+            // border: '1px solid red',
+          }}
+        >
+          <Typography
+            variant="h2"
             sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              padding: '23px',
-              width: ' 236px',
-              height: ' 123.19px',
-              background: ' #FFFFFF',
-              boxShadow: ' 0px 1.48428px 1.85534px rgba(0, 0, 0, 0.15)',
-              borderRadius: ' 9.27672px',
-              alignItems: 'center',
-              justifyContent: 'center',
-              marginBottom: '8px',
+              fontStyle: 'normal',
+              fontWeight: '400',
+              fontSize: { xs: '16px', md: '31px' },
+              lineHeight: { xs: '22px', md: '42px' },
+              //   textAlign: 'center',
+              letterSpacing: ' 0.04em',
+              color: ' #000000',
+              marginBottom: '16px',
             }}
           >
-            {/* card top */}
-            <Box
-              variant="div"
-              sx={{
-                display: 'flex',
-              }}
-            >
-              <img
-                src="/data.svg"
-                alt="item"
-                width={50}
-                height={50}
-                style={{
-                  marginRight: '8px',
-                }}
-              />
-
+            {/*  heading*/}
+            SHOPPING HISTORY
+          </Typography>
+          {shoppingHistory.length !== 0 ? (
+            shoppingHistory.map((item) => (
               <Box
+                key={item.id}
                 variant="div"
                 sx={{
                   display: 'flex',
+                  flexDirection: 'column',
+                  padding: '23px',
+                  width: { xs: ' 236px', sm: '350px', md: '694px' },
+                  height: { xs: ' 123.19px', sm: '300px', md: '362px' },
+                  background: ' #FFFFFF',
+                  boxShadow: ' 0px 1.48428px 1.85534px rgba(0, 0, 0, 0.15)',
+                  borderRadius: ' 9.27672px',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginBottom: '15px',
                 }}
               >
+                {/* card top */}
                 <Box
                   variant="div"
                   sx={{
                     display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center',
                   }}
                 >
-                  <Typography
-                    className={styles.profile__card__address__para}
-                    variant="p"
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      width: { xs: '44px', sm: '90px', md: '174px' },
+                      height: { xs: '44px', sm: '90px', md: '174px' },
+                      cursor: 'pointer',
+                    }}
                   >
-                    Total Purchase
-                  </Typography>
+                    <img
+                      src={
+                        item?.order_items?.[0].product_images?.[0]?.image_url
+                      }
+                      alt="item"
+                      width="100%"
+                      height="100%"
+                      style={{
+                        marginRight: '8px',
+                      }}
+                    />
+                  </Box>
 
-                  <Typography
-                    className={styles.profile__card__address__para}
-                    variant="p"
+                  <Box
+                    variant="div"
+                    sx={{
+                      display: 'flex',
+                    }}
                   >
-                    Delivery Address
-                  </Typography>
-                  <Typography
-                    className={styles.profile__card__address__para}
-                    variant="p"
-                  >
-                    Delivery date
-                  </Typography>
+                    <>
+                      <Box
+                        variant="div"
+                        sx={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}
+                      >
+                        <Typography
+                          className={styles.profile__card__address__para}
+                          variant="p"
+                          sx={{
+                            fontWeight: { md: '700' },
+                          }}
+                        >
+                          Total Purchase
+                        </Typography>
+
+                        <Typography
+                          className={styles.profile__card__address__para}
+                          variant="p"
+                        >
+                          Delivery Address
+                        </Typography>
+                        <Typography
+                          className={styles.profile__card__address__para}
+                          variant="p"
+                        >
+                          Delivery date
+                        </Typography>
+                      </Box>
+                      <Divider
+                        sx={{
+                          margin: '0 6px',
+                          border: ' 0.371069px solid rgba(0, 0, 0, 0.3)',
+                        }}
+                      />
+                      <Box
+                        variant="div"
+                        sx={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}
+                      >
+                        <Typography
+                          className={styles.profile__card__address__para}
+                          variant="p"
+                          sx={{
+                            fontWeight: { md: '700' },
+                          }}
+                        >
+                          {item.currency + item.total_cost}
+                        </Typography>
+                        <Typography
+                          className={styles.profile__card__address__para}
+                          variant="p"
+                        >
+                          {item?.shipping_info?.street?.substr(0, 25)}
+                          ...
+                        </Typography>
+                        <Typography
+                          className={styles.profile__card__address__para}
+                          variant="p"
+                        >
+                          {(shoppingHistory?.[0]?.date_ordered).substr(0, 10)}
+                        </Typography>
+                      </Box>
+                    </>
+                  </Box>
                 </Box>
-                <Divider
-                  sx={{
-                    margin: '0 6px',
-                    border: ' 0.371069px solid rgba(0, 0, 0, 0.3)',
-                  }}
-                />
-                <Box
-                  variant="div"
-                  sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <Typography
-                    className={styles.profile__card__address__para}
-                    variant="p"
-                  >
-                    NGN 15,700
-                  </Typography>
-                  <Typography
-                    className={styles.profile__card__address__para}
-                    variant="p"
-                  >
-                    No. 45, Ojulegba...
-                  </Typography>
-                  <Typography
-                    className={styles.profile__card__address__para}
-                    variant="p"
-                  >
-                    24th November, 2021
-                  </Typography>
+
+                {/* card down */}
+                <Box variant="div">
+                  <ButtonSmall
+                    className={styles.profile__shipping_btn}
+                    text="MORE DETAILS"
+                  />
                 </Box>
               </Box>
+            ))
+          ) : (
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '100%',
+                height: '100%',
+                // border: '1px solid red',
+              }}
+            >
+              <h4>Your Shopping history is empty</h4>
             </Box>
-
-            {/* card down */}
-            <Box variant="div">
-              <ButtonSmall
-                className={styles.profile__shipping_btn}
-                text="MORE DETAILS"
-              />
-            </Box>
-          </Box>
-        ))}
+          )}
+        </Box>
       </Box>
       <Box
         sx={{

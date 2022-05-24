@@ -25,12 +25,14 @@ const initialState = {
   user_address: [],
   public_key: '',
   ...emptyUserAddress,
-  init_payment: [],
-  init_result: [],
   order_number: [],
   selectedAddress: {},
-  verify_payment: '',
-  place_order: '',
+  orderErrorMessage: '',
+  orderSuccessMessage: '',
+  verify: '',
+  orderStatus: '',
+  ref: '',
+  dialCodes: [],
 };
 
 const reducer = (state = initialState, action) => {
@@ -40,6 +42,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         loading: action.payload,
       };
+
     case CheckoutTypes.USER_INPUT:
       return {
         ...state,
@@ -61,6 +64,11 @@ const reducer = (state = initialState, action) => {
         ...state,
         payment_method: action.payload,
       };
+    case CheckoutTypes.REF_NO:
+      return {
+        ...state,
+        ref: action.payload,
+      };
     case CheckoutTypes.ADD_ADDRESS:
       return {
         ...state,
@@ -81,26 +89,33 @@ const reducer = (state = initialState, action) => {
           phoneNumber: action?.payload?.phoneNumber,
         },
       };
-    case CheckoutTypes?.INITIALIZE_PAYMENT:
-      return {
-        ...state,
-        init_payment: action.payload.init_payment,
-        init_result: action.payload.init_result,
-      };
+
     case CheckoutTypes?.VERIFY_PAYMENT:
       return {
         ...state,
-        verify_payment: action.payload,
+        verify: action.payload,
       };
     case CheckoutTypes?.ORDER_NUMBER:
       return {
         ...state,
         order_number: action.payload,
       };
+    case CheckoutTypes?.DIAL_CODE:
+      return {
+        ...state,
+        dialCodes: action.payload,
+      };
     case CheckoutTypes?.PLACE_ORDER:
       return {
         ...state,
-        place_order: action.payload,
+        orderStatus: action.payload.status,
+        orderSuccessMessage: action.payload.successMessage,
+      };
+    case CheckoutTypes?.PLACE_ORDER_ERROR:
+      return {
+        ...state,
+        orderStatus: action.payload.status,
+        orderErrorMessage: action.payload.error,
       };
 
     default:

@@ -19,8 +19,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import { Delete } from '@mui/icons-material';
 import { handleDelete } from '../../redux/cart/cartAction';
+import { toast } from 'react-toastify';
 
-const CartComponent = () => {
+const CartComponent = ({ handleCancel, setId }) => {
   const {
     isEmpty,
     totalUniqueItems,
@@ -119,6 +120,7 @@ const CartComponent = () => {
             marginTop: '1rem',
             // border: '1px solid red',
           }}
+          className={styles.cart__warraper}
         >
           {cartItems?.map((item, i) => (
             <Box
@@ -168,7 +170,7 @@ const CartComponent = () => {
                 </Typography>
                 <Typography className={styles.cart_details} variant="p">
                   {isLogged_in
-                    ? `${cart?.cart?.[0]?.currency} ` + item.unit_price
+                    ? `${cart?.cart?.[0]?.currency} ` + item.charged_unit_price
                     : item?.currency}
                   {!isLogged_in && formatCurrency(item?.price)}
                 </Typography>
@@ -180,9 +182,13 @@ const CartComponent = () => {
                       id: item.id,
                       country: country,
                     };
-                    isLogged_in
-                      ? dispatch(handleDelete(data))
-                      : removeItem(item?.id);
+                    handleCancel();
+                    setId(isLogged_in ? data : item?.id);
+                    // setItemID();
+
+                    // isLogged_in
+                    // ? dispatch(handleDelete(data))
+                    // : removeItem(item?.id);
                   }}
                 >
                   <Delete />
