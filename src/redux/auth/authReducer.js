@@ -21,6 +21,7 @@ const initialState = {
   reset_password: '',
   userCountry: '',
   signup_api_message: {},
+  newUpdate: '',
 };
 
 const reducer = (state = initialState, action) => {
@@ -92,9 +93,9 @@ const reducer = (state = initialState, action) => {
         sent_mail: action.payload,
       };
     case AuthTypes.UPDATE__PROFILE:
-      const newUpdate = [...state, action.payload];
+      // const newUpdate = [...state, action.payload];
       return {
-        newUpdate,
+        newUpdate: action.payload,
       };
     case AuthTypes.UPLOAD__PICTURE:
       return {

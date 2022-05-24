@@ -67,7 +67,7 @@ const SignUp = () => {
 
       if (signupMessage.status === true) {
         toast.success(signupMessage.success_message);
-        router.push('/shop');
+        router.push('/FoodMarket');
         localStorage.removeItem('signupMessage');
       } else {
         toast.error(signupMessage.error_message);

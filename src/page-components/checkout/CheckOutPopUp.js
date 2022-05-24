@@ -15,41 +15,41 @@ import { toast } from 'react-toastify';
 
 function CheckOutPopUp({ setShowModal }) {
   const [countrySelected, setCountrySelected] = useState();
-  const {
-    country,
-    dialCode,
-    dialCodes,
-    state,
-    city,
-    street,
-    email,
-    contactPhoneNumber,
-    fullName,
-  } = useSelector((state) => state.checkout);
+  const [state, setState] = useState('');
+  const [city, setCity] = useState('');
+  const [phone, setPhone] = useState('');
+  const [dialCode, setDialCode] = useState('');
+  const [fullName, setFullName] = useState('');
+  const [address, setAddress] = useState('');
+  const [email, setEmail] = useState('');
+
+  const { dialCodes } = useSelector((state) => state.checkout);
+
+  const checkDialCode = dialCodes.filter((item) => {
+    return item.country_text === countrySelected;
+  });
 
   const dispatch = useDispatch();
-
-  console.log(countrySelected);
 
   const handleNewAddress = (e) => {
     e.preventDefault();
     if (
-      country === '' ||
+      countrySelected === '' ||
       state === '' ||
       city === '' ||
-      street === '' ||
-      contactPhoneNumber === '' ||
+      address === '' ||
+      phone === '' ||
       dialCode === '' ||
       fullName === ''
     ) {
       toast.error('You need to provide all information');
     } else {
       const userAddress = {
-        country: country,
+        country: countrySelected,
         state: state,
         city: city,
-        street: street,
-        contactPhoneNumber: contactPhoneNumber,
+        street: address,
+        contactPhoneNumber: phone,
         fullName: fullName,
         dialCode: dialCode,
       };
@@ -122,7 +122,7 @@ function CheckOutPopUp({ setShowModal }) {
             htmlFor="full name"
             type="text"
             onChange={(e) => {
-              dispatch(handleUserInput('fullName', e.target.value));
+              setFullName(e.target.value);
             }}
             name="fullName"
             id="fullName"
@@ -134,11 +134,11 @@ function CheckOutPopUp({ setShowModal }) {
             htmlFor="Address"
             type="text"
             onChange={(e) => {
-              dispatch(handleUserInput('street', e.target.value));
+              setAddress(e.target.value);
             }}
-            name="street"
-            id="Address"
-            value={street}
+            name="address"
+            id="address"
+            value={address}
             // icon={
             //   <IconButton>
             //     <LocationOn />
@@ -151,7 +151,7 @@ function CheckOutPopUp({ setShowModal }) {
             htmlFor="email"
             type="text"
             onChange={(e) => {
-              dispatch(handleUserInput('email', e.target.value));
+              setEmail(e.target.value);
             }}
             name="email"
             id="email"
@@ -168,11 +168,11 @@ function CheckOutPopUp({ setShowModal }) {
             htmlFor="Phone"
             type="text"
             onChange={(e) => {
-              dispatch(handleUserInput('contactPhoneNumber', e.target.value));
+              setPhone(e.target.value);
             }}
-            name="contactPhoneNumber"
-            id="Phone"
-            value={contactPhoneNumber}
+            name="phone"
+            id="phone"
+            value={phone}
             // icon={
             //   <IconButton>
             //     <Phone />
@@ -186,26 +186,25 @@ function CheckOutPopUp({ setShowModal }) {
             htmlFor="Country"
             type="text"
             onChange={(e) => {
-              dispatch(handleUserInput('country', e.target.value));
               setCountrySelected(e.target.value);
             }}
             name="country"
             id="Country"
-            value={country}
+            value={countrySelected}
             className={styles.checkout_select_options}
           >
-            {dialCodes.map((item) => (
-              <option key={item.id}>{item.country_text}</option>
-            ))}
+            {dialCodes.map((item) => {
+              return <option key={item.id}>{item.country_text}</option>;
+            })}
           </select>
 
           <select
             label="dialCode"
-            placeholder="08099999887"
+            placeholder="+234"
             htmlFor="dialCode"
             type="text"
             onChange={(e) => {
-              dispatch(handleUserInput('dialCode', e.target.value));
+              setDialCode(e.target.value);
             }}
             name="dialCode"
             id="dialCode"
@@ -215,16 +214,12 @@ function CheckOutPopUp({ setShowModal }) {
             //   <IconButton>
             //     <Phone />
             //   </IconButton>
-            // }
+            //
           >
-            {countrySelected &&
-              dialCodes.filter((item) => {
-                countrySelected === item.country_text ? (
-                  <option key={item.id}>{item.dial_code}</option>
-                ) : (
-                  ''
-                );
-              })}
+            <option></option>
+            {checkDialCode.map((item) => (
+              <option key={item.id}>{item.dial_code}</option>
+            ))}
           </select>
 
           <Input
@@ -233,7 +228,7 @@ function CheckOutPopUp({ setShowModal }) {
             htmlFor="State"
             type="text"
             onChange={(e) => {
-              dispatch(handleUserInput('state', e.target.value));
+              setState(e.target.value);
             }}
             name="state"
             id="State"
@@ -245,7 +240,7 @@ function CheckOutPopUp({ setShowModal }) {
             htmlFor="City"
             type="text"
             onChange={(e) => {
-              dispatch(handleUserInput('city', e.target.value));
+              setCity(e.target.value);
             }}
             name="city"
             id="City"

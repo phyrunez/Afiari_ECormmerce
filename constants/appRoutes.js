@@ -1,8 +1,8 @@
 export const appRoutes = {
   LOGIN: '/login',
   HOME: '/',
-  SHOP: '/shop',
-  PRODUCT: '/shop/[productId]',
+  FOODMARKET: '/FoodMarket',
+  PRODUCT: '/FoodMarket/[productId]',
   REGISTER: '/sign-up',
   FORGOT: '/forget-password',
   RESET: '/reset-password',

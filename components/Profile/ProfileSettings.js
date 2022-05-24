@@ -17,25 +17,18 @@ import { toast } from 'react-toastify';
 
 function ProfileSettings() {
   const [visible, setVisible] = useState(false);
-
-  const {
-    email,
-    firstName,
-    lastName,
-    dialCode,
-    birth_month,
-    birth_day,
-    birth_year,
-    phone_number,
-    picture_url,
-    password,
-    loading,
-    address,
-    userCountry,
-  } = useSelector((state) => state.auth);
+  const [street, setStreet] = useState();
+  const [picture_url, setPicture_url] = useState('');
+  const [birth_day, setBirth_day] = useState('');
+  const [birth_month, setBirth_month] = useState('');
+  const [dialCode, setDialCode] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [birth_year, setBirth_year] = useState('');
+  const [phone_number, setPhone_number] = useState('');
 
   console.log(
-    email,
+    // email,
     firstName,
     lastName,
     dialCode,
@@ -43,7 +36,8 @@ function ProfileSettings() {
     +birth_day,
     birth_year,
     phone_number,
-    picture_url
+    picture_url,
+    street
   );
 
   const dispatch = useDispatch();
@@ -54,7 +48,7 @@ function ProfileSettings() {
     reader.onload = () => {
       if (reader.readyState === 2) {
         // picture_url = reader.result;
-        dispatch(uploadPicture('picture_url', reader.result));
+        setPicture_url(reader.result);
       }
     };
 
@@ -66,9 +60,9 @@ function ProfileSettings() {
     const data = {
       FirstName: firstName,
       LastName: lastName,
-      BirthDay: +birth_day,
-      BirthMonth: +birth_month,
-      BirthYear: +birth_year,
+      BirthDay: birth_day,
+      BirthMonth: birth_month,
+      BirthYear: birth_year,
       PhoneNumber: phone_number,
       ProfilePicture: picture_url,
     };
@@ -146,8 +140,7 @@ function ProfileSettings() {
               {firstName + lastName}
             </Typography>
           </Box>
-          {/* <input
-            type="file"
+          {/* <input type="file" 
             placeholder="UPDATE PROFILE"
             className={styles.profile__image__upload__btn}
           /> */}
@@ -190,11 +183,11 @@ function ProfileSettings() {
         >
           <InputSmall
             type="text"
-            label="Full name"
+            label="first name"
             placeholder="Michael Adewole"
             className={styles.profile__settings__input_wrapper}
             onChange={(e) => {
-              dispatch(handleUserInput('firstName', e.target.value));
+              setFirstName(e.target.value);
             }}
             name="firstName"
             id="firstName"
@@ -202,31 +195,32 @@ function ProfileSettings() {
           />
           <InputSmall
             type="text"
-            label="Address"
-            placeholder="No. 45, Ojulegba road, Ojuelegba, Lagos"
+            label="last name"
+            placeholder="kola"
             className={styles.profile__settings__input_wrapper}
             onChange={(e) => {
-              dispatch(handleUserInput('address', e.target.value));
+              setLastName(e.target.value);
             }}
-            name="address"
-            id="address"
-            value={address}
+            name="lastName"
+            id="lastName"
+            value={lastName}
           />
 
           <InputSmall
-            type="email"
-            label="Email"
-            placeholder="somebody@mail.com"
-            className={styles.profile__settings__input_wrapper}
-            icon={<Email fontSize="24px" />}
+            className={styles.profile__settings__input__small__phone}
+            label="Phone number"
+            placeholder="08066655544"
+            type="text"
+            icon={<Phone fontSize="24px" />}
             onChange={(e) => {
-              dispatch(handleUserInput('email', e.target.value));
+              setPhone_number(e.target.value);
             }}
-            name="email"
-            id="email"
-            value={email}
+            name="phone_number"
+            id="phone_number"
+            value={phone_number}
           />
 
+          {/*           
           <InputSmall
             label="Password"
             placeholder="************"
@@ -248,9 +242,9 @@ function ProfileSettings() {
             name="password"
             id="password"
             value={password}
-          />
+          /> */}
 
-          <Box
+          {/* <Box
             sx={{
               display: 'grid',
               gridTemplateColumns: 'repeat(1, 1fr 2fr)',
@@ -286,8 +280,8 @@ function ProfileSettings() {
               id="phone_number"
               value={phone_number}
             />
-          </Box>
-          <Box className={styles.profile__settings__input_wrapper}>
+          </Box> */}
+          {/* <Box className={styles.profile__settings__input_wrapper}>
             <label
               htmlFor="country"
               style={{
@@ -299,16 +293,15 @@ function ProfileSettings() {
             <select
               placeholder="Country"
               className={styles.profile__settings__select}
-              onChange={(e) => {
-                dispatch(setUserCountry('userCountry', e.target.value));
-              }}
+              onChange={(e) => }
+            
               name="userCountry"
               id="country"
               value={userCountry}
             >
               <option value="Nigeria">Nigeria</option>
             </select>
-          </Box>
+          </Box> */}
 
           <label htmlFor="dateOfBirth">Date of birth</label>
           <Box
@@ -332,7 +325,7 @@ function ProfileSettings() {
               <select
                 className={styles.profile__settings__select}
                 onChange={(e) => {
-                  dispatch(setUserDayOfBirth('birth_day', e.target.value));
+                  setBirth_day(e.target.value);
                 }}
                 name="birth_day"
                 id="birth_day"
@@ -360,7 +353,7 @@ function ProfileSettings() {
               <select
                 className={styles.profile__settings__select}
                 onChange={(e) => {
-                  dispatch(setUserMonthOfBirth('birth_month', e.target.value));
+                  setBirth_month(e.target.value);
                 }}
                 name="birth_month"
                 id="birth_month"
@@ -385,7 +378,7 @@ function ProfileSettings() {
               <select
                 className={styles.profile__settings__select}
                 onChange={(e) => {
-                  dispatch(setUserYearOfBirth('birth_year', e.target.value));
+                  setBirth_year(e.target.value);
                 }}
                 name="birth_year"
                 id="birth_year"

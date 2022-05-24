@@ -109,8 +109,13 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         orderStatus: action.payload.status,
-        orderErrorMessage: action.payload.error,
         orderSuccessMessage: action.payload.successMessage,
+      };
+    case CheckoutTypes?.PLACE_ORDER_ERROR:
+      return {
+        ...state,
+        orderStatus: action.payload.status,
+        orderErrorMessage: action.payload.error,
       };
 
     default:

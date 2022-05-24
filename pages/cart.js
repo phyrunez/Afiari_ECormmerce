@@ -107,6 +107,8 @@ function Cart() {
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'column',
+        width: '100%',
+        height: '100%',
         // border: '1px solid red',
       }}
     >

@@ -121,7 +121,7 @@ const Navbar = () => {
                 color: active ? '#000000' : '3a3a3a',
               }}
             >
-              <Link href="/shop">Food Market</Link>
+              <Link href="/FoodMarket">Food Market</Link>
             </li>
 
             <li
@@ -292,7 +292,9 @@ const Navbar = () => {
                 lineHeight="8px"
                 height="30px"
                 border=" 1px solid #0A503D"
-                href="/login"
+                onClick={() => {
+                  router.push('/login');
+                }}
               />
 
               <Button
@@ -446,7 +448,7 @@ const Navbar = () => {
                 </li>
 
                 <li className={styles.nav__links} onClick={handleClose}>
-                  <Link href="/shop"> Food Market </Link>
+                  <Link href="/FoodMarket"> Food Market </Link>
                 </li>
 
                 <li className={styles.nav__links} onClick={handleClose}>
@@ -570,7 +572,9 @@ const Navbar = () => {
                       lineHeight="8px"
                       height="30px"
                       border=" 1px solid #0A503D"
-                      href="/login"
+                      onClick={() => {
+                        router.push('/login');
+                      }}
                     />
 
                     <Button

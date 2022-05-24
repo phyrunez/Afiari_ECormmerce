@@ -11,6 +11,7 @@ import styles from '../../../styles/Shop.module.css';
 import Link from 'next/link';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+  getAllProducts,
   getProductsByCategory,
   setSelectedCategory,
 } from '../../redux/general/generalAction';
@@ -19,6 +20,8 @@ const ProductCategory = () => {
   const { categories } = useSelector((state) => state.general);
 
   const { country } = useSelector((state) => state.auth);
+
+  const [pageNumber, setPageNumber] = useState(1);
 
   const [selected, setSelected] = useState('');
 

@@ -81,7 +81,7 @@ export const logInUser = (user, router, query) => async (dispatch) => {
       if (router?.query?.from !== undefined) {
         router.push(router?.query?.from);
       } else {
-        router.push('/shop');
+        router.push('/FoodMarket');
       }
     } else {
       dispatch(setIsLoading(false));

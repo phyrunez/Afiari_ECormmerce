@@ -20,6 +20,7 @@ function DeleteNotification({ id, handleModal, handleCancel }) {
         zIndex: '10000000000000',
         // alignItems: 'center',
         justifyContent: 'center',
+        paddingTop: '10rem',
       }}
     >
       <Box
