@@ -63,6 +63,8 @@ export const logInUser = (user, router, query) => async (dispatch) => {
       body: { ...user },
     });
 
+    localStorage.setItem('loginResult', JSON.stringify(result));
+
     if (result.status === true) {
       dispatch(setIsLoading(false));
       dispatch({
@@ -77,12 +79,6 @@ export const logInUser = (user, router, query) => async (dispatch) => {
       JSON.stringify(
         localStorage.setItem(refreshToken, result?.result[0]?.refresh_token)
       );
-
-      if (router?.query?.from !== undefined) {
-        router.push(router?.query?.from);
-      } else {
-        router.push('/FoodMarket');
-      }
     } else {
       dispatch(setIsLoading(false));
       dispatch({
@@ -94,6 +90,50 @@ export const logInUser = (user, router, query) => async (dispatch) => {
     console.log(error);
   }
 };
+
+// export const logInUser = (user, router, query) => async (dispatch) => {
+//   try {
+//     dispatch(setIsLoading(true));
+
+//     const result = await httpRequest({
+//       url: API_ROUTES.login.route,
+//       method: API_ROUTES.login.method,
+//       needToken: false,
+//       isFormData: false,
+//       body: { ...user },
+//     });
+
+//     if (result.status === true) {
+//       dispatch(setIsLoading(false));
+//       dispatch({
+//         type: AuthTypes.LOGIN_SUCCESS,
+//         payload: true,
+//       });
+
+//       JSON.stringify(localStorage.setItem(authToken, result?.result[0]?.token));
+
+//       JSON.stringify(localStorage.setItem(authToken, result?.result[0]?.token));
+
+//       JSON.stringify(
+//         localStorage.setItem(refreshToken, result?.result[0]?.refresh_token)
+//       );
+
+//       if (router?.query?.from !== undefined) {
+//         router.push(router?.query?.from);
+//       } else {
+//         router.push('/FoodMarket');
+//       }
+//     } else {
+//       dispatch(setIsLoading(false));
+//       dispatch({
+//         type: AuthTypes.LOGIN_FAILED,
+//         payload: result.error_message,
+//       });
+//     }
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
 
 export const signUpUser = (user, router) => async (dispatch) => {
   try {

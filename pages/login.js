@@ -47,20 +47,49 @@ const Login = () => {
   //handling form submittion
   const onSubmit = (e) => {
     e.preventDefault();
-    if (email === '' || password === '') {
-      toast.error('Fields can not be empty');
-    } else if (api_error) {
-      toast.error(api_error);
-    } else {
-      const userData = {
-        username: email,
-        password: password,
-      };
+    const userData = {
+      username: email,
+      password: password,
+    };
 
-      // dispatch(login(userData));
-      dispatch(logInUser(userData, router, path));
-    }
+    // dispatch(login(userData));
+    dispatch(logInUser(userData, router, path));
+
+    setTimeout(() => {
+      let loginResult;
+      if (typeof window !== 'undefined') {
+        loginResult = JSON.parse(localStorage.getItem('loginResult'));
+      }
+      console.log(loginResult);
+
+      if (loginResult.status === false) {
+        toast.error(loginResult.error_message);
+      } else if (email === '' || password === '') {
+        toast.error('Fields can not be empty');
+      } else if (!router?.query?.from) {
+        router?.push('/FoodMarket');
+      } else {
+        router?.push(router?.query?.from);
+        toast.success(loginResult.success_message);
+      }
+    }, 2000);
   };
+  // const onSubmit = (e) => {
+  //   e.preventDefault();
+  //   if (email === '' || password === '') {
+  //     toast.error('Fields can not be empty');
+  //   } else if (api_error) {
+  //     toast.error(api_error);
+  //   } else {
+  //     const userData = {
+  //       username: email,
+  //       password: password,
+  //     };
+
+  //     // dispatch(login(userData));
+  //     dispatch(logInUser(userData, router, path));
+  //   }
+  // };
 
   return (
     <>
