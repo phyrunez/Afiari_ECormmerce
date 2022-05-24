@@ -107,6 +107,7 @@ function CheckOutPaymentMethod({ handleModal }) {
 
     onSuccess: (reference) => {
       // verify payment here with the verify route
+      //debugger;
       dispatch(verifyPayment(reference.reference));
 
       setTimeout(() => {
@@ -116,6 +117,7 @@ function CheckOutPaymentMethod({ handleModal }) {
         }
 
         console.log(verify);
+        //debugger;
         if (verify === true) {
           toast.success('Payment received proceed to place order');
         } else {
@@ -123,7 +125,7 @@ function CheckOutPaymentMethod({ handleModal }) {
           dispatch(handleSelectedPaymentMethod(''));
           dispatch(handleSelectedAddress(''));
         }
-      }, 2000);
+      }, 4000);
       // any action that you want to perform after payment is succesfull
 
       onSuccess(reference);

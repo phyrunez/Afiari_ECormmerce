@@ -227,6 +227,7 @@ export const placeOrder = (data) => async (dispatch) => {
         masterRecordId: data.masterRecordId,
       },
     });
+    localStorage.setItem('orderStatus', JSON.stringify(response));
 
     if (response?.status === true) {
       dispatch({
@@ -238,7 +239,7 @@ export const placeOrder = (data) => async (dispatch) => {
       });
     } else {
       dispatch({
-        type: CheckoutTypes?.PLACE_ORDER,
+        type: CheckoutTypes?.PLACE_ORDER_ERROR,
         payload: {
           error: response?.error_message,
           status: response?.status,

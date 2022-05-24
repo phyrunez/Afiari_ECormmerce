@@ -9,6 +9,7 @@ import * as AuthTypes from '../redux/auth/authTypes';
 
 export const httpRequest = async (params) => {
   try {
+    let result;
     const { method, body, url, needToken = true, isFormData = false } = params;
 
     if (!url) throw new Error('Url not set');
@@ -77,13 +78,31 @@ export const httpRequest = async (params) => {
       }
     }
 
+    if (res.status === 400) {
+      result = {
+        status: false,
+        error_message: 'validation error',
+      };
+
+      return result;
+    }
+    if (res.status === '') {
+      result = {
+        status: false,
+        error_message: 'validation error',
+      };
+
+      return result;
+    }
+
     // console.log(res);
+    if (res.status === 200) {
+      const response = await res.text();
 
-    const response = await res.text();
+      result = JSON.parse(response);
 
-    const result = JSON.parse(response);
-
-    return result;
+      return result;
+    }
   } catch (error) {}
 };
 

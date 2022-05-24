@@ -13,7 +13,7 @@ const ProtectedRoutes = ({ router, children }) => {
     appRoutes.FORGOT,
     appRoutes.REGISTER,
     appRoutes.RESET,
-    appRoutes.SHOP,
+    appRoutes.FOODMARKET,
     appRoutes.PRODUCT,
     appRoutes.CART,
     // appRoutes.PROFILE,

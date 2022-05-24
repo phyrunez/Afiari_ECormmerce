@@ -11,3 +11,4 @@ export const USER_INPUT = 'USER_INPUT';
 export const ORDER_NUMBER = 'ORDER_NUMBER';
 export const REF_NO = 'REF_NO';
 export const DIAL_CODE = 'DIAL_CODE';
+export const PLACE_ORDER_ERROR = 'PLACE_ORDER_ERROR';

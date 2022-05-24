@@ -81,7 +81,7 @@ const Card = () => {
               fontWeight="400"
               fontSize="10px"
               color="#FFFFFF"
-              href="/shop"
+              href="/FoodMarket"
             />
           </Box>
         </Box>

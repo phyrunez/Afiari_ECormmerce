@@ -68,7 +68,7 @@ function CheckoutCart({ handleCheckOut }) {
 
   const {
     order_number,
-    orderStatus,
+    // orderStatus,
     orderErrorMessage,
     orderSuccessMessage,
     selectedPayment,
@@ -100,21 +100,28 @@ function CheckoutCart({ handleCheckOut }) {
 
   const handleOrder = () => {
     if (verifyStatus === true) {
+      //set loading icon
       dispatch(placeOrder(data));
-
-      if (orderStatus === false) {
-        toast.error(orderErrorMessage);
-        localStorage.setItem('verify_status', false);
-        router.push('/shop');
-        dispatch(handleSelectedPaymentMethod(''));
-        dispatch(handleSelectedAddress(''));
-      } else if (orderStatus === true) {
-        toast.success(orderSuccessMessage);
-        localStorage.setItem('verify_status', false);
-        router.push('/payment-complete');
-        dispatch(handleSelectedPaymentMethod(''));
-        dispatch(handleSelectedAddress(''));
-      }
+      setTimeout(() => {
+        let orderStatus;
+        if (typeof window !== 'undefined') {
+          orderStatus = JSON.parse(localStorage.getItem('orderStatus'));
+        }
+        console.log(orderStatus);
+        if (orderStatus.status === false) {
+          toast.error(orderStatus.error_message);
+          localStorage.setItem('verify_status', false);
+          router.push('/FoodMarket');
+          dispatch(handleSelectedPaymentMethod(''));
+          dispatch(handleSelectedAddress(''));
+        } else {
+          toast.success(orderStatus.success_message);
+          localStorage.setItem('verify_status', false);
+          router.push('/payment-complete');
+          dispatch(handleSelectedPaymentMethod(''));
+          dispatch(handleSelectedAddress(''));
+        }
+      }, 4000);
     } else {
       toast.error('We can not verify your payment');
       dispatch(handleSelectedPaymentMethod(''));

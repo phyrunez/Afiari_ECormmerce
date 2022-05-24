@@ -32,6 +32,8 @@ const ShopCard = () => {
     meta_data: metaData,
   } = useSelector((state) => state?.general);
 
+  console.log(metaData);
+
   const { country, isLogged_in } = useSelector((state) => state?.auth);
 
   const { page_size, number_of_pages, page_index, total_count } = metaData;
@@ -43,6 +45,11 @@ const ShopCard = () => {
   const [pageNumber, setPageNumber] = useState(1);
 
   const { addItem } = useCart();
+  let startIndex;
+  let endIndex = page_size * page_index;
+
+  endIndex = endIndex >= total_count ? total_count : endIndex;
+  startIndex = page_size * page_index + 1 - page_size;
 
   let displayedProduct = product;
 
@@ -214,7 +221,7 @@ const ShopCard = () => {
                     height: '100%',
                   }}
                   onClick={() => {
-                    router.push(`/shop/${item.id}`);
+                    router.push(`/FoodMarket/${item.id}`);
                   }}
                 >
                   {item?.images[0]?.image_url ? (
@@ -252,7 +259,7 @@ const ShopCard = () => {
                     padding: '0 1rem',
                   }}
                 >
-                  {/* <Link href={`/shop/${item.id}`}> */}
+                  {/* <Link href={`/FoodMarket/${item.id}`}> */}
                   <Box
                     sx={{
                       display: 'flex',
@@ -260,7 +267,7 @@ const ShopCard = () => {
                       alignItems: 'flex-start',
                     }}
                     onClick={() => {
-                      router.push(`/shop/${item.id}`);
+                      router.push(`/FoodMarket/${item.id}`);
                     }}
                   >
                     <Typography
@@ -375,8 +382,8 @@ const ShopCard = () => {
           }}
           disabled={pageNumber === 1}
           onClick={() => {
-            setPageNumber(pageNumber - 1);
-            dispatch(getAllProducts(country, pageNumber - 1));
+            setPageNumber(page_index - 1);
+            dispatch(getAllProducts(country, page_index - 1));
           }}
           // onClick={handlePrev}
         >
@@ -388,17 +395,13 @@ const ShopCard = () => {
           sx={{
             backgroundColor: '#fff',
             fontSize: '10px',
+            padding: '5px',
           }}
         >
-          {`Product ${
-            pageNumber === 1 ? '1' : pageNumber * page_size - page_size + 1
-          } to ${
-            pageNumber === 1
-              ? page_size
-              : number_of_pages === pageNumber
-              ? total_count
-              : pageNumber * page_size
-          } `}
+          {console.log(
+            `Products ${startIndex} to ${endIndex} of ${total_count}`
+          )}
+          {`Products ${startIndex} to ${endIndex} of ${total_count}`}
           {/* Products 1 to 7 of {total_count} */}
         </Typography>
 
@@ -431,8 +434,8 @@ const ShopCard = () => {
           }}
           disabled={pageNumber === number_of_pages}
           onClick={() => {
-            setPageNumber(pageNumber + 1);
-            dispatch(getAllProducts(country, pageNumber + 1));
+            setPageNumber(page_index + 1);
+            dispatch(getAllProducts(country, page_index + 1));
           }}
           // onClick={handleNext}
         >
