@@ -36,6 +36,8 @@ const ShopCard = () => {
 
   const { country, isLogged_in } = useSelector((state) => state?.auth);
 
+  // console.log(country);
+
   const { page_size, number_of_pages, page_index, total_count } = metaData;
 
   const dispatch = useDispatch();
@@ -398,9 +400,9 @@ const ShopCard = () => {
             padding: '5px',
           }}
         >
-          {console.log(
+          {/* {console.log(
             `Products ${startIndex} to ${endIndex} of ${total_count}`
-          )}
+          )} */}
           {`Products ${startIndex} to ${endIndex} of ${total_count}`}
           {/* Products 1 to 7 of {total_count} */}
         </Typography>

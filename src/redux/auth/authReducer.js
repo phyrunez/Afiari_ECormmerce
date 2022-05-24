@@ -12,7 +12,7 @@ const emptyUser = {
 const initialState = {
   isLogged_in: false,
   loading: false,
-  country: '08d9c086-88ab-40d7-8029-e7df4efadc60',
+  country: '',
   ...emptyUser,
   api_error: '',
   confirmation_message: '',
@@ -70,7 +70,7 @@ const reducer = (state = initialState, action) => {
     case AuthTypes.SELECTED_COUNTRY:
       return {
         ...state,
-        userCountry: action.payload,
+        country: action.payload,
       };
     case AuthTypes.FORGET_PASSWORD:
       return {

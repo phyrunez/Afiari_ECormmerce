@@ -1,4 +1,3 @@
-import React from 'react';
 import Image from 'next/image';
 import { Grid, Typography, IconButton, Box } from '@mui/material';
 import cart from '../../public/cart.svg';
@@ -6,8 +5,7 @@ import { useState, useEffect } from 'react';
 import styles from '../../styles/Input.module.css';
 import { ArrowDropDown, ArrowDropUp } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
-import { reset } from '../redux/slice/ProductSlice';
-import { getServiceableCountry } from '../redux/slice/ProductSlice';
+import { setUserCountry } from '../redux/auth/authAction';
 
 const Header = () => {
   const [selectedCountry, setSelectedCountry] = useState('');
@@ -18,9 +16,7 @@ const Header = () => {
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(getServiceableCountry());
-  }, [dispatch, getServiceableCountry]);
+  useEffect(() => {}, []);
 
   const myLoader = ({ src }) => {
     return src;
@@ -122,6 +118,7 @@ const Header = () => {
                     .filter((country) => country?.item_value === 'Nigeria')
                     .map((country, i) => {
                       setSrc(country?.item_image_url);
+                      dispatch(setUserCountry(country.id));
                       setSelectedCountry(country?.item_value);
 
                       localStorage.setItem(
@@ -146,6 +143,7 @@ const Header = () => {
                         onClick={(e) => {
                           e.preventDefault();
                           setSrc(country.item_image_url);
+                          dispatch(setUserCountry(country.id));
                           setSelectedCountry(country.item_value);
 
                           localStorage.setItem(

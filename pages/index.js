@@ -81,8 +81,7 @@ const Home = () => {
             height: { xs: '100%', md: 'auto' },
           }}
         >
-          We deliver all your food items to your location
-          <br /> in 24 HOURS
+          We deliver all your food items to your location in 24 HOURS
         </Typography>
         <Box
           component="div"
