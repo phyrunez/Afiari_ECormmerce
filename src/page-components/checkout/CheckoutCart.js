@@ -100,6 +100,7 @@ function CheckoutCart({ handleCheckOut }) {
 
   const handleOrder = () => {
     if (verifyStatus === true) {
+      //set loading icon
       dispatch(placeOrder(data));
       setTimeout(() => {
         let orderStatus;
