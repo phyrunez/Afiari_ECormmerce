@@ -110,8 +110,11 @@ const ProductCategory = () => {
             }
             key={item.id}
             onClick={() => {
+              const countryId = JSON.parse(
+                localStorage.getItem('selectedCountry')
+              );
               setSelected(item.id);
-              dispatch(getProductsByCategory(country, item.id));
+              dispatch(getProductsByCategory(countryId?.id, item.id));
               dispatch(setSelectedCategory(item.item_value));
             }}
           >

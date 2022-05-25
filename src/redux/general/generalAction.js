@@ -33,6 +33,20 @@ export const getAllCountries = () => async (dispatch) => {
       needToken: false,
     });
 
+    response?.result
+      ?.filter((country) => country?.item_value === 'Nigeria')
+      .map((country, i) => {
+        localStorage.setItem(
+          'selectedCountry',
+          JSON.stringify({
+            id: country?.id,
+            name: country?.item_value,
+          })
+        );
+      });
+
+    // localStorage.setItem('selectedCountry', JSON.stringify());
+
     if (response?.status === true) {
       dispatch({
         type: GeneralTypes?.GET_SERVICEABLE_COUNTRY,

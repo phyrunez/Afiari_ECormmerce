@@ -25,14 +25,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   getProductsByCategory,
   setSelectedCategory,
+  getAllProducts,
+  getAllCountries,
 } from '../../src/redux/general/generalAction';
 import Spinner from '../../components/Spinner';
 import { handleDelete, setIsLoading } from '../../src/redux/cart/cartAction';
 import DeleteNotification from '../../src/page-components/shop/DeleteNotification';
 import ReactTypingEffect from 'react-typing-effect';
+import { setUserCountry } from '../../src/redux/auth/authAction';
 
 function Shop() {
-  const { categories } = useSelector((state) => state.general);
+  const { categories, countries } = useSelector((state) => state.general);
 
   const { country, loading } = useSelector((state) => state.auth);
 
@@ -142,10 +145,24 @@ function Shop() {
   };
 
   const onChange = (selectedOption) => {
+    const countryId = JSON.parse(localStorage.getItem('selectedCountry'));
     setSelectedOption(selectedOption);
-    dispatch(getProductsByCategory(country, selectedOption.id));
+    dispatch(
+      getProductsByCategory(
+        country ? country : countryId?.id,
+        selectedOption.id
+      )
+    );
     dispatch(setSelectedCategory(selectedOption.value));
   };
+
+  useEffect(() => {
+    const countryId = JSON.parse(localStorage.getItem('selectedCountry'));
+    const pageNumber = 1;
+    dispatch(getAllProducts(countryId?.id, pageNumber));
+    dispatch(setUserCountry(countryId?.id));
+    // dispatch(getProductCategory(item));
+  }, [dispatch]);
 
   return (
     <Box
