@@ -64,7 +64,7 @@
 
 .cart_product_details {
   font-weight: 600;
-  font-size: 12px;
+  font-size: 16px;
   line-height: 22px;
   /* text-align: center; */
   letter-spacing: 0.04em;
@@ -169,9 +169,9 @@
   }
 
   .cart_product_details {
-    font-size: 9px;
-    line-height: 10px;
-    margin-bottom: 5px;
+    font-size: 14px;
+    line-height: 22px;
+    margin-bottom: 2px;
   }
 
   .product_img {

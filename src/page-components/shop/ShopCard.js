@@ -89,9 +89,11 @@ const ShopCard = () => {
   });
 
   useEffect(() => {
-    dispatch(getAllProducts(country, pageNumber));
+    const countryId = JSON.parse(localStorage.getItem('selectedCountry'));
+    dispatch(getAllProducts(country ? country : countryId?.id, pageNumber));
+    // dispatch(getAllProducts(country, pageNumber));
     // dispatch(getProductCategory(item));
-  }, [dispatch, pageNumber, country, getAllProducts]);
+  }, [dispatch, pageNumber, country]);
 
   // const handleNext = () => {
   //   if (items.currentPage <= items.pages) {
@@ -221,6 +223,7 @@ const ShopCard = () => {
                 <Box
                   sx={{
                     height: '100%',
+                    // border: '1px solid red',
                   }}
                   onClick={() => {
                     router.push(`/FoodMarket/${item.id}`);
@@ -232,8 +235,8 @@ const ShopCard = () => {
                       loader={() => item?.images[0]?.image_url}
                       src={item?.images[0]?.image_url}
                       alt="product"
-                      width={222}
-                      height={140}
+                      width={100}
+                      height="100%"
                       className={styles.product_img}
                       unoptimized={true}
                     />
@@ -256,9 +259,10 @@ const ShopCard = () => {
                     flexDirection: 'column',
                     alignItems: 'flex-start',
                     justifyContent: 'center',
-                    width: '50%',
+                    width: '70%',
                     // marginLeft: '1rem',
                     padding: '0 1rem',
+                    // border: '1px solid red',
                   }}
                 >
                   {/* <Link href={`/FoodMarket/${item.id}`}> */}
@@ -267,6 +271,7 @@ const ShopCard = () => {
                       display: 'flex',
                       flexDirection: 'column',
                       alignItems: 'flex-start',
+                      // border: '1px solid red',
                     }}
                     onClick={() => {
                       router.push(`/FoodMarket/${item.id}`);
@@ -310,8 +315,8 @@ const ShopCard = () => {
                   >
                     <Button
                       sx={{
-                        width: { xs: '56px', md: '85px' },
-                        height: { xs: '18px', md: '35px' },
+                        width: { xs: '75px', md: '85px' },
+                        height: { xs: '30px', md: '35px' },
                         borderRadius: '50px',
                         fontSize: { xs: '9px', md: '12px' },
                         backgroundColor: ' #0A503D',

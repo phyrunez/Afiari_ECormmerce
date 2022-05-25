@@ -13,9 +13,11 @@ import { addMultipleCart, getCart } from '../redux/cart/cartAction';
 import { useCart } from 'react-use-cart';
 import { getShoppingHistory } from '../redux/shopping/shoppingAction';
 import { getDialCode } from '../redux/checkout/checkoutAction';
+import { setUserCountry } from '../redux/auth/authAction';
 
 function AuthProvider({ children }) {
   const { isLogged_in, country, loading } = useSelector((state) => state.auth);
+  const { countries } = useSelector((state) => state?.general);
 
   const dispatch = useDispatch();
 
@@ -51,11 +53,18 @@ function AuthProvider({ children }) {
     }
     let PageNumber = 1;
 
+    const countryId = JSON.parse(localStorage.getItem('selectedCountry'));
+
+    console.log(country);
+    console.log(countryId);
+
+    dispatch(setUserCountry(countryId));
+
     dispatch(getAllCountries());
 
     dispatch(getAllCategories());
 
-    dispatch(getAllProducts(country, PageNumber));
+    dispatch(getAllProducts(country ? country : countryId?.id, PageNumber));
 
     dispatch(getDialCode());
 

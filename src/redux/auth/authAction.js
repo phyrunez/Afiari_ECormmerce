@@ -311,6 +311,34 @@ export const forgetPassword = (email) => async (dispatch) => {
   }
 };
 
+export const getExistingMails = () => async (dispatch) => {
+  try {
+    dispatch(setIsLoading(true));
+    const result = await httpRequest({
+      url: API_ROUTES?.existingEmails?.route,
+      method: API_ROUTES?.existingEmails?.method,
+    });
+    console.log(result);
+
+    if (result?.status === true) {
+      dispatch(setIsLoading(false));
+      dispatch({
+        type: AuthTypes?.GET_EMAILS,
+        payload: result,
+      });
+
+      // router.push('/password-reset-success');
+    } else {
+      dispatch({
+        type: AuthTypes?.GET_EMAILS,
+        payload: result?.error_message,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const updateProfile = (data) => async (dispatch) => {
   try {
     dispatch(setIsLoading(true));
