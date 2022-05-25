@@ -33,8 +33,6 @@ function AuthProvider({ children }) {
         needToken: true,
       });
 
-      console.log(result);
-
       if (result?.status === true) {
         dispatch({
           type: AuthTypes.GET_CURRENT_USER,
@@ -55,16 +53,13 @@ function AuthProvider({ children }) {
 
     const countryId = JSON.parse(localStorage.getItem('selectedCountry'));
 
-    console.log(country);
-    console.log(countryId);
-
-    dispatch(setUserCountry(countryId));
+    dispatch(setUserCountry(countryId?.id));
 
     dispatch(getAllCountries());
 
     dispatch(getAllCategories());
 
-    dispatch(getAllProducts(country ? country : countryId?.id, PageNumber));
+    // dispatch(getAllProducts(country ? country : countryId?.id, PageNumber));
 
     dispatch(getDialCode());
 

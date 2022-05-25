@@ -11,6 +11,8 @@ import { PersistGate } from 'redux-persist/integration/react';
 import AuthProvider from '../src/shared-components/AuthProvider';
 import ProtectedRoutes from '../constants/ProtectedRoutes';
 import { CartProvider } from 'react-use-cart';
+import { useEffect } from 'react';
+import { getAllCountries } from '../src/redux/general/generalAction';
 
 const store = configureStore();
 // const persistor = persistStore(store);

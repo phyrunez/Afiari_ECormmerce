@@ -32,8 +32,6 @@ const ShopCard = () => {
     meta_data: metaData,
   } = useSelector((state) => state?.general);
 
-  console.log(metaData);
-
   const { country, isLogged_in } = useSelector((state) => state?.auth);
 
   // console.log(country);
