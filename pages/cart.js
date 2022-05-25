@@ -256,6 +256,7 @@ function Cart() {
                 >
                   {!isLogged_in ? (
                     <Image
+                      loader={() => item?.images[0]?.image_url}
                       src={item?.images?.[0]?.image_url}
                       alt="product"
                       width={79}
@@ -264,6 +265,7 @@ function Cart() {
                     />
                   ) : (
                     <Image
+                      loader={() => item?.images[0]?.image_url}
                       src={item?.product_image}
                       alt="product"
                       width={79}
@@ -274,50 +276,84 @@ function Cart() {
                   <Box
                     sx={{
                       display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
+                      flexDirection: { xs: 'column', md: 'row' },
                       justifyContent: 'center',
-                      alignItems: 'flex-start',
-                      width: { xs: '90px', md: '153px' },
-                      height: '73px',
+                      alignItems: 'center',
                     }}
                   >
-                    <Typography className={styles.cart_details} variant="p">
-                      {isLogged_in ? item.product_name : item?.name}
-                    </Typography>
-                    <Typography
-                      className={styles.cart_details}
-                      variant="p"
-                    ></Typography>
-                    <Typography className={styles.cart_details} variant="p">
-                      {/* {isLogged_in ? cart?.cart?.[0]?.currency : 'NGN'}{' '}
-                  {item?.charged_unit_price} */}
-                      {isLogged_in
-                        ? `${cart?.cart?.[0]?.currency}  ` +
-                          `${item?.charged_cost}`
-                        : `${item?.currency}`}
-                      {!isLogged_in && formatCurrency(item?.price)}
-                    </Typography>
-                  </Box>
-
-                  <Box>
-                    <IconButton
-                      onClick={() => {
-                        const data = {
-                          id: item.id,
-                          country: country,
-                        };
-
-                        setItemID(isLogged_in ? data : item?.id);
-                        setShow(true);
-
-                        // isLogged_in
-                        //   ? dispatch(handleDelete(data))
-                        //   : removeItem(item?.id);
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        alignItems: 'flex-start',
+                        width: { xs: '90px', md: '153px' },
+                        height: '73px',
                       }}
                     >
-                      <Delete />
-                    </IconButton>
+                      <Typography className={styles.cart_details} variant="p">
+                        {isLogged_in ? item.product_name : item?.name}
+                      </Typography>
+                      <Typography
+                        className={styles.cart_details}
+                        variant="p"
+                      ></Typography>
+                      <Typography className={styles.cart_details} variant="p">
+                        {/* {isLogged_in ? cart?.cart?.[0]?.currency : 'NGN'}{' '}
+                  {item?.charged_unit_price} */}
+                        {isLogged_in
+                          ? `${cart?.cart?.[0]?.currency}  ` +
+                            `${item?.charged_cost}`
+                          : `${item?.currency}`}
+                        {!isLogged_in && formatCurrency(item?.price)}
+                      </Typography>
+                    </Box>
+
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <Box>
+                        <IconButton
+                          onClick={() => {
+                            const data = {
+                              id: item.id,
+                              country: country,
+                            };
+
+                            setItemID(isLogged_in ? data : item?.id);
+                            setShow(true);
+
+                            // isLogged_in
+                            //   ? dispatch(handleDelete(data))
+                            //   : removeItem(item?.id);
+                          }}
+                        >
+                          <Delete />
+                        </IconButton>
+                      </Box>
+
+                      <AddAndRemoveCartButton
+                        width="70px"
+                        height="35px"
+                        borderRadius="22px"
+                        fontSize="12px"
+                        backgroundColor="#fff"
+                        border=" 0.458333px solid #3A3A3A"
+                        text={item?.quantity}
+                        item={item}
+                        isLogged_in={isLogged_in}
+                        country={country}
+                        cartId={item.id}
+                        quantity={item.quantity}
+                        prodId={item.product_id}
+                        dispatch={dispatch}
+                      />
+                    </Box>
                   </Box>
                   {/* 
               <Box
@@ -365,23 +401,6 @@ function Cart() {
                   +
                 </Button>
               </Box> */}
-
-                  <AddAndRemoveCartButton
-                    width="70px"
-                    height="35px"
-                    borderRadius="22px"
-                    fontSize="12px"
-                    backgroundColor="#fff"
-                    border=" 0.458333px solid #3A3A3A"
-                    text={item?.quantity}
-                    item={item}
-                    isLogged_in={isLogged_in}
-                    country={country}
-                    cartId={item.id}
-                    quantity={item.quantity}
-                    prodId={item.product_id}
-                    dispatch={dispatch}
-                  />
                 </Box>
               ))}
             </Box>

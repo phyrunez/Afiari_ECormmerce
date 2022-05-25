@@ -14,6 +14,10 @@ const API_ROUTES = {
     route: 'Account/get/my-profile',
     method: 'GET',
   },
+  existingEmails: {
+    route: 'Account/existing-emails',
+    method: 'GET',
+  },
   updateProfile: {
     route: 'Account/update-profile',
     method: 'PUT',

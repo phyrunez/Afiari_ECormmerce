@@ -13,21 +13,38 @@ import { useRouter } from 'next/router';
 
 import { VisibilityOff, Visibility } from '@mui/icons-material';
 import { toast } from 'react-toastify';
-import { signUpUser, handleUserInput } from '../src/redux/auth/authAction';
+import {
+  signUpUser,
+  handleUserInput,
+  getExistingMails,
+} from '../src/redux/auth/authAction';
 import Spinner from '../components/Spinner';
 
 const SignUp = () => {
   const [checked, setChecked] = useState(false);
   const [btnDisabled, setBtnDisabled] = useState(true);
   const [showpassword, setShowpassword] = useState(false);
+  const [query, setQuery] = useState('');
+  const [q, setQ] = useState(false);
 
   // const { email, firstName, lastName, password } = formData;
 
   const dispatch = useDispatch();
 
-  const { email, firstName, lastName, password, loading, signup_api_message } =
-    useSelector((state) => state.auth);
+  const {
+    email,
+    firstName,
+    lastName,
+    password,
+    loading,
+    signup_api_message,
+    existing_emails,
+  } = useSelector((state) => state.auth);
   const router = useRouter();
+
+  console.log(existing_emails);
+
+  const emails = existing_emails?.result;
 
   // useEffect(() => {
   //   if (isError) {
@@ -80,6 +97,19 @@ const SignUp = () => {
   // if (loading) {
   //   return <Spinner />;
   // }
+
+  console.log(q);
+  useEffect(() => {
+    dispatch(getExistingMails());
+
+    emails?.filter((email) => {
+      if (email.toLowerCase().includes(query.toLowerCase())) {
+        setQ(true);
+      } else {
+        setQ(false);
+      }
+    });
+  }, [dispatch]);
   return (
     <>
       <Box
@@ -185,9 +215,20 @@ const SignUp = () => {
             id="email"
             onChange={(e) => {
               dispatch(handleUserInput('email', e.target.value));
+              setQuery(e.target.value);
             }}
             value={email}
           />
+
+          {q && (
+            <h5
+              style={{
+                color: 'red',
+              }}
+            >
+              email already exist
+            </h5>
+          )}
 
           <Input
             type={showpassword === false ? 'password' : 'text'}

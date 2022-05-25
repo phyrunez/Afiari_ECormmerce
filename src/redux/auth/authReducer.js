@@ -22,6 +22,7 @@ const initialState = {
   userCountry: '',
   signup_api_message: {},
   newUpdate: '',
+  existing_emails: [],
 };
 
 const reducer = (state = initialState, action) => {
@@ -92,10 +93,16 @@ const reducer = (state = initialState, action) => {
         ...state,
         sent_mail: action.payload,
       };
+    case AuthTypes.GET_EMAILS:
+      return {
+        ...state,
+        existing_emails: action.payload,
+      };
     case AuthTypes.UPDATE__PROFILE:
       // const newUpdate = [...state, action.payload];
       return {
-        newUpdate: action.payload,
+        ...state,
+        ...emptyUseraction.payload,
       };
     case AuthTypes.UPLOAD__PICTURE:
       return {
