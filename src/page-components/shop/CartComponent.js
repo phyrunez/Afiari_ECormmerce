@@ -142,6 +142,7 @@ const CartComponent = ({ handleCancel, setId }) => {
               {!isLogged_in ? (
                 <Image
                   src={item?.images[0]?.image_url}
+                  loader={() => item?.images[0]?.image_url}
                   alt="product"
                   width={59}
                   height={59}
@@ -149,6 +150,7 @@ const CartComponent = ({ handleCancel, setId }) => {
                 />
               ) : (
                 <Image
+                  loader={() => item?.images[0]?.image_url}
                   src={item?.product_image}
                   alt="product"
                   width={59}
