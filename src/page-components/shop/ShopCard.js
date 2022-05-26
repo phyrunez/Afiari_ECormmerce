@@ -87,10 +87,10 @@ const ShopCard = () => {
   });
 
   useEffect(() => {
-    const countryId = JSON.parse(localStorage.getItem('selectedCountry'));
-    dispatch(getAllProducts(country ? country : countryId?.id, pageNumber));
-    // dispatch(getAllProducts(country, pageNumber));
-    // dispatch(getProductCategory(item));
+    setTimeout(() => {
+      const countryId = JSON.parse(localStorage.getItem('selectedCountry'));
+      dispatch(getAllProducts(country ? country : countryId?.id, pageNumber));
+    }, 2000);
   }, [dispatch, pageNumber, country]);
 
   // const handleNext = () => {
