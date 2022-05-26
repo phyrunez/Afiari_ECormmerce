@@ -1,3 +1,12 @@
+.homepage__typing__Header {
+  font-weight: 600;
+  font-size: 18px;
+  text-align: justify;
+  color: #000000;
+  width: 100%;
+  height: auto;
+}
+
 .form__wrapper {
   display: flex;
   flex-direction: column;
@@ -115,7 +124,17 @@
   top: 0rem !important;
 }
 
+@media (max-width: 899px) {
+  .homepage__typing__Header {
+    color: #ffffff;
+  }
+}
+
 @media (max-width: 600px) {
+  .homepage__typing__Header {
+    color: #ffffff;
+  }
+
   .select_country_wrapper {
     width: 60px;
     height: 45px;

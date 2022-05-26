@@ -265,7 +265,7 @@ function Cart() {
                     />
                   ) : (
                     <Image
-                      loader={() => item?.images[0]?.image_url}
+                      loader={() => item?.product_image}
                       src={item?.product_image}
                       alt="product"
                       width={79}
