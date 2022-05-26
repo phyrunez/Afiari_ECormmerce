@@ -1,5 +1,11 @@
 import { Delete } from '@mui/icons-material';
-import { Button, Divider, IconButton, Typography } from '@mui/material';
+import {
+  Button,
+  CircularProgress,
+  Divider,
+  IconButton,
+  Typography,
+} from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useEffect, useState } from 'react';
 import {
@@ -77,6 +83,7 @@ function CheckoutCart({ handleCheckOut }) {
   } = useSelector((state) => state.checkout);
 
   const [disable, setDisable] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { api_error, country, email, password, loading, isLogged_in } =
     useSelector((state) => state?.auth);
@@ -99,6 +106,7 @@ function CheckoutCart({ handleCheckOut }) {
   }
 
   const handleOrder = () => {
+    setIsLoading(true);
     if (verifyStatus === true) {
       //set loading icon
       dispatch(placeOrder(data));
@@ -111,12 +119,14 @@ function CheckoutCart({ handleCheckOut }) {
         if (orderStatus.status === false) {
           toast.error(orderStatus.error_message);
           localStorage.setItem('verify_status', false);
+          setIsLoading(false);
           router.push('/FoodMarket');
           dispatch(handleSelectedPaymentMethod(''));
           dispatch(handleSelectedAddress(''));
         } else {
           toast.success(orderStatus.success_message);
           localStorage.setItem('verify_status', false);
+          setIsLoading(false);
           router.push('/payment-complete');
           dispatch(handleSelectedPaymentMethod(''));
           dispatch(handleSelectedAddress(''));
@@ -124,6 +134,7 @@ function CheckoutCart({ handleCheckOut }) {
       }, 4000);
     } else {
       toast.error('We can not verify your payment');
+      setIsLoading(false);
       dispatch(handleSelectedPaymentMethod(''));
       dispatch(handleSelectedAddress(''));
     }
@@ -320,9 +331,16 @@ function CheckoutCart({ handleCheckOut }) {
             onClick={handleOrder}
             disabled={!verifyStatus}
           >
-            PLACE ORDER:
-            {`${cart?.cart?.[0]?.currency} ` +
-              cart?.cart?.[0]?.charged_total_cost}
+            {isLoading ? (
+              <CircularProgress
+                sx={{
+                  color: '#fff',
+                }}
+                size={20}
+              />
+            ) : (
+              ` PLACE ORDER: ${cart?.cart?.[0]?.currency}   ${cart?.cart?.[0]?.charged_total_cost}`
+            )}
           </Button>
         </Box>
       </Box>
