@@ -258,9 +258,12 @@ const CartComponent = ({ handleCancel, setId }) => {
           onClick={() => {
             setLoading(true);
             if (isLogged_in) {
+              setLoading(false);
               router.push('/checkout');
             } else {
-              console.log('open auth modal');
+              toast.error('You need to be logged in');
+              setLoading(false);
+              router.push('/login');
             }
           }}
         >
