@@ -33,6 +33,25 @@ const Navbar = () => {
   const { isLogged_in } = useSelector((state) => state.auth);
   const { cart } = useSelector((state) => state.cart);
   const [active, setActive] = useState(false);
+  const [activePage, setActivePage] = useState('');
+
+  const navList = [
+    {
+      id: 1,
+      value: 'Home',
+      route: '/',
+    },
+    {
+      id: 2,
+      value: 'FoodMarket',
+      route: '/FoodMarket',
+    },
+    {
+      id: 3,
+      value: 'Stores around me',
+      route: '/',
+    },
+  ];
 
   const dispatch = useDispatch();
 
@@ -99,7 +118,25 @@ const Navbar = () => {
               // border: '1px solid red',
             }}
           >
-            <li
+            {navList?.map((list) => (
+              <Link href={list.route}>
+                <li
+                  className={styles.nav__list}
+                  style={{
+                    fontWeight: list?.value === activePage ? '600' : '400',
+
+                    color: list?.value === activePage ? '#000000' : '3a3a3a',
+                  }}
+                  onClick={() => {
+                    setActivePage(list?.value);
+                    setActive(true);
+                  }}
+                >
+                  {list?.value}
+                </li>
+              </Link>
+            ))}
+            {/* <li
               className={styles.nav__list}
               style={{
                 fontWeight: active ? '600' : '400',
@@ -133,7 +170,7 @@ const Navbar = () => {
               }}
             >
               <Link href="/">Stores around you </Link>
-            </li>
+            </li> */}
           </Box>
         </Toolbar>
         <Box
