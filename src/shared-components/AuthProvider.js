@@ -59,11 +59,9 @@ function AuthProvider({ children }) {
 
     dispatch(getAllCategories());
 
-    // dispatch(getAllProducts(country ? country : countryId?.id, PageNumber));
-
     dispatch(getDialCode());
 
-    // dispatch(getCart());
+    dispatch(getCart());
   }, [dispatch]);
 
   useEffect(() => {
@@ -83,7 +81,10 @@ function AuthProvider({ children }) {
       };
       cart();
       if (items) {
-        dispatch(addMultipleCart(country, cart()));
+        setTimeout(() => {
+          const countryId = JSON.parse(localStorage.getItem('selectedCountry'));
+          dispatch(addMultipleCart(countryId.id, cart()));
+        }, 4000);
         dispatch(getCart());
         emptyCart();
       }

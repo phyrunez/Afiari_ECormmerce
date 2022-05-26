@@ -6,6 +6,7 @@ import styles from '../../styles/Input.module.css';
 import { ArrowDropDown, ArrowDropUp } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUserCountry } from '../redux/auth/authAction';
+import ReactTypingEffect from 'react-typing-effect';
 
 const Header = () => {
   const [selectedCountry, setSelectedCountry] = useState('');
@@ -96,7 +97,7 @@ const Header = () => {
           <Box
             sx={{
               position: { xs: 'absolute', md: 'relative' },
-              top: { xs: '73px', md: '0' },
+              top: { xs: '50px', sm: '73px', md: '0' },
               left: { xs: '1rem', md: '0' },
             }}
           >
@@ -219,7 +220,47 @@ const Header = () => {
               width: { xs: '100%', sm: '350px', md: '450px', lg: '100%' },
             }}
           >
-            <Typography
+            <ReactTypingEffect
+              text={[
+                '    Foodstuff and Groceries at your Fingertips',
+                'Forget the hustle, let’s go to market for you!!!',
+              ]}
+              cursorRenderer={(cursor) => <h1>{cursor}</h1>}
+              className={styles.homepage__typing__Header}
+              speed={50}
+              eraseSpeed={50}
+              eraseDelay={1200}
+              typingDelay={500}
+              displayTextRenderer={(text, i) => {
+                return (
+                  <Typography
+                    variant="h1"
+                    sx={{
+                      fontWeight: '600',
+                      fontSize: { xs: '29px', md: '48px', lg: '48px' },
+                      lineHeight: { xs: '37px', md: '70px', lg: '90px' },
+                      letterSpacing: {
+                        xs: '0.06em',
+                        md: '0.15em',
+                        lg: '0.017em',
+                      },
+                      textAlign: { xs: 'center', md: 'justify' },
+                      color: { md: '#000000', xs: ' #FFFFFF' },
+                      // marginTop: { xs: '15px', lg: '40px' },
+                      // marginButtom: '8px',
+                      width: '100%',
+                      // border: '1px solid red',
+                    }}
+                  >
+                    {text.split('').map((char, i) => {
+                      const key = `${i}`;
+                      return <span key={key}>{char}</span>;
+                    })}
+                  </Typography>
+                );
+              }}
+            />
+            {/* <Typography
               sx={{
                 fontWeight: '600',
                 fontSize: { xs: '29px', md: '48px', lg: '48px' },
@@ -236,7 +277,7 @@ const Header = () => {
               variant="h1"
             >
               Foodstuff and Groceries at your Fingertips
-            </Typography>
+            </Typography> */}
           </Box>
 
           <Typography
