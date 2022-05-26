@@ -293,7 +293,7 @@ const SignUp = () => {
                 color: ' #0A503D',
               }}
             >
-              <Link href="/"> Terms of Service </Link>
+              <Link href="/terms_and_condition"> Terms of Service </Link>
             </span>
             and
             <span
@@ -303,7 +303,7 @@ const SignUp = () => {
                 color: ' #0A503D',
               }}
             >
-              <Link href="/">Privacy Policy </Link>
+              <Link href="/privacy_policy">Privacy Policy </Link>
             </span>
             of Afiari
           </Typography>

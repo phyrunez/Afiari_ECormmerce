@@ -209,12 +209,14 @@ const Footer = () => {
           </Box>
         </Box>
         <Box component="ul" className={styles.policy}>
-          <Link href="/policy">
-            <li>Privacy Policy</li>
-          </Link>
-          <Link href="/terms">
-            <li>Terms of Service</li>
-          </Link>
+          <li>
+            {' '}
+            <Link href="/privacy_policy">Privacy Policy</Link>
+          </li>
+          <li>
+            {' '}
+            <Link href="/terms_and_condition">Terms of Service</Link>
+          </li>
 
           <li> &copy; 2022 Afiari</li>
         </Box>

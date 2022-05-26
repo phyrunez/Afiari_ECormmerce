@@ -12,6 +12,7 @@
 .nav__list {
   list-style-type: none;
   color: #3a3a3a;
+  cursor: pointer;
 }
 
 .toolbar {
