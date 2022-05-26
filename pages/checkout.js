@@ -196,6 +196,7 @@ function Checkout() {
             >
               <Image
                 src={item?.product_image}
+                loader={() => item?.product_image}
                 alt="product"
                 width={79}
                 height={79}
