@@ -1,4 +1,4 @@
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, Typography } from '@mui/material';
 import Image from 'next/image';
 import React from 'react';
 import { ButtonSmall } from '../../shared-components/Button';
@@ -33,6 +33,8 @@ const ShopCard = () => {
   } = useSelector((state) => state?.general);
 
   const { country, isLogged_in } = useSelector((state) => state?.auth);
+
+  const [loading, setLoading] = useState(false);
 
   // console.log(country);
 
@@ -87,9 +89,11 @@ const ShopCard = () => {
   });
 
   useEffect(() => {
+    setLoading(true);
     setTimeout(() => {
       const countryId = JSON.parse(localStorage.getItem('selectedCountry'));
       dispatch(getAllProducts(country ? country : countryId?.id, pageNumber));
+      setLoading(false);
     }, 2000);
   }, [dispatch, pageNumber, country]);
 
@@ -189,6 +193,26 @@ const ShopCard = () => {
           >
             <Typography variant="p">items not available</Typography>
           </Box>
+        ) : loading === true ? (
+          <Box
+            sx={{
+              display: 'flex',
+              // flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              // marginTop: '29px',
+              width: '100%',
+              // height: '100%',
+              padding: '29px 16px',
+            }}
+          >
+            <CircularProgress
+              sx={{
+                color: '#000',
+              }}
+              size={60}
+            />
+          </Box>
         ) : (
           products()?.map((item, i) => (
             <Box
@@ -215,35 +239,33 @@ const ShopCard = () => {
                   boxShadow: '0px 4.16667px 8.33333px rgba(0, 0, 0, 0.08)',
                   borderRadius: ' 5.20833px',
                   padding: '1rem 1rem',
+                  // border: '1px solid red',
                 }}
               >
                 {/* <Link href={`/shop/${item.id}`}> */}
                 <Box
                   sx={{
+                    width: { xs: '100px', md: '200px' },
                     height: '100%',
-                    // border: '1px solid red',
+                    // border: '1px solid green',
                   }}
                   onClick={() => {
                     router.push(`/FoodMarket/${item.id}`);
                   }}
                 >
                   {item?.images[0]?.image_url ? (
-                    <Image
+                    <img
                       key={item?.images[0]?.id}
-                      loader={() => item?.images[0]?.image_url}
+                      // loader={() => item?.images[0]?.image_url}
                       src={item?.images[0]?.image_url}
                       alt="product"
-                      width={100}
-                      height="100%"
                       className={styles.product_img}
-                      unoptimized={true}
+                      // unoptimized={true}
                     />
                   ) : (
-                    <Image
+                    <img
                       src="/fish.png"
                       alt="product"
-                      width={50}
-                      height={50}
                       className={styles.product_img}
                     />
                   )}

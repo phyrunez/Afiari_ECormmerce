@@ -40,6 +40,28 @@ li {
   color: transparent;
 }
 
+.privacy_para {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 28px;
+  color: #3a3a3a;
+  margin-bottom: 1rem;
+}
+
+.privacy_heading {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 25px;
+  line-height: 53px;
+  margin-bottom: 1rem;
+  color: #3a3a3a;
+}
+
+.privacy_ul li {
+  list-style: disc;
+}
+
 .loadingSpinnerContainer {
   position: fixed;
   top: 0;
@@ -108,5 +130,14 @@ li {
     align-items: center;
     justify-content: center;
     /* margin-top: -0.5rem; */
+  }
+}
+@media (max-width: 899px) {
+  .privacy_heading {
+    font-size: 15px;
+  }
+
+  .privacy_para {
+    font-size: 12px;
   }
 }

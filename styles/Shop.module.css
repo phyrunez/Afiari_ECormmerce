@@ -77,6 +77,9 @@
 
 .product_img {
   border-radius: 10.8163px;
+  /* border: 1px solid red; */
+  height: 100%;
+  width: 100%;
 }
 
 .checkout_input {
@@ -127,9 +130,6 @@
   outline: none;
 }
 
-.deletePopUpBtn {
-}
-
 @media only screen and (max-width: 899px) {
   .typing_text {
     display: flex;
@@ -174,10 +174,10 @@
     margin-bottom: 2px;
   }
 
-  .product_img {
+  /* .product_img {
     width: 115px !important;
     height: 96px !important;
-  }
+  } */
 
   .cart_details {
     font-size: 9px;
