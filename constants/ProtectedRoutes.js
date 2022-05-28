@@ -16,8 +16,8 @@ const ProtectedRoutes = ({ router, children }) => {
     appRoutes.FOODMARKET,
     appRoutes.PRODUCT,
     appRoutes.CART,
-    // appRoutes.PROFILE,
-    // appRoutes.PAYMENTCOMPLETE,
+    appRoutes.PRIVACYPOLICY,
+    appRoutes.TERMSANDCONDITION,
     // appRoutes.THANKYOU,
   ];
 

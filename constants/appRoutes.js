@@ -10,4 +10,6 @@ export const appRoutes = {
   PROFILE: '/profile',
   PAYMENTCOMPLETE: '/payment-complete',
   THANKYOU: '/thank-you',
+  PRIVACYPOLICY: '/privacy_policy',
+  TERMSANDCONDITION: '/terms_and_condition',
 };
