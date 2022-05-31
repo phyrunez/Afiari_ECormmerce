@@ -130,6 +130,10 @@ const API_ROUTES = {
     route: 'Transaction/paystack/verify-payment/',
     method: 'GET',
   },
+  cancelPayment: {
+    route: 'Transaction/paystack/cancel-payment/',
+    method: 'GET',
+  },
   placeOrder: {
     route: 'Orders/place-order',
     method: 'POST',
