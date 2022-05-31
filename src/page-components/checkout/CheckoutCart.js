@@ -108,14 +108,14 @@ function CheckoutCart({ handleCheckOut }) {
     masterRecordId: masterID,
   };
 
-  let verifyStatus;
-  if (typeof window !== 'undefined') {
-    verifyStatus = JSON.parse(localStorage.getItem('verify_status'));
-  }
+  // let verifyStatus;
+  // if (typeof window !== 'undefined') {
+  //   verifyStatus = JSON.parse(localStorage.getItem('verify_status'));
+  // }
 
   const handleplaceOrder = () => {
     location.replace(
-      `/paystack?orderNumber=${orderNumber}&paymentType=${selectedPayment}&shippingAddress=${selectedAddress.id}&masterRecordId=${masterID}&userEmail=${email}&totalAmount=${finalAmount}`
+      `/paystack?orderNumber=${orderNumber}&paymentType=${selectedPayment}&shippingAddress=${selectedAddress.id}&masterRecordId=${masterID}&userEmail=${email}`
     );
   };
 

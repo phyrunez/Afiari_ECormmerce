@@ -43,7 +43,7 @@ const Navbar = () => {
     },
     {
       id: 2,
-      value: 'FoodMarket',
+      value: 'Food Market',
       route: '/FoodMarket',
     },
     {

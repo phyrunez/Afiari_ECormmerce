@@ -48,7 +48,6 @@ Foodstuff market in Lagos"
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> */}
         {/* <script src="../src/vendor/jquery.min.js"></script>
         <script src="../src/vendor/sweetalert.min.js"></script> */}
-        <script src="https://js.paystack.co/v1/inline.js"></script>
       </Head>
 
       <Provider store={store}>

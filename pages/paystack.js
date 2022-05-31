@@ -2,6 +2,9 @@ import { Component } from 'react';
 import { BASE_URL, API_ROUTES } from '../constants/config';
 import $ from 'jquery';
 import swal from 'sweetalert';
+import { logo } from '../assests/images/loginSvg';
+import { Box } from '@mui/material';
+import Script from 'next/script';
 
 class Jquery extends Component {
   constructor(props) {
@@ -50,7 +53,7 @@ class Jquery extends Component {
       if (resp?.status) {
         transaction_ref = resp?.result[0]?.reference;
         let userEmail = getParameterByName('userEmail');
-        let totalCost = getParameterByName('totalAmount');
+        let totalCost = resp?.result[0]?.amount;
         //get paystack public key
         $.ajax({
           method: 'GET',
@@ -204,7 +207,21 @@ class Jquery extends Component {
     PaystackScript(PaystackCallback); //start
   };
   render() {
-    return <div className=""></div>;
+    return (
+      <Box
+        className=""
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          width: '100%',
+          height: '100vh',
+        }}
+      >
+        <Script src="https://js.paystack.co/v1/inline.js"></Script>
+        <img src="/Afiari logo.png" alt="logo" width={250} height={50} />
+      </Box>
+    );
   }
 }
 
