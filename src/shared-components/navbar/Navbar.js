@@ -119,7 +119,7 @@ const Navbar = () => {
             }}
           >
             {navList?.map((list) => (
-              <Link href={list.route} key={list.id}>
+              <Link href={list.route} key={list.i}>
                 <li
                   className={styles.nav__list}
                   style={{
