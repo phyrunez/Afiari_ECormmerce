@@ -139,11 +139,12 @@ function CheckOutPaymentMethod({ handleModal }) {
     },
   };
 
-  const handlePayNow = () => {
-    toast.error('You need to select a payment method and delivery address');
-  };
+  // const handlePayNow = () => {
+  //   toast.error('You need to select a payment method and delivery address');
+  // };
 
   useEffect(() => {
+    dispatch(getOrderNumber(country));
     dispatch(getPaymentOptions());
     dispatch(getAddress());
     localStorage.removeItem('ref');
@@ -219,10 +220,8 @@ function CheckOutPaymentMethod({ handleModal }) {
                   }}
                   onClick={() => {
                     dispatch(handleSelectedPaymentMethod(item.id));
-                    dispatch(publicKey());
-                    dispatch(getOrderNumber(country));
-                    dispatch(initializePayment(orderNumber));
-                    console.log(selectedPayment);
+
+                    // dispatch(initializePayment(orderNumber));
                   }}
                 >
                   {item.item_value.toUpperCase()}
@@ -230,7 +229,7 @@ function CheckOutPaymentMethod({ handleModal }) {
               ))}
             </Box>
 
-            {selectedPayment === '' || selectedAddress.id === undefined ? (
+            {/* {selectedPayment === '' || selectedAddress.id === undefined ? (
               <button className={styles.paystackButton} onClick={handlePayNow}>
                 Pay now
               </button>
@@ -239,7 +238,7 @@ function CheckOutPaymentMethod({ handleModal }) {
                 className={styles.paystackButton}
                 {...componentProps}
               />
-            )}
+            )} */}
 
             {/* <ButtonSmall
               text="PAY NOW"
