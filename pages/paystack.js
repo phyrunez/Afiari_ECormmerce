@@ -216,22 +216,38 @@ const Jquery = () => {
     token = localStorage.getItem('Afiari_access');
   }
 
+
   const BASEURL = BASE_URL;
   const Auth_Header = {
     Authorization: 'Bearer ' + token,
   };
 
-  //add to index.html
-  //<script src="https://js.paystack.co/v1/inline.js"></script>
-  //
+  const GetPublicKey = (callback) => {
+    $.ajax({
+      method: "GET",
+      url: `${BASEURL}/Transaction/paystack/public-key`,
+      success: function (key_resp) {
+        callback(key_resp)
+      }
+    })
+  }
 
-  const PaystackScript = (callback) => {
+  const KeyCallback = (resp) => {
+    if (resp?.status) {
+      PaystackScript(PaystackCallback, resp?.result[0].public_key)
+      return;
+    }
+  }
+
+
+  const PaystackScript = (callback, publicKey) => {
     //STEP 1: Initiate the transaction
     let initiateUrlPath = API_ROUTES.initializePayment.route;
     let orderNumber = getParameterByName('orderNumber');
     let payload = JSON.stringify({
       orderNumber: orderNumber,
     });
+
     $.ajax({
       method: 'POST',
       url: `${BASEURL}/${initiateUrlPath}`,
@@ -241,83 +257,77 @@ const Jquery = () => {
       headers: Auth_Header,
       success: function (data) {
         //$('#result').html(data);
-        callback(data);
+        callback(data, publicKey);
       },
-      error: function (resp) {},
+      error: function (resp) { },
     });
   };
 
-  const PaystackCallback = (resp) => {
+  const PaystackCallback = (resp, publicKey) => {
     let transaction_ref;
     if (resp?.status) {
       transaction_ref = resp?.result[0]?.reference;
       let userEmail = getParameterByName('userEmail');
       let totalCost = resp?.result[0]?.amount;
-      //get paystack public key
-      $.ajax({
-        method: 'GET',
-        url: `${BASEURL}/${API_ROUTES.getPublicKey.route}`,
-        success: function (key_resp) {
-          //STEP 2: paystack process payment
-          var handler = PaystackPop.setup({
-            key: `${key_resp?.result[0]?.public_key}`,
-            email: userEmail,
-            amount: totalCost,
-            ref: transaction_ref,
+      
+      //STEP 2: paystack process payment
+      var handler = PaystackPop.setup({
+        key: `${publicKey}`,
+        email: userEmail,
+        amount: totalCost,
+        ref: transaction_ref,
 
-            callback: function (response) {
-              console.log('paystack response => ', response);
-              //VERIFY PAYMENT
-              let VerifyUrlPath = API_ROUTES.verifyPayment.route;
-              $.ajax({
-                method: 'GET',
-                url: `${BASEURL}/${VerifyUrlPath}${transaction_ref}`,
-                contentType: 'application/json',
-                dataType: 'json',
-                headers: Auth_Header,
-                success: function (resp) {
-                  if (resp?.status) {
-                    SuccessCallback(resp);
-                    return;
-                  }
-                  swal({
-                    title: 'Snap!',
-                    text: resp,
-                    icon: 'warning',
-                    button: 'Ok',
-                  });
-                },
-                error: function (resp) {
-                  console.log('Error', resp);
-                },
+        callback: function (response) {
+          console.log('paystack response => ', response);
+          //VERIFY PAYMENT
+          let VerifyUrlPath = API_ROUTES.verifyPayment.route;
+          $.ajax({
+            method: 'GET',
+            url: `${BASEURL}/${VerifyUrlPath}${transaction_ref}`,
+            contentType: 'application/json',
+            dataType: 'json',
+            headers: Auth_Header,
+            success: function (resp) {
+              if (resp?.status) {
+                SuccessCallback(resp);
+                return;
+              }
+              swal({
+                title: 'Snap!',
+                text: resp,
+                icon: 'warning',
+                button: 'Ok',
               });
             },
-
-            onClose: function () {
-              ///CANCEL TRANSACTION
-              let cancelUrlPath = API_ROUTES.cancelPayment.route;
-              $.ajax({
-                method: 'GET',
-                url: `${BASEURL}/${cancelUrlPath}${transaction_ref}`,
-                contentType: 'application/json',
-                dataType: 'json',
-                headers: Auth_Header,
-                success: function (resp) {
-                  //$('#result').html(resp)
-                  console.log('User cancelled transaction', resp);
-                  CancelCallback(resp);
-                },
-                error: function (resp) {
-                  console.log('Error occured on close ', resp);
-                },
-              });
+            error: function (resp) {
+              console.log('Error', resp);
             },
           });
+        },
 
-          handler.openIframe();
+        onClose: function () {
+          ///CANCEL TRANSACTION
+          let cancelUrlPath = API_ROUTES.cancelPayment.route;
+          $.ajax({
+            method: 'GET',
+            url: `${BASEURL}/${cancelUrlPath}${transaction_ref}`,
+            contentType: 'application/json',
+            dataType: 'json',
+            headers: Auth_Header,
+            success: function (resp) {
+              //$('#result').html(resp)
+              console.log('User cancelled transaction', resp);
+              CancelCallback(resp);
+            },
+            error: function (resp) {
+              console.log('Error occured on close ', resp);
+            }
+          });
         },
       });
+      handler.openIframe();
     }
+
   };
 
   const SuccessCallback = (resp) => {
@@ -405,8 +415,9 @@ const Jquery = () => {
   }
 
   useEffect(() => {
-    PaystackScript(PaystackCallback); //start
+    GetPublicKey(KeyCallback); //start
   }, []);
+
   return (
     <Box
       className=""
@@ -426,4 +437,3 @@ const Jquery = () => {
 };
 
 export default Jquery;
-// PaystackScript(PaystackCallback); //start
