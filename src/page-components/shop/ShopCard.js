@@ -234,7 +234,7 @@ const ShopCard = () => {
                   display: 'flex',
                   justifyContent: 'space-evenly',
                   width: { md: '80%', xs: '100%' },
-                  height: { md: '200px', xs: '139.06px' },
+                  height: { md: '250px', xs: '150.06px' },
                   background: '#FFFFFF',
                   boxShadow: '0px 4.16667px 8.33333px rgba(0, 0, 0, 0.08)',
                   borderRadius: ' 5.20833px',

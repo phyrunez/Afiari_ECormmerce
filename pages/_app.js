@@ -44,6 +44,10 @@ Where can I buy foodstuff near me,
 Foodstuff shop,
 Foodstuff market in Lagos"
         />
+        {/* <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> */}
+        {/* <script src="../src/vendor/jquery.min.js"></script>
+        <script src="../src/vendor/sweetalert.min.js"></script> */}
       </Head>
 
       <Provider store={store}>

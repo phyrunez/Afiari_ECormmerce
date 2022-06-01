@@ -43,7 +43,7 @@ const Navbar = () => {
     },
     {
       id: 2,
-      value: 'FoodMarket',
+      value: 'Food Market',
       route: '/FoodMarket',
     },
     {
@@ -119,7 +119,7 @@ const Navbar = () => {
             }}
           >
             {navList?.map((list) => (
-              <Link href={list.route}>
+              <Link href={list.route} key={list.i}>
                 <li
                   className={styles.nav__list}
                   style={{
