@@ -109,7 +109,7 @@ const SignUp = () => {
         setQ(false);
       }
     });
-  }, [dispatch]);
+  }, [dispatch, emails, query]);
   return (
     <>
       <Box
