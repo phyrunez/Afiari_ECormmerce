@@ -12,4 +12,5 @@ export const appRoutes = {
   THANKYOU: '/thank-you',
   PRIVACYPOLICY: '/privacy_policy',
   TERMSANDCONDITION: '/terms_and_condition',
+  PAYSTACK: '/paystack',
 };

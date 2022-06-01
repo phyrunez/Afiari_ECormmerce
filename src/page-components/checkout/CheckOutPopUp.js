@@ -67,7 +67,7 @@ function CheckOutPopUp({ setShowModal }) {
         sx={{
           display: 'flex',
           justifyContent: 'center',
-          width: { xs: '250px', sm: '330px', md: '720px' },
+          width: { xs: '250px', sm: '450px', md: '720px' },
           height: '750px',
           background: '#fff',
           borderRadius: '25px',

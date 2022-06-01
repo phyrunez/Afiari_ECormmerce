@@ -62,10 +62,6 @@ function Cart() {
   const disableCheckoutBtn =
     !cartItems || cartItems?.length === 0 ? true : false;
 
-  useEffect(() => {
-    dispatch(getCart());
-  }, [dispatch]);
-
   const router = useRouter();
 
   const currency = cartItems?.map((item) => item?.currency);
@@ -98,6 +94,10 @@ function Cart() {
       router.push('/login');
     }
   };
+
+  useEffect(() => {
+    dispatch(getCart());
+  }, [dispatch]);
 
   return (
     <Box

@@ -31,6 +31,7 @@ import {
 import { useRouter } from 'next/router';
 
 import { toast } from 'react-toastify';
+// import {} from '../../../pages/paystack'
 
 const useStyles = makeStyles((theme) => ({
   checkoutButton: {
@@ -92,6 +93,13 @@ function CheckoutCart({ handleCheckOut }) {
 
   const router = useRouter();
 
+  const orderNumber = order_number?.[0]?.order_number;
+
+  const totalAmount = order_number?.[0]?.total_cost;
+
+  // hhh
+  const finalAmount = Math.round(+totalAmount?.replace(/,/g, '') * 100);
+
   const masterID = order_number?.[0]?.order_master_id;
 
   const data = {
@@ -100,45 +108,57 @@ function CheckoutCart({ handleCheckOut }) {
     masterRecordId: masterID,
   };
 
-  let verifyStatus;
-  if (typeof window !== 'undefined') {
-    verifyStatus = JSON.parse(localStorage.getItem('verify_status'));
-  }
+  // let verifyStatus;
+  // if (typeof window !== 'undefined') {
+  //   verifyStatus = JSON.parse(localStorage.getItem('verify_status'));
+  // }
 
-  const handleOrder = () => {
-    setIsLoading(true);
-    if (verifyStatus === true) {
-      //set loading icon
-      dispatch(placeOrder(data));
-      setTimeout(() => {
-        let orderStatus;
-        if (typeof window !== 'undefined') {
-          orderStatus = JSON.parse(localStorage.getItem('orderStatus'));
-        }
-        console.log(orderStatus);
-        if (orderStatus.status === false) {
-          toast.error(orderStatus.error_message);
-          localStorage.setItem('verify_status', false);
-          setIsLoading(false);
-          router.push('/FoodMarket');
-          dispatch(handleSelectedPaymentMethod(''));
-          dispatch(handleSelectedAddress(''));
-        } else {
-          toast.success(orderStatus.success_message);
-          localStorage.setItem('verify_status', false);
-          setIsLoading(false);
-          router.push('/payment-complete');
-          dispatch(handleSelectedPaymentMethod(''));
-          dispatch(handleSelectedAddress(''));
-        }
-      }, 4000);
-    } else {
-      toast.error('We can not verify your payment');
-      setIsLoading(false);
-      dispatch(handleSelectedPaymentMethod(''));
-      dispatch(handleSelectedAddress(''));
-    }
+  const handleplaceOrder = () => {
+    location.replace(
+      `/paystack?orderNumber=${orderNumber}&paymentType=${selectedPayment}&shippingAddress=${selectedAddress.id}&masterRecordId=${masterID}&userEmail=${email}`
+    );
   };
+
+  const handlePayNow = () => {
+    toast.error(
+      'You need to select a payment method and delivery address before placing order'
+    );
+  };
+
+  // const handleOrder = () => {
+  //   setIsLoading(true);
+  //   if (verifyStatus === true) {
+  //     //set loading icon
+  //     dispatch(placeOrder(data));
+  //     setTimeout(() => {
+  //       let orderStatus;
+  //       if (typeof window !== 'undefined') {
+  //         orderStatus = JSON.parse(localStorage.getItem('orderStatus'));
+  //       }
+  //       console.log(orderStatus);
+  //       if (orderStatus.status === false) {
+  //         toast.error(orderStatus.error_message);
+  //         localStorage.setItem('verify_status', false);
+  //         setIsLoading(false);
+  //         router.push('/FoodMarket');
+  //         dispatch(handleSelectedPaymentMethod(''));
+  //         dispatch(handleSelectedAddress(''));
+  //       } else {
+  //         toast.success(orderStatus.success_message);
+  //         localStorage.setItem('verify_status', false);
+  //         setIsLoading(false);
+  //         router.push('/payment-complete');
+  //         dispatch(handleSelectedPaymentMethod(''));
+  //         dispatch(handleSelectedAddress(''));
+  //       }
+  //     }, 4000);
+  //   } else {
+  //     toast.error('We can not verify your payment');
+  //     setIsLoading(false);
+  //     dispatch(handleSelectedPaymentMethod(''));
+  //     dispatch(handleSelectedAddress(''));
+  //   }
+  // };
 
   useEffect(() => {
     dispatch(getCart());
@@ -304,44 +324,78 @@ function CheckoutCart({ handleCheckOut }) {
             cursor: 'pointer',
           }}
         >
-          <Button
-            variant="h4"
-            sx={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              width: { xs: '263', md: '515px' },
-              height: { xs: '40px', md: '79px' },
-              background: '#0A503D',
-              borderRadius: {
-                xs: '0px 0px 31.5402px 31.5402px',
-                md: '0px 0px 61.8375px 61.8375px',
-              },
-              fontWeight: '600',
-              fontSize: { xs: '12px', md: ' 25px' },
-              lineHeight: ' 19px',
-              textAlign: 'center',
-              letterSpacing: ' 0.04em',
-              cursor: 'pointer',
-              color: ' #FFFFFF',
-              '&:hover': {
-                backgroundColor: '#0a3d30',
-              },
-            }}
-            onClick={handleOrder}
-            disabled={!verifyStatus}
-          >
-            {isLoading ? (
-              <CircularProgress
-                sx={{
-                  color: '#fff',
-                }}
-                size={20}
-              />
-            ) : (
-              ` PLACE ORDER: ${cart?.cart?.[0]?.currency}   ${cart?.cart?.[0]?.charged_total_cost}`
-            )}
-          </Button>
+          {selectedPayment === '' || selectedAddress.id === undefined ? (
+            <Button
+              variant="h4"
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                width: { xs: '263', md: '515px' },
+                height: { xs: '40px', md: '79px' },
+                background: '#0A503D',
+                borderRadius: {
+                  xs: '0px 0px 31.5402px 31.5402px',
+                  md: '0px 0px 61.8375px 61.8375px',
+                },
+                fontWeight: '600',
+                fontSize: { xs: '12px', md: ' 25px' },
+                lineHeight: ' 19px',
+                textAlign: 'center',
+                letterSpacing: ' 0.04em',
+                cursor: 'pointer',
+                color: ' #FFFFFF',
+                '&:hover': {
+                  backgroundColor: '#0a3d30',
+                },
+              }}
+              // onClick={handleOrder}
+              onClick={handlePayNow}
+              // disabled={!verifyStatus}
+            >
+              {`PLACE ORDER: ${cart?.cart?.[0]?.currency}   ${cart?.cart?.[0]?.charged_total_cost}`}
+            </Button>
+          ) : (
+            <Button
+              variant="h4"
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                width: { xs: '263', md: '515px' },
+                height: { xs: '40px', md: '79px' },
+                background: '#0A503D',
+                borderRadius: {
+                  xs: '0px 0px 31.5402px 31.5402px',
+                  md: '0px 0px 61.8375px 61.8375px',
+                },
+                fontWeight: '600',
+                fontSize: { xs: '12px', md: ' 25px' },
+                lineHeight: ' 19px',
+                textAlign: 'center',
+                letterSpacing: ' 0.04em',
+                cursor: 'pointer',
+                color: ' #FFFFFF',
+                '&:hover': {
+                  backgroundColor: '#0a3d30',
+                },
+              }}
+              // onClick={handleOrder}
+              onClick={handleplaceOrder}
+              // disabled={!verifyStatus}
+            >
+              {isLoading ? (
+                <CircularProgress
+                  sx={{
+                    color: '#fff',
+                  }}
+                  size={20}
+                />
+              ) : (
+                ` PLACE ORDER: ${cart?.cart?.[0]?.currency}   ${cart?.cart?.[0]?.charged_total_cost}`
+              )}
+            </Button>
+          )}
         </Box>
       </Box>
     </>

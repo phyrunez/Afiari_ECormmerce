@@ -1,12 +1,17 @@
 import { Box, Typography } from '@mui/material';
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { handleDelete } from '../../redux/cart/cartAction';
 import { ButtonSmall } from '../../shared-components/Button';
 import styles from '../../../styles/Shop.module.css';
+import { useCart } from 'react-use-cart';
 
 function DeleteNotification({ id, handleModal, handleCancel }) {
+  const { country, isLogged_in } = useSelector((state) => state?.auth);
+
+  const { removeItem } = useCart();
+  console.log(id);
   const dispatch = useDispatch();
   return (
     <Box
@@ -106,8 +111,14 @@ function DeleteNotification({ id, handleModal, handleCancel }) {
           <ButtonSmall
             text="Ok"
             onClick={() => {
-              handleModal(id);
-              toast.success('Product Removed from Cart Successfully');
+              if (isLogged_in) {
+                handleModal(id);
+                toast.success('Product Removed from Cart Successfully');
+              } else {
+                removeItem(id);
+                handleCancel();
+                toast.success('Product Removed from Cart Successfully');
+              }
             }}
             width={151}
             height={40}
