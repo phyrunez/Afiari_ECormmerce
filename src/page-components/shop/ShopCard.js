@@ -17,6 +17,7 @@ import Link from 'next/link';
 import {
   getAllProducts,
   getProductsByCategory,
+  getSearchProduct,
 } from '../../redux/general/generalAction';
 import { addCart } from '../../redux/cart/cartAction';
 
@@ -24,17 +25,21 @@ import { useCart } from 'react-use-cart';
 import { formatCurrency, getNumber } from '../../utils/utils';
 import { toast } from 'react-toastify';
 
-const ShopCard = ({ query }) => {
+const ShopCard = ({ query, isLoading, value }) => {
   const {
     product,
     productCategory,
     selectedCategory,
     meta_data: metaData,
+    searched,
   } = useSelector((state) => state?.general);
+  console.log('searched', searched);
 
   const { country, isLogged_in } = useSelector((state) => state?.auth);
 
   const [loading, setLoading] = useState(false);
+
+  console.log(isLoading);
 
   const { page_size, number_of_pages, page_index, total_count } = metaData;
 
@@ -56,6 +61,10 @@ const ShopCard = ({ query }) => {
   if (selectedCategory !== '') {
     displayedProduct = productCategory;
   }
+
+  // if(query){
+  //   displayedProduct = searched
+  // }
 
   const products = () => {
     const newData = displayedProduct.map((prod, index) => {
@@ -79,9 +88,31 @@ const ShopCard = ({ query }) => {
     return newData;
   };
 
-  const search = products()?.filter((item) =>
-    item?.name?.toLowerCase().includes(query?.toLowerCase())
-  );
+  const searchedItems = () => {
+    const newData = searched.map((prod, index) => {
+      return {
+        id: prod.id,
+        star_rating: prod.star_rating,
+        name: prod.name,
+        description: prod.description,
+        date_created: prod.date_created,
+        sku: prod.sku,
+        date_text: prod.date_text,
+        price: getNumber(prod.afiari_price),
+        currency: prod.currency,
+        store_id: prod.store_id,
+        store_name: prod.store_name,
+        categories: prod.categories,
+        images: prod.images,
+        reviews: prod.reviews,
+      };
+    });
+    return newData;
+  };
+
+  // const search = products()?.filter((item) =>
+  //   item?.name?.toLowerCase().includes(query?.toLowerCase())
+  // );
 
   const [items] = useState({
     total: metaData?.total_count,
@@ -195,7 +226,7 @@ const ShopCard = ({ query }) => {
           >
             <Typography variant="p">items not available</Typography>
           </Box>
-        ) : loading === true ? (
+        ) : loading === true || isLoading === true ? (
           <Box
             sx={{
               display: 'flex',
@@ -215,7 +246,7 @@ const ShopCard = ({ query }) => {
               size={60}
             />
           </Box>
-        ) : query && search.length === 0 ? (
+        ) : query && searchedItems().length === 0 ? (
           <Box
             sx={{
               display: 'flex',
@@ -229,8 +260,8 @@ const ShopCard = ({ query }) => {
           >
             <Typography variant="p"> No result for the search item </Typography>
           </Box>
-        ) : query ? (
-          search.map((item) => (
+        ) : query && value !== '' ? (
+          searchedItems().map((item) => (
             <Box
               key={item.id}
               sx={{

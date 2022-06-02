@@ -14,6 +14,7 @@ const initialState = {
   saved_testimony_message: '',
   comment: '',
   selectedProfileMenu: '',
+  searched: [],
 };
 
 const reducer = (state = initialState, action) => {
@@ -54,6 +55,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         selectedCategory: action.payload,
+      };
+    case GeneralTypes.SEARCH_PRODUCT:
+      return {
+        ...state,
+        searched: action.payload,
       };
     case GeneralTypes.GET_SELECTED_PROFILE_MENU:
       return {

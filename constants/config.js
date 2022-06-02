@@ -150,6 +150,10 @@ const API_ROUTES = {
     route: 'Lookup/dial-code',
     method: 'GET',
   },
+  searchProduct: {
+    route: 'Product/search?search_text=',
+    method: 'GET',
+  },
 };
 
 const authToken = 'Afiari_access';
