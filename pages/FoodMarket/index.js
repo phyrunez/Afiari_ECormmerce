@@ -43,6 +43,7 @@ function Shop() {
 
   const [show, setShow] = useState(false);
   const [itemID, setItemID] = useState('');
+  const [query, setQuery] = useState('');
 
   const dispatch = useDispatch();
 
@@ -326,6 +327,9 @@ function Shop() {
                 sx={{ ml: 1, flex: 1 }}
                 placeholder="Search for food item"
                 inputProps={{ 'aria-label': 'Search for food item' }}
+                onChange={(e) => {
+                  setQuery(e.target.value);
+                }}
               />
               <IconButton type="submit" sx={{ p: '10px' }} aria-label="search">
                 <Search />
@@ -432,7 +436,7 @@ function Shop() {
             }}
           ></Divider>
 
-          <ShopCard />
+          <ShopCard query={query} />
 
           {/* //////////////////////////////////////////////// the next and prev arrows //////////////////////////////////////////////// */}
 
