@@ -17,6 +17,7 @@ import Link from 'next/link';
 import {
   getAllProducts,
   getProductsByCategory,
+  getSearchProduct,
 } from '../../redux/general/generalAction';
 import { addCart } from '../../redux/cart/cartAction';
 
@@ -24,19 +25,21 @@ import { useCart } from 'react-use-cart';
 import { formatCurrency, getNumber } from '../../utils/utils';
 import { toast } from 'react-toastify';
 
-const ShopCard = () => {
+const ShopCard = ({ query, isLoading, value }) => {
   const {
     product,
     productCategory,
     selectedCategory,
     meta_data: metaData,
+    searched,
   } = useSelector((state) => state?.general);
+  console.log('searched', searched);
 
   const { country, isLogged_in } = useSelector((state) => state?.auth);
 
   const [loading, setLoading] = useState(false);
 
-  // console.log(country);
+  console.log(isLoading);
 
   const { page_size, number_of_pages, page_index, total_count } = metaData;
 
@@ -59,6 +62,10 @@ const ShopCard = () => {
     displayedProduct = productCategory;
   }
 
+  // if(query){
+  //   displayedProduct = searched
+  // }
+
   const products = () => {
     const newData = displayedProduct.map((prod, index) => {
       return {
@@ -80,6 +87,32 @@ const ShopCard = () => {
     });
     return newData;
   };
+
+  const searchedItems = () => {
+    const newData = searched.map((prod, index) => {
+      return {
+        id: prod.id,
+        star_rating: prod.star_rating,
+        name: prod.name,
+        description: prod.description,
+        date_created: prod.date_created,
+        sku: prod.sku,
+        date_text: prod.date_text,
+        price: getNumber(prod.afiari_price),
+        currency: prod.currency,
+        store_id: prod.store_id,
+        store_name: prod.store_name,
+        categories: prod.categories,
+        images: prod.images,
+        reviews: prod.reviews,
+      };
+    });
+    return newData;
+  };
+
+  // const search = products()?.filter((item) =>
+  //   item?.name?.toLowerCase().includes(query?.toLowerCase())
+  // );
 
   const [items] = useState({
     total: metaData?.total_count,
@@ -193,7 +226,7 @@ const ShopCard = () => {
           >
             <Typography variant="p">items not available</Typography>
           </Box>
-        ) : loading === true ? (
+        ) : loading === true || isLoading === true ? (
           <Box
             sx={{
               display: 'flex',
@@ -213,6 +246,175 @@ const ShopCard = () => {
               size={60}
             />
           </Box>
+        ) : query && searchedItems().length === 0 ? (
+          <Box
+            sx={{
+              display: 'flex',
+              // flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              // marginTop: '29px',
+              width: '100%',
+              padding: '29px 16px',
+            }}
+          >
+            <Typography variant="p"> No result for the search item </Typography>
+          </Box>
+        ) : query && value !== '' ? (
+          searchedItems().map((item) => (
+            <Box
+              key={item.id}
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'space-around',
+                // marginTop: '29px',
+                width: '100%',
+                padding: '29px 16px',
+                cursor: 'pointer',
+              }}
+            >
+              <Box
+                component="div"
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-evenly',
+                  width: { md: '80%', xs: '100%' },
+                  height: { md: '250px', xs: '150.06px' },
+                  background: '#FFFFFF',
+                  boxShadow: '0px 4.16667px 8.33333px rgba(0, 0, 0, 0.08)',
+                  borderRadius: ' 5.20833px',
+                  padding: '1rem 1rem',
+                  // border: '1px solid red',
+                }}
+              >
+                {/* <Link href={`/shop/${item.id}`}> */}
+                <Box
+                  sx={{
+                    width: { xs: '100px', md: '200px' },
+                    height: '100%',
+                    // border: '1px solid green',
+                  }}
+                  onClick={() => {
+                    router.push(`/FoodMarket/${item.id}`);
+                  }}
+                >
+                  {item?.images[0]?.image_url ? (
+                    <img
+                      key={item?.images[0]?.id}
+                      // loader={() => item?.images[0]?.image_url}
+                      src={item?.images[0]?.image_url}
+                      alt="product"
+                      className={styles.product_img}
+                      // unoptimized={true}
+                    />
+                  ) : (
+                    <img
+                      src="/fish.png"
+                      alt="product"
+                      className={styles.product_img}
+                    />
+                  )}
+                </Box>
+                {/* </Link> */}
+
+                <Box
+                  component="div"
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'flex-start',
+                    justifyContent: 'center',
+                    width: '70%',
+                    // marginLeft: '1rem',
+                    padding: '0 1rem',
+                    // border: '1px solid red',
+                  }}
+                >
+                  {/* <Link href={`/FoodMarket/${item.id}`}> */}
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'flex-start',
+                      // border: '1px solid red',
+                    }}
+                    onClick={() => {
+                      router.push(`/FoodMarket/${item.id}`);
+                    }}
+                  >
+                    <Typography
+                      variant="p"
+                      className={styles.cart_product_details}
+                    >
+                      {item.name}
+                    </Typography>
+                    <Typography
+                      variant="p"
+                      className={styles.cart_product_details}
+                      sx={{
+                        fontWeight: '400',
+                        marginBottom: { xs: '10px', md: '30px' },
+                      }}
+                    >
+                      {item.description}
+                    </Typography>
+                    <Typography
+                      variant="p"
+                      className={styles.cart_product_details}
+                      sx={{
+                        marginBottom: { xs: '0px', md: '13px' },
+                      }}
+                    >
+                      NGN {formatCurrency(item?.price)}
+                    </Typography>
+                  </Box>
+                  {/* </Link> */}
+
+                  <Box
+                    component="div"
+                    sx={{
+                      display: 'flex',
+                      width: '100%',
+                      marginTop: '16px',
+                    }}
+                  >
+                    <Button
+                      sx={{
+                        width: { xs: '75px', md: '85px' },
+                        height: { xs: '30px', md: '35px' },
+                        borderRadius: '50px',
+                        fontSize: { xs: '9px', md: '12px' },
+                        backgroundColor: ' #0A503D',
+                        color: '#fff',
+                        '&:hover': {
+                          backgroundColor: '#0a3d30',
+                          color: '#fff',
+                        },
+                      }}
+                      onClick={() => {
+                        const data = {
+                          country: country,
+                          id: item.id,
+                          isLogged_in: isLogged_in,
+                        };
+                        if (isLogged_in) {
+                          dispatch(addCart(data));
+                          toast.success('Product Added  Cart Successfully');
+                        } else {
+                          addItem(item);
+                          toast.success('Product Added  Cart Successfully');
+                        }
+                      }}
+                    >
+                      ADD
+                    </Button>
+                  </Box>
+                </Box>
+              </Box>
+            </Box>
+          ))
         ) : (
           products()?.map((item, i) => (
             <Box

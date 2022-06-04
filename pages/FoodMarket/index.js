@@ -27,6 +27,7 @@ import {
   setSelectedCategory,
   getAllProducts,
   getAllCountries,
+  getSearchProduct,
 } from '../../src/redux/general/generalAction';
 import Spinner from '../../components/Spinner';
 import { handleDelete, setIsLoading } from '../../src/redux/cart/cartAction';
@@ -35,7 +36,11 @@ import ReactTypingEffect from 'react-typing-effect';
 import { setUserCountry } from '../../src/redux/auth/authAction';
 
 function Shop() {
-  const { categories, countries } = useSelector((state) => state.general);
+  const {
+    categories,
+    countries,
+    meta_data: metaData,
+  } = useSelector((state) => state.general);
 
   const { country, loading } = useSelector((state) => state.auth);
 
@@ -43,6 +48,12 @@ function Shop() {
 
   const [show, setShow] = useState(false);
   const [itemID, setItemID] = useState('');
+  const [query, setQuery] = useState('');
+  const [val, setVal] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [pageload, setPageload] = useState(false);
+
+  const { page_size, number_of_pages, page_index, total_count } = metaData;
 
   const dispatch = useDispatch();
 
@@ -157,10 +168,15 @@ function Shop() {
   };
 
   useEffect(() => {
+    // if (window.scrollTo(0, 0)) {
+    //   setPageload(true);
+    // }
     const countryId = JSON.parse(localStorage.getItem('selectedCountry'));
     const pageNumber = 1;
     dispatch(getAllProducts(countryId?.id, pageNumber));
     dispatch(setUserCountry(countryId?.id));
+    console.log(loading);
+    dispatch(getSearchProduct('', country, page_index));
     // dispatch(getProductCategory(item));
   }, [dispatch]);
 
@@ -184,6 +200,7 @@ function Shop() {
           handleModal={handleModal}
         />
       )}
+      {pageload && <Spinner />}
       <Box
         className={styles.shop__header}
         sx={{
@@ -326,6 +343,11 @@ function Shop() {
                 sx={{ ml: 1, flex: 1 }}
                 placeholder="Search for food item"
                 inputProps={{ 'aria-label': 'Search for food item' }}
+                onChange={(e) => {
+                  setVal(e.target.value);
+                  setQuery(e.target.value);
+                }}
+                value={val}
               />
               <IconButton type="submit" sx={{ p: '10px' }} aria-label="search">
                 <Search />
@@ -342,6 +364,14 @@ function Shop() {
               backgroundColor=" #0A503D"
               text="SEARCH"
               color="#fff"
+              onClick={() => {
+                setIsLoading(true);
+                setTimeout(() => {
+                  dispatch(getSearchProduct(query, country, page_index));
+                  setIsLoading(false);
+                  // setVal('');
+                }, 1000);
+              }}
             />
           </Box>
         </Box>
@@ -432,7 +462,7 @@ function Shop() {
             }}
           ></Divider>
 
-          <ShopCard />
+          <ShopCard query={query} isLoading={isLoading} value={val} />
 
           {/* //////////////////////////////////////////////// the next and prev arrows //////////////////////////////////////////////// */}
 
