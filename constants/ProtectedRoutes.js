@@ -33,7 +33,7 @@ const ProtectedRoutes = ({ router, children }) => {
       });
       // router.push()
     }
-  }, [isLogged_in, pathIsProtected, appRoutes, isBrowser]);
+  }, [isLogged_in, pathIsProtected, router]);
 
   return children;
 };
