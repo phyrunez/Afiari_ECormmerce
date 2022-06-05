@@ -89,7 +89,7 @@ function AuthProvider({ children }) {
         emptyCart();
       }
     }
-  }, [isLogged_in, dispatch]);
+  }, [isLogged_in, dispatch, emptyCart]);
 
   return <Fragment>{children}</Fragment>;
 }
