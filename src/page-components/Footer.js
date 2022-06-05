@@ -144,10 +144,10 @@ const Footer = () => {
           }}
         >
           <Box component="ul" className={styles.footer__list}>
-            <Link href="/shop">
+            <Link href="/FoodMarket" passHref>
               <li>Food Market</li>
             </Link>
-            <Link href="/">
+            <Link href="/stores-around-you" passHref>
               <li>Stores Around You</li>
             </Link>
             {/* <Link href="/help">
