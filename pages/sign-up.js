@@ -72,24 +72,23 @@ const SignUp = () => {
       lastName: lastName,
       password: password,
     };
-    dispatch(signUpUser(userData, router));
+    dispatch(signUpUser(userData, router))
+      .then(() => {
+        let signupMessage;
+        if (typeof window !== 'undefined') {
+          signupMessage = JSON.parse(localStorage.getItem('signupMessage'));
+        }
 
-    setTimeout(() => {
-      let signupMessage;
-      if (typeof window !== 'undefined') {
-        signupMessage = JSON.parse(localStorage.getItem('signupMessage'));
-      }
+        console.log(signupMessage);
 
-      console.log(signupMessage);
-
-      if (signupMessage.status === true) {
-        toast.success(signupMessage.success_message);
-        router.push('/FoodMarket');
-        localStorage.removeItem('signupMessage');
-      } else {
-        toast.error(signupMessage.error_message);
-      }
-    }, 3000);
+        if (signupMessage.status === true) {
+          toast.success(signupMessage.success_message);
+          router.push('/FoodMarket');
+          localStorage.removeItem('signupMessage');
+        } else {
+          toast.error(signupMessage.error_message);
+        }
+      })
   };
 
   console.log(signup_api_message);

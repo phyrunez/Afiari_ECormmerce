@@ -69,26 +69,25 @@ const Login = () => {
     };
 
     // dispatch(login(userData));
-    dispatch(logInUser(userData, router, path));
+    dispatch(logInUser(userData, router, path))
+      .then(() => {
+        let loginResult;
+        if (typeof window !== 'undefined') {
+          loginResult = JSON.parse(localStorage.getItem('loginResult'));
+        }
+        console.log(loginResult);
 
-    setTimeout(() => {
-      let loginResult;
-      if (typeof window !== 'undefined') {
-        loginResult = JSON.parse(localStorage.getItem('loginResult'));
-      }
-      console.log(loginResult);
-
-      if (loginResult.status === false) {
-        toast.error(loginResult.error_message);
-      } else if (email === '' || password === '') {
-        toast.error('Fields can not be empty');
-      } else if (!router?.query?.from) {
-        router?.push('/FoodMarket');
-      } else {
-        router?.push(router?.query?.from);
-        toast.success(loginResult.success_message);
-      }
-    }, 2000);
+        if (loginResult.status === false) {
+          toast.error(loginResult.error_message);
+        } else if (email === '' || password === '') {
+          toast.error('Fields can not be empty');
+        } else if (!router?.query?.from) {
+          router?.push('/FoodMarket');
+        } else {
+          router?.push(router?.query?.from);
+          toast.success(loginResult.success_message);
+        }
+    })
   };
   // const onSubmit = (e) => {
   //   e.preventDefault();

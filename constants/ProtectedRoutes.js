@@ -1,8 +1,7 @@
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { appRoutes } from './appRoutes';
-
-const isBrowser = () => typeof window !== 'undefined';
+import { authToken } from './config';
 
 const ProtectedRoutes = ({ router, children }) => {
   const { isLogged_in } = useSelector((state) => state?.auth);
@@ -22,18 +21,16 @@ const ProtectedRoutes = ({ router, children }) => {
   ];
 
   const pathIsProtected = unProtectedRoutes.indexOf(router.pathname) === -1;
-
   useEffect(() => {
-    if (!isLogged_in && pathIsProtected && isBrowser()) {
-      router.push({
+     if (!localStorage.getItem(authToken)) {
+        router.push({
         pathname: appRoutes.LOGIN,
         query: {
           from: router.pathname,
         },
       });
-      // router.push()
-    }
-  }, [isLogged_in, pathIsProtected, router]);
+     }
+  }, [router]);
 
   return children;
 };

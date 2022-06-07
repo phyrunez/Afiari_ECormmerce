@@ -87,7 +87,17 @@ export const logInUser = (user, router, query) => async (dispatch) => {
       });
     }
   } catch (error) {
-    console.log(error);
+    const result = {
+      status: false,
+      error_message: 'Server error! Reload to continue.',
+      success_message: null
+    };
+    dispatch(setIsLoading(false));
+    localStorage.setItem('loginResult', JSON.stringify(result));
+    dispatch({
+      type: AuthTypes.LOGIN_FAILED,
+      payload: result,
+    });
   }
 };
 
@@ -174,6 +184,17 @@ export const signUpUser = (user, router) => async (dispatch) => {
     console.log(user);
   } catch (error) {
     console.log(error);
+    const result = {
+      status: false,
+      error_message: 'Server error! Reload to continue.',
+      success_message: null
+    };
+    dispatch(setIsLoading(false));
+    localStorage.setItem('signupMessage', JSON.stringify(result));
+    dispatch({
+      type: AuthTypes.SIGNUP_FAILED,
+      payload: result,
+    });
   }
 };
 
