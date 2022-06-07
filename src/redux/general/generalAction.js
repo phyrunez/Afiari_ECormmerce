@@ -192,3 +192,25 @@ export const getTestimony = () => async (dispatch) => {
     console.log(error);
   }
 };
+
+export const getSearchProduct =
+  (text, country, page_number) => async (dispatch) => {
+    try {
+      dispatch(setIsLoading(true));
+      const response = await httpRequest({
+        url: `${
+          API_ROUTES?.searchProduct?.route + text
+        }&service_country=${country}&page_number=${page_number}`,
+        method: API_ROUTES?.searchProduct.method,
+      });
+
+      if (response?.status === true) {
+        dispatch({
+          type: GeneralTypes?.SEARCH_PRODUCT,
+          payload: response.result,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };

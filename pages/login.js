@@ -45,8 +45,24 @@ const Login = () => {
   //destructure form data
 
   //handling form submittion
-  const onSubmit = (e) => {
-    e.preventDefault();
+
+  useEffect(() => {
+    const listener = event => {
+      if (event.code === "Enter" || event.code === "NumpadEnter") {
+        console.log("Enter key was pressed. Run your function.");
+        event.preventDefault();
+        // callMyFunction();
+        onSubmit()
+      }
+    };
+    document.addEventListener("keydown", listener);
+    return () => {
+      document.removeEventListener("keydown", listener);
+    };
+  }, []);
+
+
+  const onSubmit = () => {
     const userData = {
       username: email,
       password: password,
