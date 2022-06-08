@@ -35,6 +35,7 @@ const SignUp = () => {
     email,
     firstName,
     lastName,
+    agentCode,
     password,
     loading,
     signup_api_message,
@@ -67,10 +68,11 @@ const SignUp = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const userData = {
-      email: email,
-      firstName: firstName,
-      lastName: lastName,
-      password: password,
+      email,
+      firstName,
+      lastName,
+      password,
+      agentCode,
     };
     dispatch(signUpUser(userData, router))
       .then(() => {
@@ -108,7 +110,7 @@ const SignUp = () => {
         setQ(false);
       }
     });
-  }, [dispatch, emails, query]);
+  }, [dispatch, query]);
   return (
     <>
       <Box
@@ -228,6 +230,19 @@ const SignUp = () => {
               email already exist
             </h5>
           )}
+          <Input
+            type="text"
+            label="AgentCode"
+            htmlFor="agentCode"
+            placeholder="************"
+            name="agentCode"
+            id="agentCode"
+            onChange={(e) => {
+              dispatch(handleUserInput('agentCode', e.target.value));
+              setQuery(e.target.value);
+            }}
+            value={agentCode}
+          />
 
           <Input
             type={showpassword === false ? 'password' : 'text'}

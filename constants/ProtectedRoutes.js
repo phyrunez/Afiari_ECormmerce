@@ -22,7 +22,7 @@ const ProtectedRoutes = ({ router, children }) => {
 
   const pathIsProtected = unProtectedRoutes.indexOf(router.pathname) === -1;
   useEffect(() => {
-     if (!localStorage.getItem(authToken)) {
+     if (!localStorage.getItem(authToken) && pathIsProtected ) {
         router.push({
         pathname: appRoutes.LOGIN,
         query: {
