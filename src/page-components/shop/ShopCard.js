@@ -297,11 +297,15 @@ const ShopCard = ({ query, isLoading, value }) => {
                     // border: '1px solid green',
                   }}
                   onClick={() => {
-                    router.push(`/FoodMarket/${item.id}`);
+                    if(item[0] ) {
+                      router.push('/FoodMarket');
+                    }else {
+                      router.push(`/FoodMarket/${item.id}`)
+                    };
                   }}
                 >
                   {item?.images[0]?.image_url ? (
-                    <img
+                    <Image
                       key={item?.images[0]?.id}
                       // loader={() => item?.images[0]?.image_url}
                       src={item?.images[0]?.image_url}
@@ -310,7 +314,7 @@ const ShopCard = ({ query, isLoading, value }) => {
                       // unoptimized={true}
                     />
                   ) : (
-                    <img
+                    <Image
                       src="/fish.png"
                       alt="product"
                       className={styles.product_img}

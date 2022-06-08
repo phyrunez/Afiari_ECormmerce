@@ -35,6 +35,7 @@ const SignUp = () => {
     email,
     firstName,
     lastName,
+    agentCode,
     password,
     loading,
     signup_api_message,
@@ -64,32 +65,49 @@ const SignUp = () => {
   //     [e.target.name]: e.target.value,
   //   }));
   // };
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const userData = {
-      email: email,
-      firstName: firstName,
-      lastName: lastName,
-      password: password,
+
+  useEffect(() => {
+    const listener = event => {
+      if (event.code === "Enter" || event.code === "NumpadEnter") {
+        console.log("Enter key was pressed. Run your function.");
+        event.preventDefault();
+        // callMyFunction();
+        handleSubmit(event)
+      }
     };
-    dispatch(signUpUser(userData, router));
+    document.addEventListener("keydown", listener);
+    return () => {
+      document.removeEventListener("keydown", listener);
+    };
+  }, []);
 
-    setTimeout(() => {
-      let signupMessage;
-      if (typeof window !== 'undefined') {
-        signupMessage = JSON.parse(localStorage.getItem('signupMessage'));
-      }
 
-      console.log(signupMessage);
+  const handleSubmit = () => {
+    // e.preventDefault();
+    const userData = {
+      email,
+      firstName,
+      lastName,
+      password,
+      agentCode,
+    };
+    dispatch(signUpUser(userData, router))
+      .then(() => {
+        let signupMessage;
+        if (typeof window !== 'undefined') {
+          signupMessage = JSON.parse(localStorage.getItem('signupMessage'));
+        }
 
-      if (signupMessage.status === true) {
-        toast.success(signupMessage.success_message);
-        router.push('/FoodMarket');
-        localStorage.removeItem('signupMessage');
-      } else {
-        toast.error(signupMessage.error_message);
-      }
-    }, 3000);
+        console.log(signupMessage);
+
+        if (signupMessage.status === true) {
+          toast.success(signupMessage.success_message);
+          router.push('/FoodMarket');
+          localStorage.removeItem('signupMessage');
+        } else {
+          toast.error(signupMessage.error_message);
+        }
+      })
   };
 
   console.log(signup_api_message);
@@ -109,7 +127,7 @@ const SignUp = () => {
         setQ(false);
       }
     });
-  }, [dispatch]);
+  }, [dispatch, query]);
   return (
     <>
       <Box
@@ -132,7 +150,7 @@ const SignUp = () => {
             marginLeft: { md: '80px', xs: '0px' },
           }}
         >
-          <Link href="/">
+          <Link href="/" passHref>
             <Box
               sx={{
                 display: 'flex',
@@ -220,7 +238,7 @@ const SignUp = () => {
             value={email}
           />
 
-          {q && (
+          {!q && (
             <h5
               style={{
                 color: 'red',
@@ -229,6 +247,19 @@ const SignUp = () => {
               email already exist
             </h5>
           )}
+          <Input
+            type="text"
+            label="AgentCode"
+            htmlFor="agentCode"
+            placeholder="************"
+            name="agentCode"
+            id="agentCode"
+            onChange={(e) => {
+              dispatch(handleUserInput('agentCode', e.target.value));
+              setQuery(e.target.value);
+            }}
+            value={agentCode}
+          />
 
           <Input
             type={showpassword === false ? 'password' : 'text'}
@@ -313,7 +344,7 @@ const SignUp = () => {
             backgroundColor={
               btnDisabled === false ? '#0A503D' : 'rgba(119, 157, 138, 0.919)'
             }
-            onClick={handleSubmit}
+            onClick={(e) => handleSubmit(e)}
             disabled={btnDisabled}
             isLoading={loading}
             type="submit"

@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "node server.js",
-    "build": "next build",
+    "build": "set NODE_OPTIONS=--max-old-space-size=16192 && next build",
     "start": "NODE_ENV=production node server.js"
   },
   "dependencies": {
@@ -21,7 +21,7 @@
     "axios": "^0.26.1",
     "jquery": "^3.6.0",
     "mini-svg-data-uri": "^1.4.4",
-    "next": "^12.1.4",
+    "next": "^12.1.7-canary.31",
     "next-compose-plugins": "^2.2.1",
     "next-images": "^1.8.4",
     "next-pwa": "^5.5.2",
