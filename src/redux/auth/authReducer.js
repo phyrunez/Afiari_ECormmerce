@@ -5,6 +5,7 @@ const emptyUser = {
   firstName: '',
   lastName: '',
   password: '',
+  agentCode: '',
   dialCode: '',
   address: '',
 };
