@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { illustration, logo, VisibilityIcon } from '../assests/images/loginSvg';
 
 import { Typography, Box, Hidden, CircularProgress } from '@mui/material';
@@ -24,7 +24,7 @@ const Login = () => {
   const { country, api_error, email, isLoggged_in, password, loading } =
     useSelector((state) => state.auth);
   const dispatch = useDispatch();
-
+  const submitButton = useRef()
   const router = useRouter();
   const path = router.query;
   // console.log(path);
@@ -59,7 +59,11 @@ const Login = () => {
     return () => {
       document.removeEventListener("keydown", listener);
     };
-  }, []);
+  }, [email, password]);
+
+  useEffect(() => {
+    console.log(email, "=====", password)
+  }, [email,password]);
 
 
   const onSubmit = () => {
@@ -69,6 +73,8 @@ const Login = () => {
       username: email,
       password: password,
     };
+
+    console.log(submitButton, userData)
 
     // dispatch(login(userData));
     dispatch(logInUser(userData, router, path))
@@ -255,6 +261,7 @@ const Login = () => {
             backgroundColor="#0A503D"
             onClick={(e) => onSubmit(e)}
             isLoading={loading}
+            inputRef={submitButton}
           />
 
           <LoginBtnComponent
