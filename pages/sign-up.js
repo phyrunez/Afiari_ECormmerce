@@ -64,8 +64,25 @@ const SignUp = () => {
   //     [e.target.name]: e.target.value,
   //   }));
   // };
-  const handleSubmit = (e) => {
-    e.preventDefault();
+
+  useEffect(() => {
+    const listener = event => {
+      if (event.code === "Enter" || event.code === "NumpadEnter") {
+        console.log("Enter key was pressed. Run your function.");
+        event.preventDefault();
+        // callMyFunction();
+        handleSubmit(event)
+      }
+    };
+    document.addEventListener("keydown", listener);
+    return () => {
+      document.removeEventListener("keydown", listener);
+    };
+  }, []);
+
+
+  const handleSubmit = () => {
+    // e.preventDefault();
     const userData = {
       email: email,
       firstName: firstName,
@@ -131,7 +148,7 @@ const SignUp = () => {
             marginLeft: { md: '80px', xs: '0px' },
           }}
         >
-          <Link href="/">
+          <Link href="/" passHref>
             <Box
               sx={{
                 display: 'flex',
@@ -219,7 +236,7 @@ const SignUp = () => {
             value={email}
           />
 
-          {q && (
+          {!q && (
             <h5
               style={{
                 color: 'red',
@@ -312,7 +329,7 @@ const SignUp = () => {
             backgroundColor={
               btnDisabled === false ? '#0A503D' : 'rgba(119, 157, 138, 0.919)'
             }
-            onClick={handleSubmit}
+            onClick={(e) => handleSubmit(e)}
             disabled={btnDisabled}
             isLoading={loading}
             type="submit"

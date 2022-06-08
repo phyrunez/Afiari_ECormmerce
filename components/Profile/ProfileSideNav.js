@@ -56,7 +56,7 @@ function ProfileSideNav() {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        width: { xs: active ? '45%' : '25%', md: '45%' },
+        width: { xs: !active ? '35%' : '25%', md: '45%' },
         background: ' #FFFFFF',
         border: '1px solid rgba(0, 0, 0, 0.3)',
         // marginLeft: '3rem',
@@ -122,7 +122,7 @@ function ProfileSideNav() {
             color: '#000000',
           }}
         >
-          {first_name + last_name}
+          {first_name + ' ' + last_name}
         </Typography>
       </Box>
 

@@ -52,7 +52,7 @@ const Login = () => {
         console.log("Enter key was pressed. Run your function.");
         event.preventDefault();
         // callMyFunction();
-        onSubmit()
+        onSubmit(event)
       }
     };
     document.addEventListener("keydown", listener);
@@ -63,6 +63,8 @@ const Login = () => {
 
 
   const onSubmit = () => {
+    document.querySelectorAll('input').forEach((input) => {input.blur()
+    })
     const userData = {
       username: email,
       password: password,
@@ -78,6 +80,7 @@ const Login = () => {
         console.log(loginResult);
 
         if (loginResult.status === false) {
+          console.log(loginResult.error_message)
           toast.error(loginResult.error_message);
         } else if (email === '' || password === '') {
           toast.error('Fields can not be empty');
