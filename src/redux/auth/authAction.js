@@ -245,7 +245,7 @@ export const verifyPasswordReset = (email, token) => async (dispatch) => {
   try {
     dispatch(setIsLoading(true));
     const result = await httpRequest({
-      url: API_ROUTES?.verifyPasswordReset?.route + email + token,
+      url: API_ROUTES?.verifyPasswordReset?.route + '/' + email + '/' + token,
       method: API_ROUTES?.verifyPasswordReset?.method,
     });
     // console.log(result);
@@ -264,8 +264,11 @@ export const verifyPasswordReset = (email, token) => async (dispatch) => {
         payload: result?.error_message,
       });
     }
+
+    return result;
   } catch (error) {
     console.log(error);
+    throw new Error(error)
   }
 };
 
@@ -319,8 +322,6 @@ export const forgetPassword = (email) => async (dispatch) => {
         type: AuthTypes?.FORGET_PASSWORD,
         payload: result,
       });
-
-      // router.push('/password-reset-success');
     } else {
       dispatch({
         type: AuthTypes?.FORGET_PASSWORD,
@@ -329,6 +330,17 @@ export const forgetPassword = (email) => async (dispatch) => {
     }
   } catch (error) {
     console.log(error);
+    const result = {
+      status: false,
+      error_message: 'Server error! Reload to continue.',
+      success_message: null,
+    };
+    dispatch(setIsLoading(false));
+    localStorage.setItem('signupMessage', JSON.stringify(result));
+    dispatch({
+      type: AuthTypes.FORGET_PASSWORD,
+      payload: result,
+    });
   }
 };
 
