@@ -243,7 +243,7 @@ export const sendConfirmationMail = () => async (dispatch) => {
 
 export const verifyPasswordReset = (email, token) => async (dispatch) => {
   return httpRequest({
-    url: API_ROUTES?.verifyPasswordReset?.route + '/' + email + '/' + token,
+    url: `${API_ROUTES?.verifyPasswordReset.route}?email=${email}&token=${token}`,
     method: API_ROUTES?.verifyPasswordReset?.method,
     needToken: false
   });
