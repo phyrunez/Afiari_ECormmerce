@@ -16,7 +16,7 @@ export const httpRequest = async (params) => {
 
     if (typeof url !== 'string') throw new Error('Url must be a string');
 
-    const token = localStorage.getItem(authToken);
+    const token = localStorage ? localStorage.getItem(authToken) : '';
     const headers = getHeaders(token, needToken);
 
     const options = {
@@ -28,7 +28,6 @@ export const httpRequest = async (params) => {
     if (body) options.body = isFormData ? body : JSON.stringify(body);
 
     const res = await fetch(`${BASE_URL}/${url}`, options);
-
     if (res.status === 401) {
       const currentRefreshToken = localStorage.getItem(refreshToken);
       if (refreshToken) {
@@ -103,7 +102,9 @@ export const httpRequest = async (params) => {
 
       return result;
     }
-  } catch (error) {}
+  } catch (error) {
+    console.log("error", error)
+  }
 };
 
 const getHeaders = (token, needToken) => {
