@@ -1,14 +1,16 @@
 import { Box } from '@mui/system';
-import React from 'react';
+import React, { useState } from 'react';
 import Navbar from '../src/shared-components/navbar/Navbar';
 import Footer from '../src/page-components/Footer';
 import { useSelector } from 'react-redux';
-import AuthenticationPages from '../components/AuthenticationPages';
+import AuthenticationPages from '../components/AuthenticationPages-2';
 import Spinner from '../components/Spinner';
+import { logo } from '../assests/images/loginSvg';
 import BackButton from '../src/shared-components/BackButton';
 import { useRouter } from 'next/router';
 
 const MailConfirmation = () => {
+  const [showNav, setShowNav] = useState(false)
   const router = useRouter();
 
   const onClick = (e) => {
@@ -17,19 +19,38 @@ const MailConfirmation = () => {
   };
 
   return (
-   <div>
+   <Box
+    sx={{
+      position: 'relative',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      flexDirection: 'column',
+      width: '100%',
+      height: '100%',
+      // border: '1px solid red',
+    }}
+   >
       <Navbar />
       <Box
         sx={{
+          position: 'relative',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          padding: '4rem',
+          marginBottom: '20rem',
+          padding: '4.5rem',
         }}
       >
-        <BackButton />
-
+        <Box 
+          sx={{
+            display: { lg: 'flex', xs: 'none' },
+            left: '-17.5rem'
+          }}
+        >
+          <BackButton />
+        </Box>
         <AuthenticationPages
           heading="CHECK YOUR MAIL"
           subHeading="We sent a password reset link to your mail"
@@ -44,7 +65,7 @@ const MailConfirmation = () => {
         <Button text="OPEN EMAIL" color="#fff" backgroundColor="#0A503D" /> */}
       </Box>
       <Footer />
-   </div>
+   </Box>
   );
 };
 

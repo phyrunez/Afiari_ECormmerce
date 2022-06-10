@@ -25,7 +25,7 @@ const SignUp = () => {
   const [btnDisabled, setBtnDisabled] = useState(true);
   const [showpassword, setShowpassword] = useState(false);
   const [query, setQuery] = useState('');
-  const [q, setQ] = useState(false);
+  const [emailExist, setEmailExist] = useState(false);
 
   // const { email, firstName, lastName, password } = formData;
 
@@ -79,7 +79,11 @@ const SignUp = () => {
     return () => {
       document.removeEventListener("keydown", listener);
     };
-  }, []);
+  }, [ email,
+    firstName,
+    lastName,
+    agentCode,
+    password]);
 
 
   const handleSubmit = () => {
@@ -116,15 +120,15 @@ const SignUp = () => {
   //   return <Spinner />;
   // }
 
-  console.log(q);
+  console.log(emailExist);
   useEffect(() => {
     dispatch(getExistingMails());
 
     emails?.filter((email) => {
       if (email.toLowerCase().includes(query.toLowerCase())) {
-        setQ(true);
+        setEmailExist(true);
       } else {
-        setQ(false);
+        setEmailExist(false);
       }
     });
   }, [dispatch, query]);
@@ -238,7 +242,7 @@ const SignUp = () => {
             value={email}
           />
 
-          {!q && (
+          {emailExist && (
             <h5
               style={{
                 color: 'red',
@@ -251,7 +255,7 @@ const SignUp = () => {
             type="text"
             label="AgentCode"
             htmlFor="agentCode"
-            placeholder="************"
+            placeholder="enter your agent code (optional)"
             name="agentCode"
             id="agentCode"
             onChange={(e) => {

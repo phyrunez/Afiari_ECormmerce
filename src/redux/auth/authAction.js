@@ -248,7 +248,7 @@ export const verifyPasswordReset = (email, token) => async (dispatch) => {
       url: API_ROUTES?.verifyPasswordReset?.route + '/' + email + '/' + token,
       method: API_ROUTES?.verifyPasswordReset?.method,
     });
-    // console.log(result);
+    console.log(result);
 
     if (result.status === true) {
       dispatch(setIsLoading(false));

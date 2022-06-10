@@ -1,16 +1,23 @@
 import { Box } from '@mui/system';
-import React, { useReducer } from 'react';
+import React, { useReducer, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import AuthenticationPages from '../components/AuthenticationPages';
+import AuthenticationPages from '../components/AuthenticationPages-2';
 import Spinner from '../components/Spinner';
-import { handleUserInput, resetPassword } from '../src/redux/auth/authAction';
+import { handleUserInput, resetPassword, verifyPasswordReset } from '../src/redux/auth/authAction';
 import { ButtonBig as Button } from '../src/shared-components/Button';
 import { Input } from '../src/shared-components/InputComponent';
+import Image from 'next/image';
+import Navbar from '../src/shared-components/navbar/Navbar';
+import Footer from '../src/page-components/Footer';
+import reset_password_illustration from '../public/reset_password_illustration.svg';
+import { VisibilityOff, Visibility } from '@mui/icons-material';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
 import BackButton from '../src/shared-components/BackButton';
 
 const ResetPassword = ({ isLinkVerified, err_message }) => {
+  const [showPassword, setShowPassword] = useState(false)
+
   const router = useRouter();
   const dispatch = useDispatch();
   const email = router.query.email;
@@ -52,47 +59,123 @@ const ResetPassword = ({ isLinkVerified, err_message }) => {
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          padding: '4rem',
+          width: '100%',
+          maxHeight: '100%',
         }}
       >
-        <BackButton />
-        <AuthenticationPages
-          heading="RESET PASSWORD"
-          subHeading="Set a new password for your profile on Afiari"
-          paddinglg="10px"
-          paddingxs="10px"
-        />
-        <Input
-          type="password"
-          label="password"
-          htmlFor="password"
-          placeholder="************"
-          onChange={(e) => {
-            dispatch(handleUserInput('password', e.target.value));
+        <Navbar />
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '5rem',
+            width: '100%',
+            marginBottom: '15rem',
+            marginTop: '-5rem'
           }}
-          name="password"
-          id="password"
-          value={password}
-        />
-        <Input
-          type="password"
-          label="password"
-          htmlFor="repeat_password"
-          placeholder="************"
-          onChange={(e) => {
-            dispatch(handleUserInput('repeat_password', e.target.value));
-          }}
-          name="repeat_password"
-          id="repeat_password"
-          value={repeat_password}
-        />
-        <Button
-          text="RESET PASSWORD"
-          color="#fff"
-          backgroundColor="#0A503D"
-          onClick={onSubmit}
-          isLoading={loading}
-        />
+        >
+          <Box
+            sx={{
+              position: 'relative',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '3.7rem',
+            }}
+          >
+            <Box sx={{ marginTop: '3rem', paddingRight: '-200rem !important'}}>
+              <BackButton />
+            </Box>
+            <AuthenticationPages
+              heading="RESET PASSWORD"
+              subHeading="Set a new password for your profile on Afiari"
+              paddinglg="10px"
+              paddingxs="10px"
+            />
+            <Input
+              type={showPassword === false ? 'password' : 'text'}
+              label="New Password"
+              htmlFor="password"
+              placeholder="************"
+              icon={
+                showPassword === true ? (
+                  <VisibilityOff
+                    onClick={() => setShowPassword(!showPassword)}
+                    sx={{
+                      height: '20px',
+                    }}
+                  />
+                ) : (
+                  <Visibility
+                    onClick={() => setShowPassword(!showPassword)}
+                    sx={{
+                      height: '20px',
+                    }}
+                  />
+                )
+              }
+              onChange={(e) => {
+                dispatch(handleUserInput('password', e.target.value));
+              }}
+              name="password"
+              id="password"
+              value={password}
+            />
+            <Input
+              type={showPassword === false ? 'password' : 'text'}
+              label="Confirm Password"
+              htmlFor="repeat_password"
+              placeholder="************"
+              icon={
+                showPassword === true ? (
+                  <VisibilityOff
+                    onClick={() => setShowPassword(!showPassword)}
+                    sx={{
+                      height: '20px',
+                    }}
+                  />
+                ) : (
+                  <Visibility
+                    onClick={() => setShowPassword(!showPassword)}
+                    sx={{
+                      height: '20px',
+                    }}
+                  />
+                )
+              }
+              onChange={(e) => {
+                dispatch(handleUserInput('repeat_password', e.target.value));
+              }}
+              name="repeat_password"
+              id="repeat_password"
+              value={repeat_password}
+            />
+            <Button
+              text="RESET PASSWORD"
+              color="#fff"
+              backgroundColor="#0A503D"
+              onClick={onSubmit}
+              isLoading={loading}
+            />
+          </Box>
+          <Box
+            sx={{
+              display: { lg: 'flex', xs: 'none' },
+              marginLeft: '7rem',
+              marginTop: '2rem'
+            }}
+          >
+            <Image
+              src={reset_password_illustration}
+              alt="forgotPassword illustration"
+              width={419}
+              height={317}
+            />
+          </Box>
+        </Box>
+        <Footer />
       </Box>
     );
   } else {
@@ -108,9 +191,10 @@ export async function getServerSideProps(context) {
   }
   try {
     const result = await verifyPasswordReset(email, token)
+    console.log(result)
     if (result.status === true) {
       return {
-        props: { isLinkVerified: true, err_message: 'Invalid email' }
+        props: { isLinkVerified: true }
       }
     } else {
       return {
@@ -118,6 +202,7 @@ export async function getServerSideProps(context) {
       };
     }
   } catch (err) {
+    console.log(err)
     return {
       props: { isLinkVerified: false, err_message: 'Server Error! Reload page to continue.' },
     };
