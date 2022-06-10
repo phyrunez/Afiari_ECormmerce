@@ -3,7 +3,7 @@ import React, { useReducer } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import AuthenticationPages from '../components/AuthenticationPages';
 import Spinner from '../components/Spinner';
-import { handleUserInput, resetPassword } from '../src/redux/auth/authAction';
+import { handleUserInput, resetPassword, verifyPasswordReset } from '../src/redux/auth/authAction';
 import { ButtonBig as Button } from '../src/shared-components/Button';
 import { Input } from '../src/shared-components/InputComponent';
 import { useRouter } from 'next/router';
@@ -103,18 +103,20 @@ const ResetPassword = ({ isLinkVerified, err_message }) => {
 export async function getServerSideProps(context) {
   const email = context.query.email;
   const token = context.query.token;
+  console.log(email, token)
   if (!email || !token) return {
-    props: { isLinkVerified: true, err_message: 'Invalid email' },
+    props: { isLinkVerified: false, err_message: 'Invalid token' },
   }
   try {
-    const result = await verifyPasswordReset(email, token)
+    const result = verifyPasswordReset(email, token)()
+    console.log(result)
     if (result.status === true) {
       return {
-        props: { isLinkVerified: true, err_message: 'Invalid email' }
+        props: { isLinkVerified: true }
       }
     } else {
       return {
-        props: { isLinkVerified: false, err_message: 'Invalid email' },
+        props: { isLinkVerified: false, err_message: 'Invalid token' },
       };
     }
   } catch (err) {
