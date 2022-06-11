@@ -16,7 +16,7 @@ export const httpRequest = async (params) => {
 
     if (typeof url !== 'string') throw new Error('Url must be a string');
 
-    const token = localStorage.getItem(authToken);
+    const token = typeof window !== 'undefined' ? localStorage.getItem(authToken) : '';
     const headers = getHeaders(token, needToken);
 
     const options = {
@@ -98,12 +98,12 @@ export const httpRequest = async (params) => {
     // console.log(res);
     if (res.status === 200) {
       const response = await res.text();
-
       result = JSON.parse(response);
-
-      return result;
+      return result
     }
-  } catch (error) {}
+  } catch (error) {
+    console.log("error", error)
+  }
 };
 
 const getHeaders = (token, needToken) => {

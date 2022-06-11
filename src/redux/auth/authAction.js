@@ -242,6 +242,7 @@ export const sendConfirmationMail = () => async (dispatch) => {
 };
 
 export const verifyPasswordReset = (email, token) => async (dispatch) => {
+<<<<<<< HEAD
   try {
     dispatch(setIsLoading(true));
     const result = await httpRequest({
@@ -270,6 +271,13 @@ export const verifyPasswordReset = (email, token) => async (dispatch) => {
     console.log(error);
     throw new Error(error)
   }
+=======
+  return httpRequest({
+    url: `${API_ROUTES?.verifyPasswordReset.route}?email=${email}&token=${token}`,
+    method: API_ROUTES?.verifyPasswordReset?.method,
+    needToken: false
+  });
+>>>>>>> fbdb745c173547dd83e92f14bf5421cc6e171e5b
 };
 
 export const resetPassword = (userData) => async (dispatch) => {
