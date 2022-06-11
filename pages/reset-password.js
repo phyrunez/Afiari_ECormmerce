@@ -191,11 +191,7 @@ export async function getServerSideProps(context) {
     props: { isLinkVerified: false, err_message: 'Invalid token' },
   }
   try {
-<<<<<<< HEAD
-    const result = await verifyPasswordReset(email, token)
-=======
     const result = verifyPasswordReset(email, token)()
->>>>>>> fbdb745c173547dd83e92f14bf5421cc6e171e5b
     console.log(result)
     if (result.status === true) {
       return {
