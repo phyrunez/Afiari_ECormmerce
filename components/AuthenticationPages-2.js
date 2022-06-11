@@ -31,7 +31,7 @@ const AuthenticationPages = ({
         }}
       >
         <Box
-          lassName={styles.form__wrapper}
+          className={styles.form__wrapper}
           sx={{
             display: 'flex',
             flexDirection: 'column',
@@ -39,21 +39,7 @@ const AuthenticationPages = ({
             alignItems: 'center',
             width: '100%',
           }}
-        >
-          {/* <Link href="/">
-            <a>
-              <Box
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  width: '100%',
-                }}
-              >
-                {logo}
-              </Box>
-            </a>
-          </Link> */}
+        >  
           <Typography
             variant="h4"
             sx={{

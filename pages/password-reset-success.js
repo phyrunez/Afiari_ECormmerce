@@ -30,12 +30,13 @@ const MailConfirmation = () => {
         height: '100%'
       }}
     >
-      <Navbar />
+      <Box sx={{ display: {lg: 'flex', xs: 'none'}, width: '100%'}}><Navbar /></Box>
       {/* <AuthenticationPages /> */}
       <Box
         sx={{
           display: 'flex',
           alignItems: 'center',
+          // flexDirection: {xs: 'column'},
           justifyContent: 'center',
           padding: '5rem',
           width: '100%',
@@ -85,7 +86,7 @@ const MailConfirmation = () => {
           />
         </Box>
       </Box>
-      <Footer />
+      <Box sx={{ display: {lg: 'flex', xs: 'none'}, width: '100%'}}><Footer /></Box>
     </Box>
   );
 };

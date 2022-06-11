@@ -23,6 +23,7 @@ function BackButton() {
         borderRadius: '100%',
         paddingLeft: '.3rem',
       }}
+      xs={{ left: '10px'}}
       onClick={() => {
         router.back();
       }}

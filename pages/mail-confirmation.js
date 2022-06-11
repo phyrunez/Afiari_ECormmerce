@@ -2,6 +2,7 @@ import { Box } from '@mui/system';
 import React, { useState } from 'react';
 import Navbar from '../src/shared-components/navbar/Navbar';
 import Footer from '../src/page-components/Footer';
+import Link from 'next/link'
 import { useSelector } from 'react-redux';
 import AuthenticationPages from '../components/AuthenticationPages-2';
 import Spinner from '../components/Spinner';
@@ -31,7 +32,7 @@ const MailConfirmation = () => {
       // border: '1px solid red',
     }}
    >
-      <Navbar />
+      <Box sx={{ display: {lg: 'flex', xs: 'none'}, width: '100%'}}><Navbar /></Box>
       <Box
         sx={{
           position: 'relative',
@@ -45,26 +46,53 @@ const MailConfirmation = () => {
       >
         <Box 
           sx={{
+            marginTop: '3rem', 
+            paddingRight: '-200rem !important',
             display: { lg: 'flex', xs: 'none' },
-            left: '-17.5rem'
+            left: '110.5rem'
           }}
         >
           <BackButton />
         </Box>
-        <AuthenticationPages
+        {showNav && <AuthenticationPages
           heading="CHECK YOUR MAIL"
           subHeading="We sent a password reset link to your mail"
           paddinglg="10px"
           paddingxs="10px"
           question="Didn’t get a mail?"
           questionValue=" Resend reset link"
-          btnText="OPEN EMAIL"
+          // btnText="OPEN EMAIL"
           onClick={onClick}
-        />
+        />}
+        {!showNav && <><Link href="/">
+            <a>
+              <Box
+                sx={{
+                  display: {lg: 'none', xs: 'flex'},
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  width: '100%',
+                }}
+              >
+                {logo}
+              </Box>
+            </a>
+          </Link>
+          <AuthenticationPages
+           heading="CHECK YOUR MAIL"
+           subHeading="We sent a password reset link to your mail"
+           paddinglg="10px"
+           paddingxs="10px"
+           question="Didn’t get a mail?"
+           questionValue=" Resend reset link"
+           btnText="OPEN EMAIL"
+           onClick={onClick}
+         /></>
+        }
         {/* 
         <Button text="OPEN EMAIL" color="#fff" backgroundColor="#0A503D" /> */}
       </Box>
-      <Footer />
+      <Box sx={{ display: {lg: 'flex', xs: 'none'}, width: '100%'}}><Footer /></Box>
    </Box>
   );
 };
