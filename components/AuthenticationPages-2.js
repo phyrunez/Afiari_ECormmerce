@@ -31,7 +31,7 @@ const AuthenticationPages = ({
         }}
       >
         <Box
-          lassName={styles.form__wrapper}
+          className={styles.form__wrapper}
           sx={{
             display: 'flex',
             flexDirection: 'column',
@@ -39,34 +39,20 @@ const AuthenticationPages = ({
             alignItems: 'center',
             width: '100%',
           }}
-        >
-          {/* <Link href="/">
-            <a>
-              <Box
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  width: '100%',
-                }}
-              >
-                {logo}
-              </Box>
-            </a>
-          </Link> */}
+        >  
           <Typography
             variant="h4"
             sx={{
               width: '279px',
               height: '53px',
               fontStyle: 'normal',
-              fontWeight: '400',
+              fontWeight: 'bold',
               fontSize: '20px',
               lineHeight: '53px',
               textAlign: 'center',
               letterSpacing: '0.04em',
               color: '#3A3A33',
-              marginTop: '20px',
+              marginTop: '40px',
               marginBottom: '14px',
             }}
           >
@@ -80,7 +66,8 @@ const AuthenticationPages = ({
               fontSize: '16px',
               lineHeight: '22px',
               textAlign: 'center',
-              letterSpacing: ' 0.04em',
+              width: '500px',
+              letterSpacing: ' 0.01em',
               color: '#3A3A33',
               marginBottom: '32px',
             }}
@@ -130,6 +117,7 @@ const AuthenticationPages = ({
               component="span"
               sx={{
                 color: ' #0A503D',
+                cursor: 'pointer'
               }}
             >
               {questionValue}

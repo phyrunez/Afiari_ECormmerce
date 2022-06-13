@@ -18,6 +18,9 @@ const ProtectedRoutes = ({ router, children }) => {
     appRoutes.PRIVACYPOLICY,
     appRoutes.TERMSANDCONDITION,
     appRoutes.PAYSTACK,
+    appRoutes.FORGET_PASSWORD,
+    appRoutes.MAIL_CONFIRMATION,
+    appRoutes.PASSWORD_RESET_SUCCESS
   ];
 
   const pathIsProtected = unProtectedRoutes.indexOf(router.pathname) === -1;

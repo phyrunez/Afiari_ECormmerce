@@ -242,31 +242,41 @@ export const sendConfirmationMail = () => async (dispatch) => {
 };
 
 export const verifyPasswordReset = (email, token) => async (dispatch) => {
-  try {
-    dispatch(setIsLoading(true));
-    const result = await httpRequest({
-      url: API_ROUTES?.verifyPasswordReset?.route + email + token,
-      method: API_ROUTES?.verifyPasswordReset?.method,
-    });
-    // console.log(result);
+// <<<<<<< HEAD
+//   try {
+//     dispatch(setIsLoading(true));
+//     const result = await httpRequest({
+//       url: API_ROUTES?.verifyPasswordReset?.route + '/' + email + '/' + token,
+//       method: API_ROUTES?.verifyPasswordReset?.method,
+//     });
+//     console.log(result);
 
-    if (result.status === true) {
-      dispatch(setIsLoading(false));
-      dispatch({
-        type: AuthTypes?.EMAIL_CONFIRM,
-        payload: result?.success_message,
-      });
+//     if (result.status === true) {
+//       dispatch(setIsLoading(false));
+//       dispatch({
+//         type: AuthTypes?.EMAIL_CONFIRM,
+//         payload: result?.success_message,
+//       });
 
-      // router.push('/password-reset-success');
-    } else {
-      dispatch({
-        type: AuthTypes?.EMAIL_CONFIRM,
-        payload: result?.error_message,
-      });
-    }
-  } catch (error) {
-    console.log(error);
-  }
+//       // router.push('/password-reset-success');
+//     } else {
+//       dispatch({
+//         type: AuthTypes?.EMAIL_CONFIRM,
+//         payload: result?.error_message,
+//       });
+//     }
+
+//     return result;
+//   } catch (error) {
+//     console.log(error);
+//     throw new Error(error)
+//   }
+// =======
+  return httpRequest({
+    url: `${API_ROUTES?.verifyPasswordReset.route}?email=${email}&token=${token}`,
+    method: API_ROUTES?.verifyPasswordReset?.method,
+    needToken: false
+  });
 };
 
 export const resetPassword = (userData) => async (dispatch) => {
@@ -319,8 +329,6 @@ export const forgetPassword = (email) => async (dispatch) => {
         type: AuthTypes?.FORGET_PASSWORD,
         payload: result,
       });
-
-      // router.push('/password-reset-success');
     } else {
       dispatch({
         type: AuthTypes?.FORGET_PASSWORD,
@@ -329,6 +337,17 @@ export const forgetPassword = (email) => async (dispatch) => {
     }
   } catch (error) {
     console.log(error);
+    const result = {
+      status: false,
+      error_message: 'Server error! Reload to continue.',
+      success_message: null,
+    };
+    dispatch(setIsLoading(false));
+    localStorage.setItem('signupMessage', JSON.stringify(result));
+    dispatch({
+      type: AuthTypes.FORGET_PASSWORD,
+      payload: result,
+    });
   }
 };
 
