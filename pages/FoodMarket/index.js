@@ -28,6 +28,7 @@ import {
   getAllProducts,
   getAllCountries,
   getSearchProduct,
+  setSearched,
 } from '../../src/redux/general/generalAction';
 import Spinner from '../../components/Spinner';
 import { handleDelete, setIsLoading } from '../../src/redux/cart/cartAction';
@@ -174,6 +175,13 @@ function Shop() {
     setSearchFieldLoaded(false)
   };
 
+  // SEARCH
+  const search = () => {
+    setIsLoading(true);
+    dispatch(getSearchProduct(query, country, page_index))
+    .then(() => setIsLoading(false))
+  }
+
   useEffect(() => {
     console.log("i am called")
     // if (window.scrollTo(0, 0)) {
@@ -189,8 +197,13 @@ function Shop() {
   }, [dispatch]);
 
   useEffect(() => {
+    console.log("i am working now")
     if (val !== '') {
       setSearchFieldLoaded(true);
+      search();
+    } else {
+      setSearchFieldLoaded(false);
+      dispatch(setSearched(false))
     }
   }, [val]);
 
@@ -384,14 +397,7 @@ function Shop() {
               backgroundColor=" #0A503D"
               text="SEARCH"
               color="#fff"
-              onClick={() => {
-                setIsLoading(true);
-                setTimeout(() => {
-                  dispatch(getSearchProduct(query, country, page_index));
-                  setIsLoading(false);
-                  // setVal('');
-                }, 1000);
-              }}
+              onClick={() => search()}
             />
           </Box>
         </Box>
@@ -482,7 +488,7 @@ function Shop() {
             }}
          dddddd ></Divider>
 
-          <ShopCard query={query} isLoading={isLoading} value={val} />
+          <ShopCard isLoading={isLoading} />
 
           {/* //////////////////////////////////////////////// the next and prev arrows //////////////////////////////////////////////// */}
 
