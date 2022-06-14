@@ -25,7 +25,7 @@ const SignUp = () => {
   const [btnDisabled, setBtnDisabled] = useState(true);
   const [showpassword, setShowpassword] = useState(false);
   const [query, setQuery] = useState('');
-  const [q, setQ] = useState(false);
+  const [emailExist, setEmailExist] = useState(false);
 
   // const { email, firstName, lastName, password } = formData;
 
@@ -65,8 +65,29 @@ const SignUp = () => {
   //     [e.target.name]: e.target.value,
   //   }));
   // };
-  const handleSubmit = (e) => {
-    e.preventDefault();
+
+  useEffect(() => {
+    const listener = event => {
+      if (event.code === "Enter" || event.code === "NumpadEnter") {
+        console.log("Enter key was pressed. Run your function.");
+        event.preventDefault();
+        // callMyFunction();
+        handleSubmit(event)
+      }
+    };
+    document.addEventListener("keydown", listener);
+    return () => {
+      document.removeEventListener("keydown", listener);
+    };
+  }, [ email,
+    firstName,
+    lastName,
+    agentCode,
+    password]);
+
+
+  const handleSubmit = () => {
+    // e.preventDefault();
     const userData = {
       email,
       firstName,
@@ -95,6 +116,18 @@ const SignUp = () => {
 
   console.log(signup_api_message);
 
+  console.log(emailExist);
+  useEffect(() => {
+    dispatch(getExistingMails());
+
+    emails?.filter((email) => {
+      if (email.toLowerCase().includes(query.toLowerCase())) {
+        setEmailExist(true);
+      } else {
+        setEmailExist(false);
+      }
+    });
+  }, [dispatch, query]);
   return (
     <>
       <Box
@@ -117,7 +150,7 @@ const SignUp = () => {
             marginLeft: { md: '80px', xs: '0px' },
           }}
         >
-          <Link href="/">
+          <Link href="/" passHref>
             <Box
               sx={{
                 display: 'flex',
@@ -208,7 +241,7 @@ const SignUp = () => {
             type="text"
             label="AgentCode"
             htmlFor="agentCode"
-            placeholder="************"
+            placeholder="enter your agent code (optional)"
             name="agentCode"
             id="agentCode"
             onChange={(e) => {
@@ -301,7 +334,7 @@ const SignUp = () => {
             backgroundColor={
               btnDisabled === false ? '#0A503D' : 'rgba(119, 157, 138, 0.919)'
             }
-            onClick={handleSubmit}
+            onClick={(e) => handleSubmit(e)}
             disabled={btnDisabled}
             isLoading={loading}
             type="submit"

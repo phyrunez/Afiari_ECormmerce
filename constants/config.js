@@ -40,7 +40,6 @@ const API_ROUTES = {
     route: 'Account/reset-password',
     method: 'POST',
   },
-
   refreshToken: {
     route: 'Auth/refresh/access-token',
     method: 'POST',

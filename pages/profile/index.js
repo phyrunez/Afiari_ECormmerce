@@ -47,7 +47,7 @@ function Profile() {
         {selectedProfileMenu === 'Shopping History' ? (
           <ShoppingHistory />
         ) : selectedProfileMenu === 'Notification' ? (
-          <ShoppingHistory />
+          <ProfileOpenNotification />
         ) : // <Notification />
         selectedProfileMenu === 'Profile Settings' ? (
           <ProfileSettings />
