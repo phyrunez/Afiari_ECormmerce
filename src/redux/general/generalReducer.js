@@ -15,6 +15,7 @@ const initialState = {
   comment: '',
   selectedProfileMenu: '',
   searched: [],
+  hasSearched: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -59,7 +60,9 @@ const reducer = (state = initialState, action) => {
     case GeneralTypes.SEARCH_PRODUCT:
       return {
         ...state,
-        searched: action.payload,
+        searched: action.payload.product,
+        meta_data: action.payload.data,
+        hasSearched: true,
       };
     case GeneralTypes.GET_SELECTED_PROFILE_MENU:
       return {
@@ -81,6 +84,12 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         [action.payload.name]: action.payload.value,
+      };
+
+    case GeneralTypes.SEARCHED:
+      return {
+        ...state,
+        hasSearched: action.payload,
       };
 
     default:

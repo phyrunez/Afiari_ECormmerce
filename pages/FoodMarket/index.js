@@ -6,7 +6,7 @@ import {
   Paper,
   InputBase,
 } from '@mui/material';
-import { Search } from '@mui/icons-material';
+import { Search, Clear } from '@mui/icons-material';
 import { useEffect, useState } from 'react';
 import Select from 'react-select';
 import Footer from '../../src/page-components/Footer';
@@ -52,6 +52,7 @@ function Shop() {
   const [val, setVal] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [pageload, setPageload] = useState(false);
+  const [searchFieldLoaded, setSearchFieldLoaded] = useState(false);
 
   const { page_size, number_of_pages, page_index, total_count } = metaData;
 
@@ -167,7 +168,14 @@ function Shop() {
     dispatch(setSelectedCategory(selectedOption.value));
   };
 
+  // CLEAR SEARCH FIELD ON BUTTON CLICKED
+  const clearSearchField = () => {
+    setVal('')
+    setSearchFieldLoaded(false)
+  };
+
   useEffect(() => {
+    console.log("i am called")
     // if (window.scrollTo(0, 0)) {
     //   setPageload(true);
     // }
@@ -179,6 +187,12 @@ function Shop() {
     dispatch(getSearchProduct('', country, page_index));
     // dispatch(getProductCategory(item));
   }, [dispatch]);
+
+  useEffect(() => {
+    if (val !== '') {
+      setSearchFieldLoaded(true);
+    }
+  }, [val]);
 
   return (
     <Box
@@ -349,8 +363,14 @@ function Shop() {
                 }}
                 value={val}
               />
-              <IconButton type="submit" sx={{ p: '10px' }} aria-label="search">
-                <Search />
+              <IconButton
+                type="button"
+                sx={{ p: '10px' }}
+                aria-label="search"
+                onClick={() => clearSearchField()}>
+                {
+                  searchFieldLoaded ? <Clear /> : <Search />
+                }
               </IconButton>
             </Paper>
 
@@ -460,7 +480,7 @@ function Shop() {
               // margin: { md: '16px 0px 0px 29px', xs: '1rem 0' },
               border: '1px solid #E6E6E',
             }}
-          ></Divider>
+         dddddd ></Divider>
 
           <ShopCard query={query} isLoading={isLoading} value={val} />
 

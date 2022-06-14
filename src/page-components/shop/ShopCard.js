@@ -1,8 +1,6 @@
 import { Box, Button, CircularProgress, Typography } from '@mui/material';
 import Image from 'next/image';
 import React from 'react';
-import { ButtonSmall } from '../../shared-components/Button';
-
 import styles from '../../../styles/Shop.module.css';
 import leftArrow from '../../../public/leftArrow.svg';
 import rightArrow from '../../../public/rightArrow.svg';
@@ -25,13 +23,14 @@ import { useCart } from 'react-use-cart';
 import { formatCurrency, getNumber } from '../../utils/utils';
 import { toast } from 'react-toastify';
 
-const ShopCard = ({ query, isLoading, value }) => {
+const ShopCard = ({ isLoading }) => {
   const {
     product,
     productCategory,
     selectedCategory,
     meta_data: metaData,
     searched,
+    hasSearched
   } = useSelector((state) => state?.general);
   console.log('searched', searched);
 
@@ -121,14 +120,14 @@ const ShopCard = ({ query, isLoading, value }) => {
     pages: metaData?.number_of_pages,
   });
 
-  useEffect(() => {
-    setLoading(true);
-    setTimeout(() => {
-      const countryId = JSON.parse(localStorage.getItem('selectedCountry'));
-      dispatch(getAllProducts(country ? country : countryId?.id, pageNumber));
-      setLoading(false);
-    }, 2000);
-  }, [dispatch, pageNumber, country]);
+  // useEffect(() => {
+  //   setLoading(true);
+  //   setTimeout(() => {
+  //     const countryId = JSON.parse(localStorage.getItem('selectedCountry'));
+  //     dispatch(getAllProducts(country ? country : countryId?.id, pageNumber));
+  //     setLoading(false);
+  //   }, 2000);
+  // }, [dispatch, pageNumber, country]);
 
   // const handleNext = () => {
   //   if (items.currentPage <= items.pages) {
@@ -212,215 +211,219 @@ const ShopCard = ({ query, isLoading, value }) => {
           width: { sx: '100%', sm: '50%', lg: '100%' },
         }}
       >
-        {products().length === 0 ? (
-          <Box
-            sx={{
-              display: 'flex',
-              // flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              // marginTop: '29px',
-              width: '100%',
-              padding: '29px 16px',
-            }}
-          >
-            <Typography variant="p">items not available</Typography>
-          </Box>
-        ) : loading === true || isLoading === true ? (
-          <Box
-            sx={{
-              display: 'flex',
-              // flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              // marginTop: '29px',
-              width: '100%',
-              // height: '100%',
-              padding: '29px 16px',
-            }}
-          >
-            <CircularProgress
-              sx={{
-                color: '#000',
-              }}
-              size={60}
-            />
-          </Box>
-        ) : query && searchedItems().length === 0 ? (
-          <Box
-            sx={{
-              display: 'flex',
-              // flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              // marginTop: '29px',
-              width: '100%',
-              padding: '29px 16px',
-            }}
-          >
-            <Typography variant="p"> No result for the search item </Typography>
-          </Box>
-        ) : query && value !== '' ? (
-          searchedItems().map((item) => (
+        {
+          isLoading ? (
             <Box
-              key={item.id}
               sx={{
                 display: 'flex',
-                flexDirection: 'column',
+                // flexDirection: 'column',
                 alignItems: 'center',
-                justifyContent: 'space-around',
+                justifyContent: 'center',
+                // marginTop: '29px',
+                width: '100%',
+                // height: '100%',
+                padding: '29px 16px',
+              }}
+            >
+              <CircularProgress
+                sx={{
+                  color: '#000',
+                }}
+                size={60}
+              />
+            </Box>
+          ) : hasSearched && searched.length === 0 ? (
+            <Box
+              sx={{
+                display: 'flex',
+                // flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
                 // marginTop: '29px',
                 width: '100%',
                 padding: '29px 16px',
-                cursor: 'pointer',
               }}
             >
-              <Box
-                component="div"
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'space-evenly',
-                  width: { md: '80%', xs: '100%' },
-                  height: { md: '250px', xs: '150.06px' },
-                  background: '#FFFFFF',
-                  boxShadow: '0px 4.16667px 8.33333px rgba(0, 0, 0, 0.08)',
-                  borderRadius: ' 5.20833px',
-                  padding: '1rem 1rem',
-                  // border: '1px solid red',
-                }}
-              >
-                {/* <Link href={`/shop/${item.id}`}> */}
+              <Typography variant="p"> No result for the search item </Typography>
+            </Box>
+          ) : hasSearched && searched.length !== 0 ? (
+            searchedItems().map((item) => {
+              return (
                 <Box
-                  sx={{
-                    width: { xs: '100px', md: '200px' },
-                    height: '100%',
-                    // border: '1px solid green',
-                  }}
-                  onClick={() => {
-                    if(item[0] ) {
-                      router.push('/FoodMarket');
-                    }else {
-                      router.push(`/FoodMarket/${item.id}`)
-                    };
-                  }}
-                >
-                  {item?.images[0]?.image_url ? (
-                    <Image
-                      key={item?.images[0]?.id}
-                      // loader={() => item?.images[0]?.image_url}
-                      src={item?.images[0]?.image_url}
-                      alt="product"
-                      className={styles.product_img}
-                      // unoptimized={true}
-                    />
-                  ) : (
-                    <Image
-                      src="/fish.png"
-                      alt="product"
-                      className={styles.product_img}
-                    />
-                  )}
-                </Box>
-                {/* </Link> */}
-
-                <Box
-                  component="div"
+                  key={item.id}
                   sx={{
                     display: 'flex',
                     flexDirection: 'column',
-                    alignItems: 'flex-start',
-                    justifyContent: 'center',
-                    width: '70%',
-                    // marginLeft: '1rem',
-                    padding: '0 1rem',
-                    // border: '1px solid red',
+                    alignItems: 'center',
+                    justifyContent: 'space-around',
+                    // marginTop: '29px',
+                    width: '100%',
+                    padding: '29px 16px',
+                    cursor: 'pointer',
                   }}
                 >
-                  {/* <Link href={`/FoodMarket/${item.id}`}> */}
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'flex-start',
-                      // border: '1px solid red',
-                    }}
-                    onClick={() => {
-                      router.push(`/FoodMarket/${item.id}`);
-                    }}
-                  >
-                    <Typography
-                      variant="p"
-                      className={styles.cart_product_details}
-                    >
-                      {item.name}
-                    </Typography>
-                    <Typography
-                      variant="p"
-                      className={styles.cart_product_details}
-                      sx={{
-                        fontWeight: '400',
-                        marginBottom: { xs: '10px', md: '30px' },
-                      }}
-                    >
-                      {item.description}
-                    </Typography>
-                    <Typography
-                      variant="p"
-                      className={styles.cart_product_details}
-                      sx={{
-                        marginBottom: { xs: '0px', md: '13px' },
-                      }}
-                    >
-                      NGN {formatCurrency(item?.price)}
-                    </Typography>
-                  </Box>
-                  {/* </Link> */}
-
                   <Box
                     component="div"
                     sx={{
                       display: 'flex',
-                      width: '100%',
-                      marginTop: '16px',
+                      justifyContent: 'space-evenly',
+                      width: { md: '80%', xs: '100%' },
+                      height: { md: '250px', xs: '150.06px' },
+                      background: '#FFFFFF',
+                      boxShadow: '0px 4.16667px 8.33333px rgba(0, 0, 0, 0.08)',
+                      borderRadius: ' 5.20833px',
+                      padding: '1rem 1rem',
+                      // border: '1px solid red',
                     }}
                   >
-                    <Button
+                    {/* <Link href={`/shop/${item.id}`}> */}
+                    <Box
                       sx={{
-                        width: { xs: '75px', md: '85px' },
-                        height: { xs: '30px', md: '35px' },
-                        borderRadius: '50px',
-                        fontSize: { xs: '9px', md: '12px' },
-                        backgroundColor: ' #0A503D',
-                        color: '#fff',
-                        '&:hover': {
-                          backgroundColor: '#0a3d30',
-                          color: '#fff',
-                        },
+                        width: { xs: '100px', md: '200px' },
+                        height: '100%',
+                        // border: '1px solid green',
                       }}
                       onClick={() => {
-                        const data = {
-                          country: country,
-                          id: item.id,
-                          isLogged_in: isLogged_in,
-                        };
-                        if (isLogged_in) {
-                          dispatch(addCart(data));
-                          toast.success('Product Added  Cart Successfully');
+                        if (item[0]) {
+                          router.push('/FoodMarket');
                         } else {
-                          addItem(item);
-                          toast.success('Product Added  Cart Successfully');
-                        }
+                          router.push(`/FoodMarket/${item.id}`)
+                        };
                       }}
                     >
-                      ADD
-                    </Button>
+                      {item?.images[0]?.image_url ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          key={item?.images[0]?.id}
+                          // loader={() => item?.images[0]?.image_url}
+                          src={item?.images[0]?.image_url}
+                          alt="product"
+                          className={styles.product_img}
+                        // unoptimized={true}
+                        />
+                      ) : (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src="/fish.png"
+                          alt="product"
+                          className={styles.product_img}
+                        />
+                      )}
+                    </Box>
+                    {/* </Link> */}
+
+                    <Box
+                      component="div"
+                      sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'flex-start',
+                        justifyContent: 'center',
+                        width: '70%',
+                        // marginLeft: '1rem',
+                        padding: '0 1rem',
+                        // border: '1px solid red',
+                      }}
+                    >
+                      {/* <Link href={`/FoodMarket/${item.id}`}> */}
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'flex-start',
+                          // border: '1px solid red',
+                        }}
+                        onClick={() => {
+                          router.push(`/FoodMarket/${item.id}`);
+                        }}
+                      >
+                        <Typography
+                          variant="p"
+                          className={styles.cart_product_details}
+                        >
+                          {item.name}
+                        </Typography>
+                        <Typography
+                          variant="p"
+                          className={styles.cart_product_details}
+                          sx={{
+                            fontWeight: '400',
+                            marginBottom: { xs: '10px', md: '30px' },
+                          }}
+                        >
+                          {item.description}
+                        </Typography>
+                        <Typography
+                          variant="p"
+                          className={styles.cart_product_details}
+                          sx={{
+                            marginBottom: { xs: '0px', md: '13px' },
+                          }}
+                        >
+                          NGN {formatCurrency(item?.price)}
+                        </Typography>
+                      </Box>
+                      {/* </Link> */}
+
+                      <Box
+                        component="div"
+                        sx={{
+                          display: 'flex',
+                          width: '100%',
+                          marginTop: '16px',
+                        }}
+                      >
+                        <Button
+                          sx={{
+                            width: { xs: '75px', md: '85px' },
+                            height: { xs: '30px', md: '35px' },
+                            borderRadius: '50px',
+                            fontSize: { xs: '9px', md: '12px' },
+                            backgroundColor: ' #0A503D',
+                            color: '#fff',
+                            '&:hover': {
+                              backgroundColor: '#0a3d30',
+                              color: '#fff',
+                            },
+                          }}
+                          onClick={() => {
+                            const data = {
+                              country: country,
+                              id: item.id,
+                              isLogged_in: isLogged_in,
+                            };
+                            if (isLogged_in) {
+                              dispatch(addCart(data));
+                              toast.success('Product Added  Cart Successfully');
+                            } else {
+                              addItem(item);
+                              toast.success('Product Added  Cart Successfully');
+                            }
+                          }}
+                        >
+                          ADD
+                        </Button>
+                      </Box>
+                    </Box>
                   </Box>
                 </Box>
-              </Box>
+              )
+            })
+          ) : product.length === 0 ? (
+            <Box
+              sx={{
+                display: 'flex',
+                // flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                // marginTop: '29px',
+                width: '100%',
+                padding: '29px 16px',
+              }}
+            >
+              <Typography variant="p">items not available</Typography>
             </Box>
-          ))
-        ) : (
-          products()?.map((item, i) => (
+          ) : products()?.map((item, i) => (
             <Box
               key={item.id}
               sx={{
@@ -460,15 +463,17 @@ const ShopCard = ({ query, isLoading, value }) => {
                   }}
                 >
                   {item?.images[0]?.image_url ? (
+                    // eslint-disable-next-line @next/next/no-img-element
                     <img
                       key={item?.images[0]?.id}
                       // loader={() => item?.images[0]?.image_url}
                       src={item?.images[0]?.image_url}
                       alt="product"
                       className={styles.product_img}
-                      // unoptimized={true}
+                    // unoptimized={true}
                     />
                   ) : (
+                    // eslint-disable-next-line @next/next/no-img-element
                     <img
                       src="/fish.png"
                       alt="product"
@@ -574,7 +579,7 @@ const ShopCard = ({ query, isLoading, value }) => {
               </Box>
             </Box>
           ))
-        )}
+        }
       </Box>
 
       <Box
