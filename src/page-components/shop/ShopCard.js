@@ -32,7 +32,7 @@ const ShopCard = ({ isLoading }) => {
     searched,
     hasSearched
   } = useSelector((state) => state?.general);
-  console.log('searched', searched);
+  console.log('searched');
 
   const { country, isLogged_in } = useSelector((state) => state?.auth);
 
@@ -409,7 +409,7 @@ const ShopCard = ({ isLoading }) => {
                 </Box>
               )
             })
-          ) : product.length === 0 ? (
+          ) : products().length === 0 ? (
             <Box
               sx={{
                 display: 'flex',

@@ -114,20 +114,6 @@ const SignUp = () => {
       })
   };
 
-  console.log(signup_api_message);
-
-  console.log(emailExist);
-  useEffect(() => {
-    dispatch(getExistingMails());
-
-    emails?.filter((email) => {
-      if (email.toLowerCase().includes(query.toLowerCase())) {
-        setEmailExist(true);
-      } else {
-        setEmailExist(false);
-      }
-    });
-  }, [dispatch, query]);
   return (
     <>
       <Box
@@ -237,6 +223,7 @@ const SignUp = () => {
             }}
             value={email}
           />
+          
           <Input
             type="text"
             label="AgentCode"
@@ -246,7 +233,6 @@ const SignUp = () => {
             id="agentCode"
             onChange={(e) => {
               dispatch(handleUserInput('agentCode', e.target.value));
-              setQuery(e.target.value);
             }}
             value={agentCode}
           />

@@ -8,6 +8,7 @@ const initialState = {
   categories: [],
   singleProduct: [],
   meta_data: {},
+  initial_meta_data: {},
   cart_message: '',
   selectedCategory: '',
   testimonies: [],
@@ -15,7 +16,7 @@ const initialState = {
   comment: '',
   selectedProfileMenu: '',
   searched: [],
-  hasSearched: false
+  hasSearched: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -35,6 +36,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         product: action?.payload?.products,
         meta_data: action?.payload?.data,
+        initial_meta_data: action?.payload?.data,
       };
     case GeneralTypes.GET_PRODUCTS_BY_CATEGORY:
       return {
@@ -90,6 +92,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         hasSearched: action.payload,
+      };
+    case GeneralTypes.SET_INITIAL_METADATA:
+      return {
+        ...state,
+        meta_data: state.initial_meta_data
       };
 
     default:

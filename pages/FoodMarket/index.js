@@ -29,6 +29,7 @@ import {
   getAllCountries,
   getSearchProduct,
   setSearched,
+  setInitialMetaData,
 } from '../../src/redux/general/generalAction';
 import Spinner from '../../components/Spinner';
 import { handleDelete, setIsLoading } from '../../src/redux/cart/cartAction';
@@ -75,7 +76,16 @@ function Shop() {
     id: item.id,
   }));
 
-  const options = finalItems;
+  const ALL_PRODUCT_ID = 'all';
+  let options = finalItems;
+  options = [
+    {
+      value: 'All products',
+      label: 'All products',
+      id: ALL_PRODUCT_ID,
+    },
+    ...options,
+  ];
 
   // /////////////// SETTING UP THE STYLE FOR THE REACT SELECT ////////////////////////////
 
@@ -157,16 +167,22 @@ function Shop() {
     setShow(!show);
   };
 
-  const onChange = (selectedOption) => {
+  const onChange = (selectedOption) => {  
     const countryId = JSON.parse(localStorage.getItem('selectedCountry'));
     setSelectedOption(selectedOption);
-    dispatch(
-      getProductsByCategory(
-        country ? country : countryId?.id,
-        selectedOption.id
-      )
-    );
-    dispatch(setSelectedCategory(selectedOption.value));
+    if(selectedOption.id === ALL_PRODUCT_ID){
+      dispatch(setSelectedCategory(''));
+      dispatch(setSearched(false));
+      dispatch(setInitialMetaData());
+    } else {
+      dispatch(
+        getProductsByCategory(
+          country ? country : countryId?.id,
+          selectedOption.id
+        )
+      );
+      dispatch(setSelectedCategory(selectedOption.value));
+    }
   };
 
   // CLEAR SEARCH FIELD ON BUTTON CLICKED
@@ -177,6 +193,7 @@ function Shop() {
 
   // SEARCH
   const search = () => {
+    if(val.trim() === "") return
     setIsLoading(true);
     dispatch(getSearchProduct(query, country, page_index))
     .then(() => setIsLoading(false))
@@ -197,13 +214,13 @@ function Shop() {
   }, [dispatch]);
 
   useEffect(() => {
-    console.log("i am working now")
     if (val !== '') {
       setSearchFieldLoaded(true);
       search();
     } else {
       setSearchFieldLoaded(false);
-      dispatch(setSearched(false))
+      dispatch(setSearched(false));
+      dispatch(setInitialMetaData());
     }
   }, [val]);
 
@@ -486,7 +503,7 @@ function Shop() {
               // margin: { md: '16px 0px 0px 29px', xs: '1rem 0' },
               border: '1px solid #E6E6E',
             }}
-         dddddd ></Divider>
+         ></Divider>
 
           <ShopCard isLoading={isLoading} />
 

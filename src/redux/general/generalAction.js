@@ -224,3 +224,9 @@ export const setSearched = (searched) => async (dispatch) => {
     payload: searched,
   });
 };
+
+export const setInitialMetaData = () => async (dispatch) => {
+  dispatch({
+    type: GeneralTypes?.SET_INITIAL_METADATA,
+  });
+};
