@@ -48,7 +48,7 @@ const Navbar = () => {
     },
     {
       id: 3,
-      value: 'Stores around me',
+      value: 'Stores around you',
       route: '/',
     },
   ];
@@ -119,7 +119,7 @@ const Navbar = () => {
             }}
           >
             {navList?.map((list) => (
-              <Link href={list.route} key={list.i}>
+              <Link href={list.route} key={list.i} passHref>
                 <li
                   className={styles.nav__list}
                   style={{

@@ -185,7 +185,7 @@ function ProductDetail() {
           </Typography>
         </Box>
 
-        <Box
+        {!review && <Box
           sx={{
             display: { md: 'flex', xs: 'none' },
           }}
@@ -196,7 +196,7 @@ function ProductDetail() {
             width={400}
             height={300}
           />
-        </Box>
+        </Box>}
       </Box>
       <Divider
         sx={{
@@ -212,6 +212,7 @@ function ProductDetail() {
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
+            margin: 'auto',
             // marginTop: '29px',
             width: '100%',
 
@@ -219,7 +220,7 @@ function ProductDetail() {
             // border: '1px solid red',
           }}
         >
-          <BackButton />
+          {/* <BackButton /> */}
           {/* <Box
             component="div"
             sx={{
@@ -291,7 +292,7 @@ function ProductDetail() {
             <Box
               component="div"
               sx={{
-                // border: '1px solid red',
+                // border: '1px sqolid red',
                 display: 'flex',
                 flexDirection: { xs: 'row', md: 'column' },
                 alignItems: 'flex-start',
@@ -402,8 +403,9 @@ function ProductDetail() {
       <Box
         sx={{
           display: 'flex',
+          justifyContent: 'space-between',
           borderBottom: ' 1px solid rgba(0, 0, 0, 0.3)',
-          padding: { xs: '0px 50px', md: '0px 302px' },
+          padding: { xs: '0px 20px', md: '0px 180px', lg: '0px 180px' },
           marginBottom: '1rem',
           width: '100%',
           // border: '1px solid red',
@@ -450,7 +452,7 @@ function ProductDetail() {
       <Box
         sx={{
           display: 'flex',
-          // justifyContent: 'center',
+          justifyContent: 'center',
           height: '869px',
           padding: '11px 32px',
         }}
@@ -471,6 +473,7 @@ function ProductDetail() {
               sx={{
                 display: 'flex',
                 justifyContent: 'space-evenly',
+                marginTop: '25px'
               }}
             >
               <Box
@@ -479,15 +482,16 @@ function ProductDetail() {
                   width: { xs: '25px', md: '100px' },
                   height: { xs: '25px', md: '100px' },
                   marginRight: '1rem',
+                  borderRadius: '100%'
                 }}
               >
-                <img
+                <Image
                   src="/data.svg"
                   alt="profile"
                   width="100%"
                   height="100%"
                   style={{
-                    borderRadius: '100%',
+                    borderRadius: '120%',
                   }}
                 />
               </Box>
@@ -507,6 +511,7 @@ function ProductDetail() {
 
                     color: ' #000000',
                     marginBottom: '8px',
+                    marginTop: '14px',
                   }}
                 >
                   Georgefx - October 8 2021
@@ -560,14 +565,14 @@ function ProductDetail() {
                     alignItems: 'center',
                     // justifyContent: 'space-evenly',
                     width: { xs: '15px', md: '36px' },
-
+                    fontSize: '160px',
                     marginBottom: { xs: '16px', md: '29px' },
                   }}
                 >
                   {[...Array(5)].map((item, index) => {
                     index += 1;
                     return (
-                      <img
+                      <Image
                         src={
                           index <= rating ? '/blackStar.svg' : '/whiteStar.svg'
                         }
