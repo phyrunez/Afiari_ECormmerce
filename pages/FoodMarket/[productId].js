@@ -10,9 +10,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import { ArrowBackIos, IonBu } from '@mui/icons-material';
 import { getSingleProduct } from '../../src/redux/general/generalAction';
+import { authToken } from '../../constants/config';
 
 import {
-  addCart,
+  addCart,  
   getCart,
   getPublicKey,
 } from '../../src/redux/cart/cartAction';
@@ -35,6 +36,7 @@ function ProductDetail() {
   // const { cart } = useSelector((state) => state.cart);
   const [rating, setRating] = useState(0);
   const [disable, setDisable] = useState(true);
+  const [toReview, setToReview] = useState(false)
 
   const { addItem, items } = useCart();
 
@@ -54,6 +56,11 @@ function ProductDetail() {
 
     return () => clearTimeout(timeout);
   }, [dispatch, id, country]);
+
+  useEffect(() => {
+    const token = localStorage.getItem(authToken);
+    if(token) setToReview(true)
+  }, []);
 
   const products = () => {
     const newData = product.map((prod, index) => {
@@ -403,9 +410,10 @@ function ProductDetail() {
         sx={{
           display: 'flex',
           borderBottom: ' 1px solid rgba(0, 0, 0, 0.3)',
-          padding: { xs: '0px 50px', md: '0px 302px' },
+          padding: { xs: '0px 10px', md: '0px 302px' },
           marginBottom: '1rem',
           width: '100%',
+          justifyContent: 'space-between'
           // border: '1px solid red',
         }}
       >
@@ -526,7 +534,11 @@ function ProductDetail() {
                   This yam is the best recommended nigerian yam for the pounded
                   yam recipe and it is also suitable for other yam dishes.
                 </Typography>
-                <Typography
+
+                {
+                  toReview && (
+                    <Box>
+                      <Typography
                   sx={{
                     fontStyle: 'normal',
                     fontWeight: '400',
@@ -618,6 +630,10 @@ function ProductDetail() {
                 >
                   Submit
                 </button>
+                    </Box>
+                  )
+                }
+                
               </Box>
             </Box>
           ))}
