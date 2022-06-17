@@ -4,15 +4,18 @@ import Image from 'next/image';
 import Footer from '../../src/page-components/Footer';
 import Navbar from '../../src/shared-components/navbar/Navbar';
 import item_description_illustration from '../../public/item_description_illustration.svg';
+import reviews_illustration from '../../public/reviews-illustration.svg';
+// import male_illustration from '../../public/male.png';
 import styles from '../../styles/Shop.module.css';
 import { useSelector, useDispatch } from 'react-redux';
 // import { getSingleProduct } from '../../redux/slice/ProductSlice';
 import { useRouter } from 'next/router';
 import { ArrowBackIos, IonBu } from '@mui/icons-material';
 import { getSingleProduct } from '../../src/redux/general/generalAction';
+import { authToken } from '../../constants/config';
 
 import {
-  addCart,
+  addCart,  
   getCart,
   getPublicKey,
 } from '../../src/redux/cart/cartAction';
@@ -35,6 +38,7 @@ function ProductDetail() {
   // const { cart } = useSelector((state) => state.cart);
   const [rating, setRating] = useState(0);
   const [disable, setDisable] = useState(true);
+  const [toReview, setToReview] = useState(false)
 
   const { addItem, items } = useCart();
 
@@ -54,6 +58,11 @@ function ProductDetail() {
 
     return () => clearTimeout(timeout);
   }, [dispatch, id, country]);
+
+  useEffect(() => {
+    const token = localStorage.getItem(authToken);
+    if(token) setToReview(true)
+  }, []);
 
   const products = () => {
     const newData = product.map((prod, index) => {
@@ -135,69 +144,137 @@ function ProductDetail() {
   return (
     <Box>
       <Navbar />
-      <Box
-        className={styles.shop__header}
-        sx={{
-          display: { xs: 'none', md: 'flex' },
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: { xs: 'center', md: 'space-evenly' },
-          width: '100%',
-          height: { xs: '229px', md: '402px' },
-          backgroundImage: {
-            xs: 'url("/item_description_illustration.svg")',
-            md: 'none',
-          },
-          backgroundRepeat: 'no-repeat',
-          backgroundSize: 'contain',
-          backgroundPosition: 'center',
-          marginBottom: '25px',
-        }}
-      >
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: { xs: 'center', md: 'space-evenly' },
-            width: { xs: '100%', md: '50%' },
-            height: '100%',
-          }}
-        >
-          <Typography
-            //   className={styles.shop__header__text}
-            variant="h1"
+        {!review ? ( <div>
+          <Box
+            className={styles.shop__header}
             sx={{
-              fontWeight: '600',
-              fontSize: { xs: '20px', md: '48px' },
-              lineHeight: { xs: '37px', md: '65px' },
-              textAlign: { xs: 'center', md: 'justify' },
-              color: { xs: ' #FFFFFF', md: '#3a3a3a' },
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: { xs: 'center', md: 'flex-start' },
-              justifyContent: 'center',
-              width: { xs: '100%', md: '445px', lg: '592px' },
-              height: { xs: '100%', md: 'auto' },
-              background: { xs: ' rgba(0, 34, 25, 0.824)', md: 'none' },
+              display: { xs: 'none', md: 'flex' },
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: { xs: 'center', md: 'space-evenly' },
+              width: '100%',
+              height: { xs: '229px', md: '402px' },
+              backgroundImage: {
+                xs: 'url("/item_description_illustration.svg")',
+                md: 'none',
+              },
+              backgroundRepeat: 'no-repeat',
+              backgroundSize: 'contain',
+              backgroundPosition: 'center',
+              marginBottom: '25px',
             }}
           >
-            Item Description
-          </Typography>
-        </Box>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: { xs: 'center', md: 'space-evenly' },
+                width: { xs: '100%', md: '50%' },
+                height: '100%',
+              }}
+            >
+              <Typography
+                //   className={styles.shop__header__text}
+                variant="h1"
+                sx={{
+                  fontWeight: '600',
+                  fontSize: { xs: '20px', md: '48px' },
+                  lineHeight: { xs: '37px', md: '65px' },
+                  textAlign: { xs: 'center', md: 'justify' },
+                  color: { xs: ' #FFFFFF', md: '#3a3a3a' },
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: { xs: 'center', md: 'flex-start' },
+                  justifyContent: 'center',
+                  width: { xs: '100%', md: '445px', lg: '592px' },
+                  height: { xs: '100%', md: 'auto' },
+                  background: { xs: ' rgba(0, 34, 25, 0.824)', md: 'none' },
+                }}
+              >
+                Item Description
+              </Typography>
+            </Box>
 
-        <Box
-          sx={{
-            display: { md: 'flex', xs: 'none' },
-          }}
-        >
-          <Image
-            src={item_description_illustration}
-            alt="product"
-            width={400}
-            height={300}
-          />
-        </Box>
-      </Box>
+            <Box
+              sx={{
+                display: { md: 'flex', xs: 'none' },
+              }}
+            >
+              <Image
+                src={item_description_illustration}
+                alt="product"
+                width={400}
+                height={300}
+              />
+            </Box>
+          </Box>
+          </div>
+        ) : (<div>
+          <Box
+            className={styles.shop__header}
+            sx={{
+              display: { xs: 'none', md: 'flex' },
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: { xs: 'center', md: 'space-evenly' },
+              width: '100%',
+              height: { xs: '229px', md: '402px' },
+              backgroundImage: {
+                xs: 'url("/reviews_illustration.svg")',
+                md: 'none',
+              },
+              backgroundRepeat: 'no-repeat',
+              backgroundSize: 'contain',
+              backgroundPosition: 'center',
+              marginBottom: '25px',
+            }}
+          >
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: { xs: 'center', md: 'space-evenly' },
+                width: { xs: '100%', md: '50%' },
+                height: '100%',
+              }}
+            >
+              <Typography
+                //   className={styles.shop__header__text}
+                variant="h1"
+                sx={{
+                  fontWeight: '600',
+                  fontSize: { xs: '20px', md: '48px' },
+                  lineHeight: { xs: '37px', md: '65px' },
+                  textAlign: { xs: 'center', md: 'justify' },
+                  color: { xs: ' #FFFFFF', md: '#3a3a3a' },
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: { xs: 'center', md: 'flex-start' },
+                  justifyContent: 'center',
+                  width: { xs: '100%', md: '445px', lg: '592px' },
+                  height: { xs: '100%', md: 'auto' },
+                  background: { xs: ' rgba(0, 34, 25, 0.824)', md: 'none' },
+                }}
+              >
+                See what our customers<br />
+                think of this product
+              </Typography>
+            </Box>
+
+            <Box
+              sx={{
+                display: { md: 'flex', xs: 'none' },
+              }}
+            >
+              <Image
+                src={reviews_illustration}
+                alt="product"
+                width={400}
+                height={300}
+              />
+            </Box>
+          </Box>
+        </div>)}
       <Divider
         sx={{
           width: '100%',
@@ -212,6 +289,7 @@ function ProductDetail() {
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
+            margin: 'auto',
             // marginTop: '29px',
             width: '100%',
 
@@ -219,7 +297,7 @@ function ProductDetail() {
             // border: '1px solid red',
           }}
         >
-          <BackButton />
+          {/* <BackButton /> */}
           {/* <Box
             component="div"
             sx={{
@@ -291,7 +369,7 @@ function ProductDetail() {
             <Box
               component="div"
               sx={{
-                // border: '1px solid red',
+                // border: '1px sqolid red',
                 display: 'flex',
                 flexDirection: { xs: 'row', md: 'column' },
                 alignItems: 'flex-start',
@@ -402,10 +480,14 @@ function ProductDetail() {
       <Box
         sx={{
           display: 'flex',
+          justifyContent: 'space-between',
           borderBottom: ' 1px solid rgba(0, 0, 0, 0.3)',
-          padding: { xs: '0px 50px', md: '0px 302px' },
+
+          padding: { xs: '0px 20px', md: '0px 180px', lg: '0px 180px' },
+
           marginBottom: '1rem',
           width: '100%',
+          justifyContent: 'space-between'
           // border: '1px solid red',
         }}
       >
@@ -450,7 +532,7 @@ function ProductDetail() {
       <Box
         sx={{
           display: 'flex',
-          // justifyContent: 'center',
+          justifyContent: 'center',
           height: '869px',
           padding: '11px 32px',
         }}
@@ -471,6 +553,7 @@ function ProductDetail() {
               sx={{
                 display: 'flex',
                 justifyContent: 'space-evenly',
+                marginTop: '25px'
               }}
             >
               <Box
@@ -479,15 +562,16 @@ function ProductDetail() {
                   width: { xs: '25px', md: '100px' },
                   height: { xs: '25px', md: '100px' },
                   marginRight: '1rem',
+                  borderRadius: '100%'
                 }}
               >
-                <img
+                <Image
                   src="/data.svg"
                   alt="profile"
                   width="100%"
                   height="100%"
                   style={{
-                    borderRadius: '100%',
+                    borderRadius: '120%',
                   }}
                 />
               </Box>
@@ -507,6 +591,7 @@ function ProductDetail() {
 
                     color: ' #000000',
                     marginBottom: '8px',
+                    marginTop: '14px',
                   }}
                 >
                   Georgefx - October 8 2021
@@ -526,7 +611,11 @@ function ProductDetail() {
                   This yam is the best recommended nigerian yam for the pounded
                   yam recipe and it is also suitable for other yam dishes.
                 </Typography>
-                <Typography
+
+                {
+                  toReview && (
+                    <Box>
+                      <Typography
                   sx={{
                     fontStyle: 'normal',
                     fontWeight: '400',
@@ -560,14 +649,14 @@ function ProductDetail() {
                     alignItems: 'center',
                     // justifyContent: 'space-evenly',
                     width: { xs: '15px', md: '36px' },
-
+                    fontSize: '160px',
                     marginBottom: { xs: '16px', md: '29px' },
                   }}
                 >
                   {[...Array(5)].map((item, index) => {
                     index += 1;
                     return (
-                      <img
+                      <Image
                         src={
                           index <= rating ? '/blackStar.svg' : '/whiteStar.svg'
                         }
@@ -618,6 +707,10 @@ function ProductDetail() {
                 >
                   Submit
                 </button>
+                    </Box>
+                  )
+                }
+                
               </Box>
             </Box>
           ))}

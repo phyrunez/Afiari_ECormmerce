@@ -114,24 +114,6 @@ const SignUp = () => {
       })
   };
 
-  console.log(signup_api_message);
-
-  // if (loading) {
-  //   return <Spinner />;
-  // }
-
-  console.log(emailExist);
-  useEffect(() => {
-    dispatch(getExistingMails());
-
-    emails?.filter((email) => {
-      if (email.toLowerCase().includes(query.toLowerCase())) {
-        setEmailExist(true);
-      } else {
-        setEmailExist(false);
-      }
-    });
-  }, [dispatch, query]);
   return (
     <>
       <Box
@@ -241,16 +223,7 @@ const SignUp = () => {
             }}
             value={email}
           />
-
-          {emailExist && (
-            <h5
-              style={{
-                color: 'red',
-              }}
-            >
-              email already exist
-            </h5>
-          )}
+          
           <Input
             type="text"
             label="AgentCode"
@@ -260,7 +233,6 @@ const SignUp = () => {
             id="agentCode"
             onChange={(e) => {
               dispatch(handleUserInput('agentCode', e.target.value));
-              setQuery(e.target.value);
             }}
             value={agentCode}
           />

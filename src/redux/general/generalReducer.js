@@ -8,6 +8,7 @@ const initialState = {
   categories: [],
   singleProduct: [],
   meta_data: {},
+  initial_meta_data: {},
   cart_message: '',
   selectedCategory: '',
   testimonies: [],
@@ -15,6 +16,7 @@ const initialState = {
   comment: '',
   selectedProfileMenu: '',
   searched: [],
+  hasSearched: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -34,6 +36,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         product: action?.payload?.products,
         meta_data: action?.payload?.data,
+        initial_meta_data: action?.payload?.data,
       };
     case GeneralTypes.GET_PRODUCTS_BY_CATEGORY:
       return {
@@ -59,7 +62,9 @@ const reducer = (state = initialState, action) => {
     case GeneralTypes.SEARCH_PRODUCT:
       return {
         ...state,
-        searched: action.payload,
+        searched: action.payload.product,
+        meta_data: action.payload.data,
+        hasSearched: true,
       };
     case GeneralTypes.GET_SELECTED_PROFILE_MENU:
       return {
@@ -81,6 +86,17 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         [action.payload.name]: action.payload.value,
+      };
+
+    case GeneralTypes.SEARCHED:
+      return {
+        ...state,
+        hasSearched: action.payload,
+      };
+    case GeneralTypes.SET_INITIAL_METADATA:
+      return {
+        ...state,
+        meta_data: state.initial_meta_data
       };
 
     default:

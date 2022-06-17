@@ -6,7 +6,7 @@ import {
   Paper,
   InputBase,
 } from '@mui/material';
-import { Search } from '@mui/icons-material';
+import { Search, Clear } from '@mui/icons-material';
 import { useEffect, useState } from 'react';
 import Select from 'react-select';
 import Footer from '../../src/page-components/Footer';
@@ -28,6 +28,8 @@ import {
   getAllProducts,
   getAllCountries,
   getSearchProduct,
+  setSearched,
+  setInitialMetaData,
 } from '../../src/redux/general/generalAction';
 import Spinner from '../../components/Spinner';
 import { handleDelete, setIsLoading } from '../../src/redux/cart/cartAction';
@@ -52,6 +54,7 @@ function Shop() {
   const [val, setVal] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [pageload, setPageload] = useState(false);
+  const [searchFieldLoaded, setSearchFieldLoaded] = useState(false);
 
   const { page_size, number_of_pages, page_index, total_count } = metaData;
 
@@ -73,7 +76,16 @@ function Shop() {
     id: item.id,
   }));
 
-  const options = finalItems;
+  const ALL_PRODUCT_ID = 'all';
+  let options = finalItems;
+  options = [
+    {
+      value: 'All products',
+      label: 'All products',
+      id: ALL_PRODUCT_ID,
+    },
+    ...options,
+  ];
 
   // /////////////// SETTING UP THE STYLE FOR THE REACT SELECT ////////////////////////////
 
@@ -155,19 +167,40 @@ function Shop() {
     setShow(!show);
   };
 
-  const onChange = (selectedOption) => {
+  const onChange = (selectedOption) => {  
     const countryId = JSON.parse(localStorage.getItem('selectedCountry'));
     setSelectedOption(selectedOption);
-    dispatch(
-      getProductsByCategory(
-        country ? country : countryId?.id,
-        selectedOption.id
-      )
-    );
-    dispatch(setSelectedCategory(selectedOption.value));
+    if(selectedOption.id === ALL_PRODUCT_ID){
+      dispatch(setSelectedCategory(''));
+      dispatch(setSearched(false));
+      dispatch(setInitialMetaData());
+    } else {
+      dispatch(
+        getProductsByCategory(
+          country ? country : countryId?.id,
+          selectedOption.id
+        )
+      );
+      dispatch(setSelectedCategory(selectedOption.value));
+    }
   };
 
+  // CLEAR SEARCH FIELD ON BUTTON CLICKED
+  const clearSearchField = () => {
+    setVal('')
+    setSearchFieldLoaded(false)
+  };
+
+  // SEARCH
+  const search = () => {
+    if(val.trim() === "") return
+    setIsLoading(true);
+    dispatch(getSearchProduct(query, country, page_index))
+    .then(() => setIsLoading(false))
+  }
+
   useEffect(() => {
+    console.log("i am called")
     // if (window.scrollTo(0, 0)) {
     //   setPageload(true);
     // }
@@ -179,6 +212,17 @@ function Shop() {
     dispatch(getSearchProduct('', country, page_index));
     // dispatch(getProductCategory(item));
   }, [dispatch]);
+
+  useEffect(() => {
+    if (val !== '') {
+      setSearchFieldLoaded(true);
+      search();
+    } else {
+      setSearchFieldLoaded(false);
+      dispatch(setSearched(false));
+      dispatch(setInitialMetaData());
+    }
+  }, [val]);
 
   return (
     <Box
@@ -349,8 +393,14 @@ function Shop() {
                 }}
                 value={val}
               />
-              <IconButton type="submit" sx={{ p: '10px' }} aria-label="search">
-                <Search />
+              <IconButton
+                type="button"
+                sx={{ p: '10px' }}
+                aria-label="search"
+                onClick={() => clearSearchField()}>
+                {
+                  searchFieldLoaded ? <Clear /> : <Search />
+                }
               </IconButton>
             </Paper>
 
@@ -364,14 +414,7 @@ function Shop() {
               backgroundColor=" #0A503D"
               text="SEARCH"
               color="#fff"
-              onClick={() => {
-                setIsLoading(true);
-                setTimeout(() => {
-                  dispatch(getSearchProduct(query, country, page_index));
-                  setIsLoading(false);
-                  // setVal('');
-                }, 1000);
-              }}
+              onClick={() => search()}
             />
           </Box>
         </Box>
@@ -460,9 +503,9 @@ function Shop() {
               // margin: { md: '16px 0px 0px 29px', xs: '1rem 0' },
               border: '1px solid #E6E6E',
             }}
-          ></Divider>
+         ></Divider>
 
-          <ShopCard query={query} isLoading={isLoading} value={val} />
+          <ShopCard isLoading={isLoading} />
 
           {/* //////////////////////////////////////////////// the next and prev arrows //////////////////////////////////////////////// */}
 

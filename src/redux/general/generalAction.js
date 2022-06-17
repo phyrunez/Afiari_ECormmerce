@@ -207,10 +207,26 @@ export const getSearchProduct =
       if (response?.status === true) {
         dispatch({
           type: GeneralTypes?.SEARCH_PRODUCT,
-          payload: response.result,
+          payload: {
+            product: response.result,
+            data: response?.meta_data,
+          }
         });
       }
     } catch (error) {
       console.log(error);
     }
   };
+
+export const setSearched = (searched) => async (dispatch) => {
+  dispatch({
+    type: GeneralTypes?.SEARCHED,
+    payload: searched,
+  });
+};
+
+export const setInitialMetaData = () => async (dispatch) => {
+  dispatch({
+    type: GeneralTypes?.SET_INITIAL_METADATA,
+  });
+};
