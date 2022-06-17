@@ -10,9 +10,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import { ArrowBackIos, IonBu } from '@mui/icons-material';
 import { getSingleProduct } from '../../src/redux/general/generalAction';
+import { authToken } from '../../constants/config';
 
 import {
-  addCart,
+  addCart,  
   getCart,
   getPublicKey,
 } from '../../src/redux/cart/cartAction';
@@ -35,6 +36,7 @@ function ProductDetail() {
   // const { cart } = useSelector((state) => state.cart);
   const [rating, setRating] = useState(0);
   const [disable, setDisable] = useState(true);
+  const [toReview, setToReview] = useState(false)
 
   const { addItem, items } = useCart();
 
@@ -54,6 +56,11 @@ function ProductDetail() {
 
     return () => clearTimeout(timeout);
   }, [dispatch, id, country]);
+
+  useEffect(() => {
+    const token = localStorage.getItem(authToken);
+    if(token) setToReview(true)
+  }, []);
 
   const products = () => {
     const newData = product.map((prod, index) => {
@@ -405,9 +412,14 @@ function ProductDetail() {
           display: 'flex',
           justifyContent: 'space-between',
           borderBottom: ' 1px solid rgba(0, 0, 0, 0.3)',
+<<<<<<< HEAD
           padding: { xs: '0px 20px', md: '0px 180px', lg: '0px 180px' },
+=======
+          padding: { xs: '0px 10px', md: '0px 302px' },
+>>>>>>> 38dbc07e90bcb5dd1e25ccc59217afbf30928662
           marginBottom: '1rem',
           width: '100%',
+          justifyContent: 'space-between'
           // border: '1px solid red',
         }}
       >
@@ -531,7 +543,11 @@ function ProductDetail() {
                   This yam is the best recommended nigerian yam for the pounded
                   yam recipe and it is also suitable for other yam dishes.
                 </Typography>
-                <Typography
+
+                {
+                  toReview && (
+                    <Box>
+                      <Typography
                   sx={{
                     fontStyle: 'normal',
                     fontWeight: '400',
@@ -623,6 +639,10 @@ function ProductDetail() {
                 >
                   Submit
                 </button>
+                    </Box>
+                  )
+                }
+                
               </Box>
             </Box>
           ))}
