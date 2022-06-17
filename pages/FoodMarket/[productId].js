@@ -29,19 +29,18 @@ import {
 import BackButton from '../../src/shared-components/BackButton';
 
 function ProductDetail() {
-  const { singleProduct: product, comment } = useSelector(
+  const { singleProduct: product, comment, shouldReview } = useSelector(
     (state) => state.general
   );
   const { country, isLogged_in, loading } = useSelector((state) => state.auth);
   // const { cart } = useSelector((state) => state.cart);
   const [rating, setRating] = useState(0);
   const [disable, setDisable] = useState(true);
-  const [toReview, setToReview] = useState(false)
 
   const { addItem, items } = useCart();
 
   const [review, setReview] = useState(false);
-  const [description, setDescription] = useState(false);
+  const [description, setDescription] = useState(true);
 
   const router = useRouter();
 
@@ -56,11 +55,6 @@ function ProductDetail() {
 
     return () => clearTimeout(timeout);
   }, [dispatch, id, country]);
-
-  useEffect(() => {
-    const token = localStorage.getItem(authToken);
-    if(token) setToReview(true)
-  }, []);
 
   const products = () => {
     const newData = product.map((prod, index) => {
@@ -94,6 +88,10 @@ function ProductDetail() {
     handleModal();
     toast.success('Thank you for your feedback');
   };
+
+  useEffect(() => {
+    console.log("some", shouldReview)
+  }, [shouldReview])
 
   // const addToCart = () => {
   //   const data = {
@@ -536,7 +534,7 @@ function ProductDetail() {
                 </Typography>
 
                 {
-                  toReview && (
+                  shouldReview && (
                     <Box>
                       <Typography
                   sx={{
