@@ -4,6 +4,8 @@ import Image from 'next/image';
 import Footer from '../../src/page-components/Footer';
 import Navbar from '../../src/shared-components/navbar/Navbar';
 import item_description_illustration from '../../public/item_description_illustration.svg';
+import reviews_illustration from '../../public/reviews_illustration.svg';
+// import male_illustration from '../../public/male.png';
 import styles from '../../styles/Shop.module.css';
 import { useSelector, useDispatch } from 'react-redux';
 // import { getSingleProduct } from '../../redux/slice/ProductSlice';
@@ -142,69 +144,137 @@ function ProductDetail() {
   return (
     <Box>
       <Navbar />
-      <Box
-        className={styles.shop__header}
-        sx={{
-          display: { xs: 'none', md: 'flex' },
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: { xs: 'center', md: 'space-evenly' },
-          width: '100%',
-          height: { xs: '229px', md: '402px' },
-          backgroundImage: {
-            xs: 'url("/item_description_illustration.svg")',
-            md: 'none',
-          },
-          backgroundRepeat: 'no-repeat',
-          backgroundSize: 'contain',
-          backgroundPosition: 'center',
-          marginBottom: '25px',
-        }}
-      >
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: { xs: 'center', md: 'space-evenly' },
-            width: { xs: '100%', md: '50%' },
-            height: '100%',
-          }}
-        >
-          <Typography
-            //   className={styles.shop__header__text}
-            variant="h1"
+        {!review ? ( <div>
+          <Box
+            className={styles.shop__header}
             sx={{
-              fontWeight: '600',
-              fontSize: { xs: '20px', md: '48px' },
-              lineHeight: { xs: '37px', md: '65px' },
-              textAlign: { xs: 'center', md: 'justify' },
-              color: { xs: ' #FFFFFF', md: '#3a3a3a' },
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: { xs: 'center', md: 'flex-start' },
-              justifyContent: 'center',
-              width: { xs: '100%', md: '445px', lg: '592px' },
-              height: { xs: '100%', md: 'auto' },
-              background: { xs: ' rgba(0, 34, 25, 0.824)', md: 'none' },
+              display: { xs: 'none', md: 'flex' },
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: { xs: 'center', md: 'space-evenly' },
+              width: '100%',
+              height: { xs: '229px', md: '402px' },
+              backgroundImage: {
+                xs: 'url("/item_description_illustration.svg")',
+                md: 'none',
+              },
+              backgroundRepeat: 'no-repeat',
+              backgroundSize: 'contain',
+              backgroundPosition: 'center',
+              marginBottom: '25px',
             }}
           >
-            Item Description
-          </Typography>
-        </Box>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: { xs: 'center', md: 'space-evenly' },
+                width: { xs: '100%', md: '50%' },
+                height: '100%',
+              }}
+            >
+              <Typography
+                //   className={styles.shop__header__text}
+                variant="h1"
+                sx={{
+                  fontWeight: '600',
+                  fontSize: { xs: '20px', md: '48px' },
+                  lineHeight: { xs: '37px', md: '65px' },
+                  textAlign: { xs: 'center', md: 'justify' },
+                  color: { xs: ' #FFFFFF', md: '#3a3a3a' },
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: { xs: 'center', md: 'flex-start' },
+                  justifyContent: 'center',
+                  width: { xs: '100%', md: '445px', lg: '592px' },
+                  height: { xs: '100%', md: 'auto' },
+                  background: { xs: ' rgba(0, 34, 25, 0.824)', md: 'none' },
+                }}
+              >
+                Item Description
+              </Typography>
+            </Box>
 
-        {!review && <Box
-          sx={{
-            display: { md: 'flex', xs: 'none' },
-          }}
-        >
-          <Image
-            src={item_description_illustration}
-            alt="product"
-            width={400}
-            height={300}
-          />
-        </Box>}
-      </Box>
+            <Box
+              sx={{
+                display: { md: 'flex', xs: 'none' },
+              }}
+            >
+              <Image
+                src={item_description_illustration}
+                alt="product"
+                width={400}
+                height={300}
+              />
+            </Box>
+          </Box>
+          </div>
+        ) : (<div>
+          <Box
+            className={styles.shop__header}
+            sx={{
+              display: { xs: 'none', md: 'flex' },
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: { xs: 'center', md: 'space-evenly' },
+              width: '100%',
+              height: { xs: '229px', md: '402px' },
+              backgroundImage: {
+                xs: 'url("/item_description_illustration.svg")',
+                md: 'none',
+              },
+              backgroundRepeat: 'no-repeat',
+              backgroundSize: 'contain',
+              backgroundPosition: 'center',
+              marginBottom: '25px',
+            }}
+          >
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: { xs: 'center', md: 'space-evenly' },
+                width: { xs: '100%', md: '50%' },
+                height: '100%',
+              }}
+            >
+              <Typography
+                //   className={styles.shop__header__text}
+                variant="h1"
+                sx={{
+                  fontWeight: '600',
+                  fontSize: { xs: '20px', md: '48px' },
+                  lineHeight: { xs: '37px', md: '65px' },
+                  textAlign: { xs: 'center', md: 'justify' },
+                  color: { xs: ' #FFFFFF', md: '#3a3a3a' },
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: { xs: 'center', md: 'flex-start' },
+                  justifyContent: 'center',
+                  width: { xs: '100%', md: '445px', lg: '592px' },
+                  height: { xs: '100%', md: 'auto' },
+                  background: { xs: ' rgba(0, 34, 25, 0.824)', md: 'none' },
+                }}
+              >
+                See what our customers<br />
+                think of this product
+              </Typography>
+            </Box>
+
+            <Box
+              sx={{
+                display: { md: 'flex', xs: 'none' },
+              }}
+            >
+              <Image
+                src={reviews_illustration}
+                alt="product"
+                width={400}
+                height={300}
+              />
+            </Box>
+          </Box>
+        </div>)}
       <Divider
         sx={{
           width: '100%',
@@ -412,11 +482,9 @@ function ProductDetail() {
           display: 'flex',
           justifyContent: 'space-between',
           borderBottom: ' 1px solid rgba(0, 0, 0, 0.3)',
-<<<<<<< HEAD
+
           padding: { xs: '0px 20px', md: '0px 180px', lg: '0px 180px' },
-=======
-          padding: { xs: '0px 10px', md: '0px 302px' },
->>>>>>> 38dbc07e90bcb5dd1e25ccc59217afbf30928662
+
           marginBottom: '1rem',
           width: '100%',
           justifyContent: 'space-between'
