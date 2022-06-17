@@ -74,6 +74,7 @@ const ForgetPassword = () => {
         flexDirection: 'column',
         width: '100%',
         height: '100%',
+        margin: {xs: '2rem 12rem', md: 'auto', lg: 'auto'}
         // border: '1px solid red',
       }}
     >
@@ -86,7 +87,7 @@ const ForgetPassword = () => {
           padding: '5rem',
           width: '100%',
           marginBottom: '15rem',
-          marginTop: '-5rem'
+          marginTop: '-3.5rem'
         }}
       >
         <Box

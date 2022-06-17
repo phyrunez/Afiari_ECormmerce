@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Footer from '../../src/page-components/Footer';
 import Navbar from '../../src/shared-components/navbar/Navbar';
 import item_description_illustration from '../../public/item_description_illustration.svg';
-import reviews_illustration from '../../public/reviews_illustration.svg';
+import reviews_illustration from '../../public/reviews-illustration.svg';
 // import male_illustration from '../../public/male.png';
 import styles from '../../styles/Shop.module.css';
 import { useSelector, useDispatch } from 'react-redux';
@@ -220,7 +220,7 @@ function ProductDetail() {
               width: '100%',
               height: { xs: '229px', md: '402px' },
               backgroundImage: {
-                xs: 'url("/item_description_illustration.svg")',
+                xs: 'url("/reviews_illustration.svg")',
                 md: 'none',
               },
               backgroundRepeat: 'no-repeat',

@@ -29,6 +29,7 @@ const MailConfirmation = () => {
       flexDirection: 'column',
       width: '100%',
       height: '100%',
+       margin: {xs: '2rem 12rem', md: 'auto', lg: 'auto'}
       // border: '1px solid red',
     }}
    >
@@ -41,7 +42,8 @@ const MailConfirmation = () => {
           alignItems: 'center',
           justifyContent: 'center',
           marginBottom: '20rem',
-          padding: '4.5rem',
+          padding: '4.5rem',     
+          marginTop: '1.5rem'  
         }}
       >
         <Box 
