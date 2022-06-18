@@ -6,6 +6,7 @@ import { logo } from '../assests/images/loginSvg';
 import { Box } from '@mui/material';
 import Script from 'next/script';
 import { useRouter } from 'next/router';
+import { toast } from 'react-toastify';
 
 // class Jquery extends Component
 const Jquery = () => {
@@ -216,7 +217,6 @@ const Jquery = () => {
     token = localStorage.getItem('Afiari_access');
   }
 
-
   const BASEURL = BASE_URL;
   const Auth_Header = {
     Authorization: 'Bearer ' + token,
@@ -224,21 +224,20 @@ const Jquery = () => {
 
   const GetPublicKey = (callback) => {
     $.ajax({
-      method: "GET",
+      method: 'GET',
       url: `${BASEURL}/Transaction/paystack/public-key`,
       success: function (key_resp) {
-        callback(key_resp)
-      }
-    })
-  }
+        callback(key_resp);
+      },
+    });
+  };
 
   const KeyCallback = (resp) => {
     if (resp?.status) {
-      PaystackScript(PaystackCallback, resp?.result[0].public_key)
+      PaystackScript(PaystackCallback, resp?.result[0].public_key);
       return;
     }
-  }
-
+  };
 
   const PaystackScript = (callback, publicKey) => {
     //STEP 1: Initiate the transaction
@@ -259,7 +258,7 @@ const Jquery = () => {
         //$('#result').html(data);
         callback(data, publicKey);
       },
-      error: function (resp) { },
+      error: function (resp) {},
     });
   };
 
@@ -269,7 +268,7 @@ const Jquery = () => {
       transaction_ref = resp?.result[0]?.reference;
       let userEmail = getParameterByName('userEmail');
       let totalCost = resp?.result[0]?.amount;
-      
+
       //STEP 2: paystack process payment
       var handler = PaystackPop.setup({
         key: `${publicKey}`,
@@ -292,12 +291,14 @@ const Jquery = () => {
                 SuccessCallback(resp);
                 return;
               }
-              swal({
-                title: 'Snap!',
-                text: resp,
-                icon: 'warning',
-                button: 'Ok',
-              });
+              //   swal({
+              //     title: 'Snap!',
+              //     text: resp,
+              //     icon: 'warning',
+              //     button: 'Ok',
+              //   });
+
+              toast.success('Snap!', resp);
             },
             error: function (resp) {
               console.log('Error', resp);
@@ -321,24 +322,24 @@ const Jquery = () => {
             },
             error: function (resp) {
               console.log('Error occured on close ', resp);
-            }
+            },
           });
         },
       });
       handler.openIframe();
     }
-
   };
 
   const SuccessCallback = (resp) => {
     if (resp?.status) {
       //verification successful
-      swal({
-        title: 'Good job!',
-        text: 'Transaction Successful and Payment Recieved',
-        icon: 'success',
-        button: 'Ok',
-      });
+      //   swal({
+      //     title: 'Good job!',
+      //     text: 'Transaction Successful and Payment Recieved',
+      //     icon: 'success',
+      //     button: 'Ok',
+      //   });
+      toast.success('Good job! Transaction Successful and Payment Recieved');
       //proceed to place order
       let payment = getParameterByName('paymentType');
       let shipping = getParameterByName('shippingAddress');
@@ -350,12 +351,16 @@ const Jquery = () => {
 
   const CancelCallback = (resp) => {
     if (resp?.status) {
-      swal({
-        title: 'Opps!',
-        text: 'You just cancelled the transaction, would you want to try again?',
-        icon: 'warning',
-        button: 'Ok',
-      });
+      //   swal({
+      //     title: 'Opps!',
+      //     text: 'You just cancelled the transaction, would you want to try again?',
+      //     icon: 'warning',
+      //     button: 'Ok',
+      //   });
+
+      toast.error(
+        'Opps! You just cancelled the transaction, would you want to try again?'
+      );
 
       //return back to checkout page
       router.push('/checkout');

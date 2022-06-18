@@ -137,7 +137,7 @@ function ProfileSettings() {
                 color: '#000000',
               }}
             >
-              {firstName + lastName}
+              {firstName + ' ' + lastName}
             </Typography>
           </Box>
           {/* <input type="file" 

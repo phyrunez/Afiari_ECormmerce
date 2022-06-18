@@ -1,5 +1,6 @@
 import { Close } from '@mui/icons-material';
 import { Box, IconButton, Typography } from '@mui/material';
+import Image from 'next/image'
 import React, { useState } from 'react';
 import styles from '../../styles/Profile.module.css';
 
@@ -71,7 +72,7 @@ function Notification() {
             // border: '1px solid red',
           }}
         >
-          <img
+          <Image
             src="/data.svg"
             alt="profile"
             width={32}
@@ -98,7 +99,7 @@ function Notification() {
             // border: '1px solid red',
           }}
         >
-          <img
+          <Image
             src="/data.svg"
             alt="profile"
             width={32}

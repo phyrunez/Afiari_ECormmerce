@@ -11,19 +11,20 @@ import styles from '../../../styles/Shop.module.css';
 import Link from 'next/link';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  getAllProducts,
   getProductsByCategory,
   setSelectedCategory,
+  setSearched,
+  getAllProducts,
 } from '../../redux/general/generalAction';
 
-const ProductCategory = () => {
+const ProductCategory = ({setIsLoading}) => {
   const { categories } = useSelector((state) => state.general);
 
   const { country } = useSelector((state) => state.auth);
 
   const [pageNumber, setPageNumber] = useState(1);
 
-  const [selected, setSelected] = useState('');
+  const [selected, setSelected] = useState('all');
 
   const dispatch = useDispatch();
 
@@ -82,12 +83,53 @@ const ProductCategory = () => {
           alignItems: 'center',
           justifyContent: 'center',
           width: '100%',
-          height: '400px',
+          height: 'auto',
           overflowX: 'hidden',
-          // border: '1px solid red',
+          marginTop: '0 !important'
         }}
         className={styles.cart__warraper}
       >
+        <ListItem
+          sx={{
+            cursor: 'pointer',
+            background: '#fff',
+            color: selected === 'all' ? '#0A503D' : '#3a3a3a',
+            // fontWeight: selected === item.id ? '800' : 'normal',
+            // fontSize: selected === item.id ? '20rem' : '30px',
+            '&:hover': {
+              backgroundColor: '#fff',
+              color: selected === "all" ? '#0A503D' : '#3a3a3a',
+              transform: 'scale(2rem)',
+              fontSize: '40px',
+            },
+          }}
+          className={
+            selected === "all"
+              ? styles.shop__filter__list__active
+              : styles.shop__filter__list
+          }
+          key="all"
+          onClick={() => {
+            const countryId = JSON.parse(
+              localStorage.getItem('selectedCountry')
+            );
+            setSelected("all");
+            dispatch(setSelectedCategory(""));
+            dispatch(setSearched(false));
+            setIsLoading(true);
+            dispatch(getAllProducts(countryId?.id, 1))
+          }}
+        >
+          <ListItemText
+            primary='All Products'
+            classes={{
+              primary:
+                selected === 'all'
+                  ? styles.shop__filter__list__active
+                  : styles.shop__filter__list,
+            }}
+          />
+        </ListItem>
         {categories.map((item) => (
           <ListItem
             sx={{
@@ -114,8 +156,10 @@ const ProductCategory = () => {
                 localStorage.getItem('selectedCountry')
               );
               setSelected(item.id);
+              setIsLoading(true);
               dispatch(getProductsByCategory(countryId?.id, item.id));
               dispatch(setSelectedCategory(item.item_value));
+              dispatch(setSearched(false));
             }}
           >
             <ListItemText

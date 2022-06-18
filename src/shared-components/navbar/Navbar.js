@@ -48,7 +48,7 @@ const Navbar = () => {
     },
     {
       id: 3,
-      value: 'Stores around me',
+      value: 'Stores around you',
       route: '/',
     },
   ];
@@ -119,7 +119,7 @@ const Navbar = () => {
             }}
           >
             {navList?.map((list) => (
-              <Link href={list.route} key={list.i}>
+              <Link href={list.route} key={list.i} passHref>
                 <li
                   className={styles.nav__list}
                   style={{
@@ -183,7 +183,7 @@ const Navbar = () => {
             // border: '1px solid red',
           }}
         >
-          <Link href="/cart">
+          <Link href="/cart" passHref>
             <Box
               sx={{
                 position: 'relative',
@@ -233,7 +233,7 @@ const Navbar = () => {
                 cursor: 'pointer',
               }}
             >
-              <Link href="/profile">
+              <Link href="/profile" passHref>
                 <Image
                   src="/profile.svg"
                   width={24}
@@ -277,7 +277,7 @@ const Navbar = () => {
                     justifyContent: 'center',
                   }}
                 >
-                  <Link href="/profile">
+                  <Link href="/profile" passHref>
                     <Typography
                       variant="p"
                       sx={{
@@ -384,7 +384,7 @@ const Navbar = () => {
             justifyContent: 'space-evenly',
           }}
         >
-          <Link href="/cart">
+          <Link href="/cart" passHref>
             <Box
               sx={{
                 position: 'relative',
@@ -556,7 +556,7 @@ const Navbar = () => {
                           zIndex: '2000000000000',
                         }}
                       >
-                        <Link href="/profile">
+                        <Link href="/profile" passHref>
                           <Typography
                             variant="p"
                             sx={{

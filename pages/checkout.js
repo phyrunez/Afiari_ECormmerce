@@ -13,6 +13,7 @@ import { AddAndRemoveCartButton } from '../src/shared-components/Button';
 import { Delete } from '@mui/icons-material';
 import { getCart, handleDelete } from '../src/redux/cart/cartAction';
 import { useCart } from 'react-use-cart';
+import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import Spinner from '../components/Spinner';
 import withAuth from '../constants/ProtectedRoutes';
@@ -44,6 +45,7 @@ function Checkout() {
     useSelector((state) => state?.auth);
 
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const onClick = () => {
     setShowModal(false);
@@ -69,7 +71,7 @@ function Checkout() {
     dispatch(handleSelectedPaymentMethod(''));
     dispatch(handleSelectedAddress(''));
     localStorage.setItem('verify_status', false);
-  }, []);
+  }, [country, dispatch]);
 
   return (
     <Box

@@ -120,6 +120,7 @@ export const getProductsByCategory =
           payload: {
             productCategory: response?.result,
             data: response?.meta_data,
+            categoryId: category_id,
           },
         });
       }
@@ -138,12 +139,25 @@ export const getSingleProduct =
         needToken: false,
       });
 
+      const reviewResponse = await httpRequest({
+        url: `${API_ROUTES?.shouldReview.route}${product_id}`,
+        method: API_ROUTES.shouldReview.method,
+        needToken: false,
+      });
+
       if (response?.status === true) {
         dispatch({
           type: GeneralTypes?.GET_SINGLE_PRODUCT,
           payload: {
             product: response.result,
           },
+        });
+      }
+
+      if (reviewResponse?.status === true) {
+        dispatch({
+          type: GeneralTypes?.SET_SHOULD_REVIEW,
+          payload:  reviewResponse.result[0],
         });
       }
     } catch (error) {
@@ -191,4 +205,42 @@ export const getTestimony = () => async (dispatch) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+export const getSearchProduct =
+  (text, country, page_number) => async (dispatch) => {
+    try {
+      dispatch(setIsLoading(true));
+      const response = await httpRequest({
+        url: `${
+          API_ROUTES?.searchProduct?.route + text
+        }&service_country=${country}&page_number=${page_number}`,
+        method: API_ROUTES?.searchProduct.method,
+      });
+
+      if (response?.status === true) {
+        dispatch({
+          type: GeneralTypes?.SEARCH_PRODUCT,
+          payload: {
+            product: response.result,
+            data: response?.meta_data,
+          }
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+export const setSearched = (searched) => async (dispatch) => {
+  dispatch({
+    type: GeneralTypes?.SEARCHED,
+    payload: searched,
+  });
+};
+
+export const setInitialMetaData = () => async (dispatch) => {
+  dispatch({
+    type: GeneralTypes?.SET_INITIAL_METADATA,
+  });
 };

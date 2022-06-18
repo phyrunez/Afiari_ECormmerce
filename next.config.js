@@ -1,29 +1,36 @@
 const withPWA = require('next-pwa');
 
 /** @type {import('next').NextConfig} */
-const nextConfig = withPWA({
+const nextConfig = {
   reactStrictMode: true,
-  disableStaticImages: true,
-  images: {
-    domains: [
-      'afiariwebapi.centralus.cloudapp.azure.com',
-      'source.unsplash.com',
-      'localhost',
-      'images.unsplash.com',
-      'upload.wikimedia.org',
-      'countriesnow.space',
-    ],
+  swcMinify: false,
+  experimental: {
+    esmExternals: false,
   },
+};
+// const nextConfig = withPWA({
+//   reactStrictMode: true,
+//   disableStaticImages: true,
+//   images: {
+//     domains: [
+//       'afiariwebapi.centralus.cloudapp.azure.com',
+//       'source.unsplash.com',
+//       'localhost',
+//       'images.unsplash.com',
+//       'upload.wikimedia.org',
+//       'countriesnow.space',
+//     ],
+//   },
 
-  env: {
-    BASE_URL: process.env.NEXT_PUBLIC_API_ENDPOINT,
-  },
-  pwa: {
-    dest: 'public',
-    register: true,
-    skipWaiting: true,
-  },
-});
+//   env: {
+//     BASE_URL: process.env.NEXT_PUBLIC_API_ENDPOINT,
+//   },
+//   pwa: {
+//     dest: 'public',
+//     register: true,
+//     skipWaiting: true,
+//   },
+// });
 
 module.exports = nextConfig;
 

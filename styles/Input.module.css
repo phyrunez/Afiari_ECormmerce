@@ -161,3 +161,12 @@
     top: 1.5rem;
   }
 }
+
+
+@media only screen and (max-width: 369px) {
+  .forgetPassword__wrapper {
+    align-items: center !important;
+    justify-items: center !important;
+    width: '100%'
+  }
+}

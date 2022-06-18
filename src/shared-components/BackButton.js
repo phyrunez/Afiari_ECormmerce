@@ -16,13 +16,14 @@ function BackButton() {
         justifyContent: 'center',
         width: '24px',
         height: '24px',
-        left: '25px',
+        left: '0px',
         top: '56px',
         background: '#3a3a3a',
         cursor: 'pointer',
         borderRadius: '100%',
         paddingLeft: '.3rem',
       }}
+      xs={{ left: '10px'}}
       onClick={() => {
         router.back();
       }}

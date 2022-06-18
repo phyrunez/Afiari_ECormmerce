@@ -6,7 +6,7 @@ import {
   Paper,
   InputBase,
 } from '@mui/material';
-import { Search } from '@mui/icons-material';
+import { Search, Clear } from '@mui/icons-material';
 import { useEffect, useState } from 'react';
 import Select from 'react-select';
 import Footer from '../../src/page-components/Footer';
@@ -27,6 +27,9 @@ import {
   setSelectedCategory,
   getAllProducts,
   getAllCountries,
+  getSearchProduct,
+  setSearched,
+  setInitialMetaData,
 } from '../../src/redux/general/generalAction';
 import Spinner from '../../components/Spinner';
 import { handleDelete, setIsLoading } from '../../src/redux/cart/cartAction';
@@ -35,7 +38,14 @@ import ReactTypingEffect from 'react-typing-effect';
 import { setUserCountry } from '../../src/redux/auth/authAction';
 
 function Shop() {
-  const { categories, countries } = useSelector((state) => state.general);
+  const {
+    categories,
+    countries,
+    meta_data: metaData,
+    product, 
+    productCategory,
+    searched
+  } = useSelector((state) => state.general);
 
   const { country, loading } = useSelector((state) => state.auth);
 
@@ -43,6 +53,13 @@ function Shop() {
 
   const [show, setShow] = useState(false);
   const [itemID, setItemID] = useState('');
+  const [query, setQuery] = useState('');
+  const [val, setVal] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [pageload, setPageload] = useState(false);
+  const [searchFieldLoaded, setSearchFieldLoaded] = useState(false);
+
+  const { page_size, number_of_pages, page_index, total_count } = metaData;
 
   const dispatch = useDispatch();
 
@@ -62,7 +79,16 @@ function Shop() {
     id: item.id,
   }));
 
-  const options = finalItems;
+  const ALL_PRODUCT_ID = 'all';
+  let options = finalItems;
+  options = [
+    {
+      value: 'All products',
+      label: 'All products',
+      id: ALL_PRODUCT_ID,
+    },
+    ...options,
+  ];
 
   // /////////////// SETTING UP THE STYLE FOR THE REACT SELECT ////////////////////////////
 
@@ -144,25 +170,62 @@ function Shop() {
     setShow(!show);
   };
 
-  const onChange = (selectedOption) => {
+  const onChange = (selectedOption) => {  
+    setIsLoading(true)
     const countryId = JSON.parse(localStorage.getItem('selectedCountry'));
     setSelectedOption(selectedOption);
-    dispatch(
-      getProductsByCategory(
-        country ? country : countryId?.id,
-        selectedOption.id
-      )
-    );
-    dispatch(setSelectedCategory(selectedOption.value));
+    if(selectedOption.id === ALL_PRODUCT_ID){
+      dispatch(setSelectedCategory(''));
+      dispatch(setSearched(false));
+      dispatch(getAllProducts(country, 1));
+    } else {
+      dispatch(
+        getProductsByCategory(
+          country ? country : countryId?.id,
+          selectedOption.id
+        )
+      );
+      dispatch(setSelectedCategory(selectedOption.value));
+    }
   };
+
+  // CLEAR SEARCH FIELD ON BUTTON CLICKED
+  const clearSearchField = () => {
+    setVal('')
+  };
+
+  // SEARCH
+  const search = () => {
+    if(val.trim() === "") return
+     const pageNumber = 1;
+    setIsLoading(true);
+    dispatch(getSearchProduct(query, country, pageNumber))
+  }
 
   useEffect(() => {
     const countryId = JSON.parse(localStorage.getItem('selectedCountry'));
     const pageNumber = 1;
     dispatch(getAllProducts(countryId?.id, pageNumber));
     dispatch(setUserCountry(countryId?.id));
+    console.log(loading);
+    dispatch(getSearchProduct('', country, page_index));
     // dispatch(getProductCategory(item));
   }, [dispatch]);
+
+  useEffect(() => {
+    if (val !== '') {
+      setSearchFieldLoaded(true);
+    } else {
+      setSearchFieldLoaded(false);
+      dispatch(setSearched(false));
+      const pageNumber = 1;
+      dispatch(getAllProducts(country, pageNumber));
+    }
+  }, [val]);
+
+   useEffect(() => {
+     setIsLoading(false)
+   }, [product, searched, productCategory]);
 
   return (
     <Box
@@ -184,6 +247,7 @@ function Shop() {
           handleModal={handleModal}
         />
       )}
+      {pageload && <Spinner />}
       <Box
         className={styles.shop__header}
         sx={{
@@ -326,9 +390,20 @@ function Shop() {
                 sx={{ ml: 1, flex: 1 }}
                 placeholder="Search for food item"
                 inputProps={{ 'aria-label': 'Search for food item' }}
+                onChange={(e) => {
+                  setVal(e.target.value);
+                  setQuery(e.target.value);
+                }}
+                value={val}
               />
-              <IconButton type="submit" sx={{ p: '10px' }} aria-label="search">
-                <Search />
+              <IconButton
+                type="button"
+                sx={{ p: '10px' }}
+                aria-label="search"
+                onClick={() => clearSearchField()}>
+                {
+                  searchFieldLoaded ? <Clear /> : <Search />
+                }
               </IconButton>
             </Paper>
 
@@ -342,6 +417,7 @@ function Shop() {
               backgroundColor=" #0A503D"
               text="SEARCH"
               color="#fff"
+              onClick={() => search()}
             />
           </Box>
         </Box>
@@ -363,7 +439,7 @@ function Shop() {
           marginBottom: '3rem',
         }}
       >
-        <ShopSideBoxComponent />
+        <ShopSideBoxComponent setIsLoading={setIsLoading} />
 
         {/* //////////////////////////////////////////////// the filter and categories that only appear on mobile //////////////////////////////////////////////// */}
         <Box
@@ -430,9 +506,9 @@ function Shop() {
               // margin: { md: '16px 0px 0px 29px', xs: '1rem 0' },
               border: '1px solid #E6E6E',
             }}
-          ></Divider>
+         ></Divider>
 
-          <ShopCard />
+          <ShopCard isLoading={isLoading} query={query} setIsLoading={setIsLoading} />
 
           {/* //////////////////////////////////////////////// the next and prev arrows //////////////////////////////////////////////// */}
 

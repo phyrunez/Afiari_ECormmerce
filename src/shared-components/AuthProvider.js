@@ -48,6 +48,8 @@ function AuthProvider({ children }) {
         type: AuthTypes.LOGIN_SUCCESS,
         payload: true,
       });
+    } else {
+      console.log("no token found ==========")
     }
     let PageNumber = 1;
 
@@ -89,7 +91,7 @@ function AuthProvider({ children }) {
         emptyCart();
       }
     }
-  }, [isLogged_in, dispatch]);
+  }, [isLogged_in, dispatch, emptyCart]);
 
   return <Fragment>{children}</Fragment>;
 }

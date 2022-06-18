@@ -5,7 +5,7 @@ import FilterByPriceComponent from './FilterByPriceComponent';
 import ShopWithComponent from './ShopWithComponent';
 import NewArrival from './NewArrival';
 
-const ShopWebViewLeftComponent = () => {
+const ShopWebViewLeftComponent = ({ setIsLoading }) => {
   return (
     <Box
       component="div"
@@ -17,7 +17,7 @@ const ShopWebViewLeftComponent = () => {
         // border: "1px solid red",
       }}
     >
-      <ProductCategory />
+      <ProductCategory setIsLoading={setIsLoading} />
       <FilterByPriceComponent />
       <ShopWithComponent />
       <NewArrival />

@@ -1,11 +1,13 @@
-import successIllustration from '../public/successIllustration.svg';
+import password_success_illustration from '../public/password_success_illustration.svg';
 
 import { Box, Typography } from '@mui/material';
 import React from 'react';
 import Image from 'next/image';
 
 import { ButtonBig as Button } from '../src/shared-components/Button';
-import AuthenticationPages from '../components/AuthenticationPages';
+import Navbar from '../src/shared-components/navbar/Navbar';
+import Footer from '../src/page-components/Footer';
+import AuthenticationPages from '../components/AuthenticationPages-2';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 
@@ -19,45 +21,72 @@ const MailConfirmation = () => {
   return (
     <Box
       sx={{
+        position: 'relative',
         display: 'flex',
-        flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '4rem',
+        flexDirection: 'column',
+        width: '100%',
+        height: '100%'
       }}
     >
-      <AuthenticationPages />
+      <Box sx={{ display: {lg: 'flex', xs: 'none'}, width: '100%'}}><Navbar /></Box>
+      {/* <AuthenticationPages /> */}
       <Box
         sx={{
           display: 'flex',
-          flexDirection: 'column',
           alignItems: 'center',
+          // flexDirection: {xs: 'column'},
           justifyContent: 'center',
+          padding: '5rem',
           width: '100%',
-          marginTop: '-3rem',
-          marginBottom: '2rem',
+          marginBottom: '20rem',
+          marginTop: '1rem'
         }}
       >
-        <Image src={successIllustration} alt="illustration" />
+        <Box
+          sx={{
+            position: 'relative',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '3.7rem',
+          }}
+        >
+          <Typography
+            sx={{
+              textAlign: 'center',
+              fontSize: '30px',
+              fontWeight: 'bold',
+              color: '#000',
+            }}
+          >
+            Your password has been reset successfully.
+          </Typography>
+
+          <Button
+            text="LOGIN"
+            color="#fff"
+            backgroundColor="#0A503D"
+            onClick={onClick}
+          />
+        </Box>
+        <Box
+          sx={{
+            display: { lg: 'flex', xs: 'none' },
+            marginTop: '1rem'
+          }}
+        >
+          <Image
+            src={password_success_illustration}
+            alt="passwordSuccess illustration"
+            width={519}
+            height={417}
+          />
+        </Box>
       </Box>
-
-      <Typography
-        sx={{
-          textAlign: 'center',
-          fontSize: '20px',
-          fontWeight: '600',
-          color: '#000',
-        }}
-      >
-        Your password has been reset successfully.
-      </Typography>
-
-      <Button
-        text="LOGIN"
-        color="#fff"
-        backgroundColor="#0A503D"
-        onClick={onClick}
-      />
+      <Box sx={{ display: {lg: 'flex', xs: 'none'}, width: '100%'}}><Footer /></Box>
     </Box>
   );
 };

@@ -4,6 +4,7 @@ import {
   BASE_URL,
   refreshToken,
 } from '../../constants/config';
+import { unRestrictedAPIRoutes } from '../../constants/appRoutes';
 import store from '../../src/redux/store';
 import * as AuthTypes from '../redux/auth/authTypes';
 
@@ -16,7 +17,7 @@ export const httpRequest = async (params) => {
 
     if (typeof url !== 'string') throw new Error('Url must be a string');
 
-    const token = localStorage.getItem(authToken);
+    const token = typeof window !== 'undefined' ? localStorage.getItem(authToken) : '';
     const headers = getHeaders(token, needToken);
 
     const options = {
@@ -28,6 +29,22 @@ export const httpRequest = async (params) => {
     if (body) options.body = isFormData ? body : JSON.stringify(body);
 
     const res = await fetch(`${BASE_URL}/${url}`, options);
+
+    const isAnUnrestrictedRoute = confirmRestriction(unRestrictedAPIRoutes, url)
+    if (isAnUnrestrictedRoute) {
+      if (res.status === 200) {
+        const response = await res.text();
+        result = JSON.parse(response);
+        return result;
+      } else
+        return {
+          result: [false],
+          status: true,
+          error_message: null,
+          success_message: null,
+          meta_data: null,
+        };
+    }
 
     if (res.status === 401) {
       const currentRefreshToken = localStorage.getItem(refreshToken);
@@ -98,12 +115,14 @@ export const httpRequest = async (params) => {
     // console.log(res);
     if (res.status === 200) {
       const response = await res.text();
-
       result = JSON.parse(response);
-
-      return result;
+      return result
     }
-  } catch (error) {}
+
+
+  } catch (error) {
+    console.log("error", error)
+  }
 };
 
 const getHeaders = (token, needToken) => {
@@ -111,3 +130,14 @@ const getHeaders = (token, needToken) => {
 
   return { ...headers, 'content-type': 'application/json' };
 };
+
+const confirmRestriction = (routes, url) => {
+  let isUnrestricted = false
+  routes.forEach((route) => {
+    console.log(route, url)
+    console.log(new RegExp(route).test(url))
+    if(new RegExp(route).test(url)) isUnrestricted = true
+  })
+  console.log("SUPERMAN", isUnrestricted)
+  return isUnrestricted
+}

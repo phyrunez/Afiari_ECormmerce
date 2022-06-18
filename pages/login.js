@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { illustration, logo, VisibilityIcon } from '../assests/images/loginSvg';
 
 import { Typography, Box, Hidden, CircularProgress } from '@mui/material';
@@ -24,7 +24,7 @@ const Login = () => {
   const { country, api_error, email, isLoggged_in, password, loading } =
     useSelector((state) => state.auth);
   const dispatch = useDispatch();
-
+  const submitButton = useRef()
   const router = useRouter();
   const path = router.query;
   // console.log(path);
@@ -45,34 +45,58 @@ const Login = () => {
   //destructure form data
 
   //handling form submittion
-  const onSubmit = (e) => {
-    e.preventDefault();
+
+  useEffect(() => {
+    const listener = event => {
+      if (event.code === "Enter" || event.code === "NumpadEnter") {
+        console.log("Enter key was pressed. Run your function.");
+        event.preventDefault();
+        // callMyFunction();
+        onSubmit(event)
+      }
+    };
+    document.addEventListener("keydown", listener);
+    return () => {
+      document.removeEventListener("keydown", listener);
+    };
+  }, [email, password]);
+
+  useEffect(() => {
+    console.log(email, "=====", password)
+  }, [email,password]);
+
+
+  const onSubmit = () => {
+    document.querySelectorAll('input').forEach((input) => {input.blur()
+    })
     const userData = {
       username: email,
       password: password,
     };
 
+    console.log(submitButton, userData)
+
     // dispatch(login(userData));
-    dispatch(logInUser(userData, router, path));
+    dispatch(logInUser(userData, router, path))
+      .then(() => {
+        let loginResult;
+        if (typeof window !== 'undefined') {
+          loginResult = JSON.parse(localStorage.getItem('loginResult'));
+        }
+        console.log(loginResult);
 
-    setTimeout(() => {
-      let loginResult;
-      if (typeof window !== 'undefined') {
-        loginResult = JSON.parse(localStorage.getItem('loginResult'));
-      }
-      console.log(loginResult);
-
-      if (loginResult.status === false) {
-        toast.error(loginResult.error_message);
-      } else if (email === '' || password === '') {
-        toast.error('Fields can not be empty');
-      } else if (!router?.query?.from) {
-        router?.push('/FoodMarket');
-      } else {
-        router?.push(router?.query?.from);
-        toast.success(loginResult.success_message);
-      }
-    }, 2000);
+        if (loginResult.status === false) {
+          console.log(loginResult.error_message)
+          toast.error(loginResult.error_message);
+        } else if (email === '' || password === '') {
+          toast.error('Fields can not be empty');
+        } else if (!router?.query?.from) {
+          router?.push('/FoodMarket');
+        } else {
+          router?.push(router?.query?.from);
+          toast.success(loginResult.success_message);
+        }
+    })
   };
   // const onSubmit = (e) => {
   //   e.preventDefault();
@@ -237,6 +261,7 @@ const Login = () => {
             backgroundColor="#0A503D"
             onClick={(e) => onSubmit(e)}
             isLoading={loading}
+            inputRef={submitButton}
           />
 
           <LoginBtnComponent
