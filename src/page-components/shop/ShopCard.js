@@ -22,15 +22,18 @@ import { addCart } from '../../redux/cart/cartAction';
 import { useCart } from 'react-use-cart';
 import { formatCurrency, getNumber } from '../../utils/utils';
 import { toast } from 'react-toastify';
+import { PAGE_SCENERIOS } from '../../../constants/constants';
 
-const ShopCard = ({ isLoading }) => {
+const ShopCard = ({ isLoading, setIsLoading, query }) => {
   const {
     product,
     productCategory,
     selectedCategory,
     meta_data: metaData,
     searched,
-    hasSearched
+    hasSearched,
+    currentPaginationType,
+    currentCategory
   } = useSelector((state) => state?.general);
   console.log('searched');
 
@@ -119,6 +122,22 @@ const ShopCard = ({ isLoading }) => {
     currentPage: metaData?.page_index,
     pages: metaData?.number_of_pages,
   });
+
+  const goto = (page) => {
+    setPageNumber(page)
+    if (currentPaginationType === PAGE_SCENERIOS.SEARCH) {
+      dispatch(getSearchProduct(query, country, page));
+    } else if (currentPaginationType === PAGE_SCENERIOS.CATEGORY) {
+      dispatch(getProductsByCategory(country, currentCategory, page));
+    } else {
+      dispatch(getAllProducts(country, page));
+    }
+    setIsLoading(true)
+  }
+
+  useEffect(() => {
+    setPageNumber(metaData.page_index);
+  }, [number_of_pages]);
 
   // useEffect(() => {
   //   setLoading(true);
@@ -600,13 +619,8 @@ const ShopCard = ({ isLoading }) => {
             border: 'none',
             background: 'none',
           }}
-          disabled={pageNumber === 1}
-          onClick={() => {
-            let num = 1;
-            setPageNumber(num);
-            dispatch(getAllProducts(country, num));
-          }}
-          // onClick={handlePrev}
+          disabled={+pageNumber === +1}
+          onClick={() => goto(1)}
         >
           <Image src={leftArrow} alt="product" width={10} height={10} />
           <Image src={leftArrow} alt="product" width={10} height={10} />
@@ -618,12 +632,8 @@ const ShopCard = ({ isLoading }) => {
             border: 'none',
             background: 'none',
           }}
-          disabled={pageNumber === 1}
-          onClick={() => {
-            setPageNumber(page_index - 1);
-            dispatch(getAllProducts(country, page_index - 1));
-          }}
-          // onClick={handlePrev}
+          disabled={+pageNumber === 1}
+          onClick={() => goto(page_index - 1)}
         >
           <Image src={leftArrow} alt="product" width={10} height={10} />
         </Box>
@@ -651,13 +661,13 @@ const ShopCard = ({ isLoading }) => {
             border: 'none',
             outline: 'none',
           }}
-          onChange={(e) => setPageNumber(Number(e.target.value))}
+          onChange={(e) => goto(e.target.value)}
           value={Number(pageNumber)}
         >
           {Array(number_of_pages)
             .fill()
             .map((num, i) => (
-              <option key={i} value={i + 1}>
+              <option key={i} value={i + 1} selected={Number(pageNumber) === (i + 1)}>
                 {i + 1}
               </option>
             ))}
@@ -670,12 +680,8 @@ const ShopCard = ({ isLoading }) => {
             border: 'none',
             background: 'none',
           }}
-          disabled={pageNumber === number_of_pages}
-          onClick={() => {
-            setPageNumber(page_index + 1);
-            dispatch(getAllProducts(country, page_index + 1));
-          }}
-          // onClick={handleNext}
+          disabled={+pageNumber === +number_of_pages}
+          onClick={() => goto(page_index + 1)}
         >
           <Image src={rightArrow} alt="product" width={10} height={10} />
         </Box>
@@ -686,12 +692,8 @@ const ShopCard = ({ isLoading }) => {
             border: 'none',
             background: 'none',
           }}
-          disabled={pageNumber === number_of_pages}
-          onClick={() => {
-            setPageNumber(number_of_pages);
-            dispatch(getAllProducts(country, number_of_pages));
-          }}
-          // onClick={handleNext}
+          disabled={+pageNumber === +number_of_pages}
+          onClick={() => goto(number_of_pages)}
         >
           <Image src={rightArrow} alt="product" width={10} height={10} />
           <Image src={rightArrow} alt="product" width={10} height={10} />

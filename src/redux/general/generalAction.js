@@ -120,6 +120,7 @@ export const getProductsByCategory =
           payload: {
             productCategory: response?.result,
             data: response?.meta_data,
+            categoryId: category_id,
           },
         });
       }

@@ -42,6 +42,9 @@ function Shop() {
     categories,
     countries,
     meta_data: metaData,
+    product, 
+    productCategory,
+    searched
   } = useSelector((state) => state.general);
 
   const { country, loading } = useSelector((state) => state.auth);
@@ -168,12 +171,13 @@ function Shop() {
   };
 
   const onChange = (selectedOption) => {  
+    setIsLoading(true)
     const countryId = JSON.parse(localStorage.getItem('selectedCountry'));
     setSelectedOption(selectedOption);
     if(selectedOption.id === ALL_PRODUCT_ID){
       dispatch(setSelectedCategory(''));
       dispatch(setSearched(false));
-      dispatch(setInitialMetaData());
+      dispatch(getAllProducts(country, 1));
     } else {
       dispatch(
         getProductsByCategory(
@@ -188,22 +192,17 @@ function Shop() {
   // CLEAR SEARCH FIELD ON BUTTON CLICKED
   const clearSearchField = () => {
     setVal('')
-    setSearchFieldLoaded(false)
   };
 
   // SEARCH
   const search = () => {
     if(val.trim() === "") return
+     const pageNumber = 1;
     setIsLoading(true);
-    dispatch(getSearchProduct(query, country, page_index))
-    .then(() => setIsLoading(false))
+    dispatch(getSearchProduct(query, country, pageNumber))
   }
 
   useEffect(() => {
-    console.log("i am called")
-    // if (window.scrollTo(0, 0)) {
-    //   setPageload(true);
-    // }
     const countryId = JSON.parse(localStorage.getItem('selectedCountry'));
     const pageNumber = 1;
     dispatch(getAllProducts(countryId?.id, pageNumber));
@@ -219,9 +218,14 @@ function Shop() {
     } else {
       setSearchFieldLoaded(false);
       dispatch(setSearched(false));
-      dispatch(setInitialMetaData());
+      const pageNumber = 1;
+      dispatch(getAllProducts(country, pageNumber));
     }
   }, [val]);
+
+   useEffect(() => {
+     setIsLoading(false)
+   }, [product, searched, productCategory]);
 
   return (
     <Box
@@ -435,7 +439,7 @@ function Shop() {
           marginBottom: '3rem',
         }}
       >
-        <ShopSideBoxComponent />
+        <ShopSideBoxComponent setIsLoading={setIsLoading} />
 
         {/* //////////////////////////////////////////////// the filter and categories that only appear on mobile //////////////////////////////////////////////// */}
         <Box
@@ -504,7 +508,7 @@ function Shop() {
             }}
          ></Divider>
 
-          <ShopCard isLoading={isLoading} />
+          <ShopCard isLoading={isLoading} query={query} setIsLoading={setIsLoading} />
 
           {/* //////////////////////////////////////////////// the next and prev arrows //////////////////////////////////////////////// */}
 

@@ -14,10 +14,10 @@ import {
   getProductsByCategory,
   setSelectedCategory,
   setSearched,
-  setInitialMetaData,
+  getAllProducts,
 } from '../../redux/general/generalAction';
 
-const ProductCategory = () => {
+const ProductCategory = ({setIsLoading}) => {
   const { categories } = useSelector((state) => state.general);
 
   const { country } = useSelector((state) => state.auth);
@@ -116,7 +116,8 @@ const ProductCategory = () => {
             setSelected("all");
             dispatch(setSelectedCategory(""));
             dispatch(setSearched(false));
-            dispatch(setInitialMetaData());
+            setIsLoading(true);
+            dispatch(getAllProducts(countryId?.id, 1))
           }}
         >
           <ListItemText
@@ -155,6 +156,7 @@ const ProductCategory = () => {
                 localStorage.getItem('selectedCountry')
               );
               setSelected(item.id);
+              setIsLoading(true);
               dispatch(getProductsByCategory(countryId?.id, item.id));
               dispatch(setSelectedCategory(item.item_value));
               dispatch(setSearched(false));

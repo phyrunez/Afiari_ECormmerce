@@ -1,5 +1,5 @@
 import * as GeneralTypes from './generalTypes';
-
+import { PAGE_SCENERIOS } from '../../../constants/constants'
 const initialState = {
   isLoading: false,
   countries: [],
@@ -18,6 +18,8 @@ const initialState = {
   searched: [],
   hasSearched: false,
   shouldReview: false,
+  currentPaginationType: PAGE_SCENERIOS.GENERAL,
+  currentCategory: null
 };
 
 const reducer = (state = initialState, action) => {
@@ -38,12 +40,15 @@ const reducer = (state = initialState, action) => {
         product: action?.payload?.products,
         meta_data: action?.payload?.data,
         initial_meta_data: action?.payload?.data,
+        currentPaginationType: PAGE_SCENERIOS.GENERAL,
       };
     case GeneralTypes.GET_PRODUCTS_BY_CATEGORY:
       return {
         ...state,
         productCategory: action?.payload?.productCategory,
         meta_data: action?.payload?.data,
+        currentPaginationType: PAGE_SCENERIOS.CATEGORY,
+        currentCategory: action?.payload?.categoryId,
       };
     case GeneralTypes.GET_SINGLE_PRODUCT:
       return {
@@ -66,6 +71,7 @@ const reducer = (state = initialState, action) => {
         searched: action.payload.product,
         meta_data: action.payload.data,
         hasSearched: true,
+        currentPaginationType: PAGE_SCENERIOS.SEARCH,
       };
     case GeneralTypes.GET_SELECTED_PROFILE_MENU:
       return {
@@ -103,6 +109,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         shouldReview: action.payload,
+      };
+    case GeneralTypes.SET_PAGINATION_TYPE:
+      return {
+        ...state,
+        currentPaginationType: action.payload,
       };
     default:
       return state;
