@@ -138,12 +138,25 @@ export const getSingleProduct =
         needToken: false,
       });
 
+      const reviewResponse = await httpRequest({
+        url: `${API_ROUTES?.shouldReview.route}${product_id}`,
+        method: API_ROUTES.shouldReview.method,
+        needToken: false,
+      });
+
       if (response?.status === true) {
         dispatch({
           type: GeneralTypes?.GET_SINGLE_PRODUCT,
           payload: {
             product: response.result,
           },
+        });
+      }
+
+      if (reviewResponse?.status === true) {
+        dispatch({
+          type: GeneralTypes?.SET_SHOULD_REVIEW,
+          payload:  reviewResponse.result[0],
         });
       }
     } catch (error) {

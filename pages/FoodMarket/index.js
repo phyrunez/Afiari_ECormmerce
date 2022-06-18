@@ -216,7 +216,6 @@ function Shop() {
   useEffect(() => {
     if (val !== '') {
       setSearchFieldLoaded(true);
-      search();
     } else {
       setSearchFieldLoaded(false);
       dispatch(setSearched(false));

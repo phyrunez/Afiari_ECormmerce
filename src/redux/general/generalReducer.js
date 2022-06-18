@@ -17,6 +17,7 @@ const initialState = {
   selectedProfileMenu: '',
   searched: [],
   hasSearched: false,
+  shouldReview: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -96,9 +97,13 @@ const reducer = (state = initialState, action) => {
     case GeneralTypes.SET_INITIAL_METADATA:
       return {
         ...state,
-        meta_data: state.initial_meta_data
+        meta_data: state.initial_meta_data,
       };
-
+    case GeneralTypes.SET_SHOULD_REVIEW:
+      return {
+        ...state,
+        shouldReview: action.payload,
+      };
     default:
       return state;
   }
