@@ -1,4 +1,4 @@
-const BASE_URL = 'https://afiariwebapi.centralus.cloudapp.azure.com:444/api';
+const BASE_URL = 'https://afiari-api-production.centralus.cloudapp.azure.com:444/api';
 
 const ETERNAL_URL =
   'https://www.googleapis.com/calendar/v3/users/me/calendarList';
