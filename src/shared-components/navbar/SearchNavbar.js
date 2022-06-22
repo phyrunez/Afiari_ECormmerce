@@ -11,6 +11,12 @@ import {
   Divider,
   Typography,
 } from '@mui/material';
+import {
+    getAllProducts,
+    getAllCountries,
+    getSearchProduct,
+    setSearched,
+  } from '../../redux/general/generalAction';
 import { ButtonSmall as Button } from '../Button';
 import styles from '../../../styles/Navbar.module.css';
 import style from '../../../styles/Shop.module.css';
@@ -20,7 +26,6 @@ import CardPayment from '../../../public/CardPayment.svg';
 import FreeShipping from '../../../public/FreeShipping.svg';
 import returnsIcon from '../../../public/returnsIcon.svg';
 import OnlineSupport from '../../../public/OnlineSupport.svg';
-import SearchNavbar from './SearchNavbar';
 import Link from 'next/link';
 import { useSelector, useDispatch } from 'react-redux';
 import { login } from '../../redux/slice/auth/AuthSlice';
@@ -29,19 +34,22 @@ import { useCart } from 'react-use-cart';
 import { getCart } from '../../redux/cart/cartAction';
 import { useRouter } from 'next/router';
 
-const Navbar = () => {
+
+const SearchNavbar = ({ setIsLoading }) => {
   const [showNav, setShowNav] = useState(false);
   const [menuIcon, setMenuIcon] = useState(false);
   const [show, setShow] = useState(false);
   const { totalItems, emptyCart } = useCart();
-  const [val, setVal] = useState('');
+//   const [val, setVal] = useState('');
   const [query, setQuery] = useState('');
+  const [country, setCountry] = useState('');
 
   const { isLogged_in } = useSelector((state) => state.auth);
   const { cart } = useSelector((state) => state.cart);
   const [active, setActive] = useState(false);
   const [activePage, setActivePage] = useState('');
   const [searchField, setSearchField] = useState(false);
+  const [searchFieldLoaded, setSearchFieldLoaded] = useState(false);
 
   const navList = [
     {
@@ -80,8 +88,38 @@ const Navbar = () => {
   }
 
   const clearSearchField = () => {
-    setVal('')
+    setQuery('')
   };
+
+  // SEARCH
+  const search = () => {
+    if(query.trim() === "") return
+     const pageNumber = 1;
+    setIsLoading(true);
+    dispatch(getSearchProduct(query, country, pageNumber))
+  }
+
+  useEffect(() => {
+    if (query.trim() !== '') {
+      setSearchFieldLoaded(true);
+    } else {
+      setSearchFieldLoaded(false);
+      dispatch(setSearched(false));
+    //   const pageNumber = 1;
+      dispatch(getAllProducts(country));
+    }
+  }, [query]);
+
+  useEffect(() => {
+    dispatch(getAllCountries())
+    .then(() => {
+        let getCountryItem = localStorage.getItem('selectedCountry')
+        getCountryItem = getCountryItem && JSON.parse(getCountryItem)
+        if (getCountryItem !== null) {
+            setCountry(getCountryItem.id)
+        }
+    })  
+  }, [])
 
 
   return (
@@ -458,15 +496,63 @@ const Navbar = () => {
             
           {/* </Box> */}
         
-          <Search
-            className={styles.searchField}
+          <Paper
+            className={style.smallSizeView}
+            component="form"
             sx={{
-              color: '#000',
-              marginRight: '11px',
-              width: '18px',
-              height: '20px',
+            p: '2px 4px',
+            display: {xs: 'none', sm: 'flex', md: 'none'},
+            width: '200',
+            border: '1.53151px solid rgba(0, 0, 0, 0.3)',
+            borderRadius: '20.6713px',
             }}
-          />
+        >
+            <InputBase
+            sx={{ ml: 1, flex: 1 }}
+            placeholder="Search for food item"
+            inputProps={{ 'aria-label': 'Search for food item' }}
+            onChange={(e) => {
+                // setVal(e.target.value);
+                setQuery(e.target.value);
+            }}
+            value={query}
+            />
+            <IconButton
+            type="button"
+            sx={{ p: '10px' }}
+            aria-label="search"
+            onClick={() => clearSearchField()}>
+            {
+                searchFieldLoaded ? <Clear /> : <Search />
+            }
+            </IconButton>
+            <Box className={style.smallSizeView}>
+              <Search />
+            </Box>
+        </Paper>
+
+        {/* ////////////////////////// END OF SEARCH TEXTAREA ////////////////// */}
+
+        <Box 
+            className={style.smallSizeView}
+            sx={{
+            display: {xs: 'none', sm: 'flex', md: 'none'},
+            marginLeft: '10px'
+            }}
+        >
+        <ButtonSmall
+            width="100px"
+            height="50px"
+            borderRadius="50px"
+            fontSize="12px"
+            backgroundColor=" #0A503D"
+            text="SEARCH"
+            color="#fff"
+            onClick={() => search()}
+        />
+        </Box>
+        
+   
           {!menuIcon && (
             <IconButton onClick={handleMenu}>
               <Menu
@@ -732,4 +818,5 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default SearchNavbar;
+        

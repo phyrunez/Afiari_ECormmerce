@@ -45,14 +45,14 @@ Foodstuff shop,
 Foodstuff market in Lagos"
         />
         {/* <!-- Global site tag (gtag.js) - Google Analytics --> */}
-      <script async src="https://www.googletagmanager.com/gtag/js?id=G-YDBXXY5PPK"></script>
+      {/* <script async src="https://www.googletagmanager.com/gtag/js?id=G-YDBXXY5PPK"></script>
       <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
 
         gtag('config', 'G-YDBXXY5PPK');
-      </script>
+      </script> */}
         {/* <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> */}
         {/* <script src="../src/vendor/jquery.min.js"></script>
