@@ -425,14 +425,17 @@ const Navbar = () => {
               </Box>
             </Box>
           </Link>
-          <Search
-            sx={{
-              color: '#000',
-              marginRight: '11px',
-              width: '18px',
-              height: '20px',
-            }}
-          />
+          <Box>
+            <Search
+              sx={{
+                color: '#000',
+                marginRight: '11px',
+                width: '18px',
+                height: '20px',
+              }}
+            />
+          </Box>
+          
 
           {!menuIcon && (
             <IconButton onClick={handleMenu}>

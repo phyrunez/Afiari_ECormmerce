@@ -207,13 +207,10 @@ function Shop() {
     const pageNumber = 1;
     dispatch(getAllProducts(countryId?.id, pageNumber));
     dispatch(setUserCountry(countryId?.id));
-    console.log(loading);
-    dispatch(getSearchProduct('', country, page_index));
-    // dispatch(getProductCategory(item));
   }, [dispatch]);
 
   useEffect(() => {
-    if (val !== '') {
+    if (val.trim() !== '') {
       setSearchFieldLoaded(true);
     } else {
       setSearchFieldLoaded(false);

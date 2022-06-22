@@ -12,7 +12,7 @@ import {
   ListItemText,
   Typography,
 } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSelectedProfileMenu } from '../../src/redux/general/generalAction';
 import styles from '../../styles/Profile.module.css';
@@ -48,24 +48,38 @@ function ProfileSideNav() {
     },
   ];
 
+  useEffect(() => {
+    setSelectedProfileList('Shopping History');
+  }, [])
+
   return (
     <Box
       sx={{
-        position: { sm: 'relative' },
+        position: active
+          ? { xs: 'absolute', sm: 'relative' }
+          : { sm: 'relative' },
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'center',
-        width: { xs: !active ? '35%' : '25%', md: '45%' },
+        justifyContent: 'flex-start',
+        width: active
+          ? { xs: 'auto', sm: 'auto', md: '350px' }
+          : { xs: '100px', sm: '100px', md: '500px' },
         background: ' #FFFFFF',
-        border: '1px solid rgba(0, 0, 0, 0.3)',
+        border: active ? { xs: 'unset', sm: 'unset', md: '1px solid rgba(0, 0, 0, 0.3)'} : '1px solid rgba(0, 0, 0, 0.3)',
         // marginLeft: '3rem',
-        padding: '24px 0px',
+        padding: active
+          ? { xs: '24px 30px', sm: '24px 30px', md: '24px 0px' }
+          : '24px 0px',
+        paddingTop: '20px',
         borderTop: { xs: 'none' },
         borderBottom: { xs: 'none' },
         borderTopRightRadius: { md: '15px' },
         borderBottomRightRadius: { md: '15px' },
-        zIndex: { xs: '10000000000000000000000  ', md: '0' },
+        zIndex: { xs: '100  ', md: '0' },
+        boxShadow: active
+          ? { xs: '6px 4px 8px #d5d5d54f', sm: '6px 4px 8px #d5d5d54f', md: 'unset' }
+          : 'unset',
         // border: '1px solid red',
       }}
       className={styles.profile__side__nav__wrapper}
@@ -93,7 +107,7 @@ function ProfileSideNav() {
         }}
       >
         <Typography
-          variant="h2"
+          variant="h4"
           className={styles.profile__header}
           sx={
             {
@@ -154,6 +168,8 @@ function ProfileSideNav() {
                 selectedProfileList === item.name
                   ? { xs: '#000', md: '#fff' }
                   : '#000',
+              height: { xs: 'auto', sm: 'auto', md: '108px' },
+              padding: '20px 0px',
             }}
             // sx={{
             //   background: selectedProfileList === true ? ' #0A503D' : '#fff',
@@ -164,7 +180,7 @@ function ProfileSideNav() {
                 // border: '2px solid red',
                 color:
                   selectedProfileList === item.name
-                    ? { xs: '#F7A929', md: '#3A4942' }
+                    ? { xs: 'black', md: 'black' }
                     : '#3A4942',
               }}
             >

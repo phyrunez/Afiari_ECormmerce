@@ -611,7 +611,7 @@ function ProductDetail() {
                 </Typography>
 
                 {
-                  shouldReview && (
+                  !shouldReview && (
                     <Box>
                       <Typography
                   sx={{
