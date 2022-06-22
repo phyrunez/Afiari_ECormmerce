@@ -20,6 +20,7 @@ import CartComponent from '../../src/page-components/shop/CartComponent';
 import ServiceCard from '../../src/page-components/ServiceCard';
 import { ButtonSmall } from '../../src/shared-components/Button';
 import Navbar from '../../src/shared-components/navbar/Navbar';
+import SearchNavbar from '../../src/shared-components/navbar/SearchNavbar';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -207,6 +208,12 @@ function Shop() {
     const pageNumber = 1;
     dispatch(getAllProducts(countryId?.id, pageNumber));
     dispatch(setUserCountry(countryId?.id));
+<<<<<<< HEAD
+=======
+    console.log(loading);
+    // dispatch(getSearchProduct('', country, page_index));
+    // dispatch(getProductCategory(item));
+>>>>>>> dev_03
   }, [dispatch]);
 
   useEffect(() => {
@@ -236,7 +243,7 @@ function Shop() {
         // border: '1px solid red',
       }}
     >
-      <Navbar />
+      <SearchNavbar setIsLoading={setIsLoading} />
       {show && (
         <DeleteNotification
           id={itemID}
@@ -362,6 +369,7 @@ function Shop() {
           </Typography>
 
           <Box
+            className={styles.mobileSearchView}
             sx={{
               display: { md: 'flex', xs: 'none' },
               flexDirection: 'row',
@@ -377,7 +385,7 @@ function Shop() {
                 p: '2px 4px',
                 display: 'flex',
                 alignItems: 'center',
-                width: 400,
+                width: '100%',
                 border: '1.53151px solid rgba(0, 0, 0, 0.3)',
                 borderRadius: '20.6713px',
                 marginRight: '1rem',

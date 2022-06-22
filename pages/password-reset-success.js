@@ -1,5 +1,4 @@
 import password_success_illustration from '../public/password_success_illustration.svg';
-
 import { Box, Typography } from '@mui/material';
 import React from 'react';
 import Image from 'next/image';
