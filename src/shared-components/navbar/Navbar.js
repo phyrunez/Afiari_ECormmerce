@@ -441,21 +441,6 @@ const Navbar = () => {
                     : cartItems?.length} */}
               </Box>
             </Box>
-<<<<<<< HEAD
-          </Link>
-          <Box>
-            <Search
-              sx={{
-                color: '#000',
-                marginRight: '11px',
-                width: '18px',
-                height: '20px',
-              }}
-            />
-          </Box>
-          
-
-=======
           </Link> 
             {/* <Box
             sx={{
@@ -482,7 +467,6 @@ const Navbar = () => {
               height: '20px',
             }}
           />
->>>>>>> dev_03
           {!menuIcon && (
             <IconButton onClick={handleMenu}>
               <Menu

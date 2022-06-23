@@ -208,12 +208,9 @@ function Shop() {
     const pageNumber = 1;
     dispatch(getAllProducts(countryId?.id, pageNumber));
     dispatch(setUserCountry(countryId?.id));
-<<<<<<< HEAD
-=======
     console.log(loading);
     // dispatch(getSearchProduct('', country, page_index));
     // dispatch(getProductCategory(item));
->>>>>>> dev_03
   }, [dispatch]);
 
   useEffect(() => {
