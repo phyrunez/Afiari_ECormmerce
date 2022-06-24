@@ -526,9 +526,9 @@ const SearchNavbar = ({ setIsLoading }) => {
                 searchFieldLoaded ? <Clear /> : <Search />
             }
             </IconButton>
-            <Box className={style.smallSizeView}>
+            {/* <Box className={style.smallSizeView}>
               <Search />
-            </Box>
+            </Box> */}
         </Paper>
 
         {/* ////////////////////////// END OF SEARCH TEXTAREA ////////////////// */}
