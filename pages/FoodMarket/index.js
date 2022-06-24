@@ -241,6 +241,7 @@ function Shop() {
       }}
     >
       <SearchNavbar setIsLoading={setIsLoading} />
+      {/* <Navbar /> */}
       {show && (
         <DeleteNotification
           id={itemID}
@@ -451,16 +452,18 @@ function Shop() {
             alignItems: 'center',
             justifyContent: 'center',
             width: '100%',
+            
           }}
         >
           <Box
+            className={styles.adjustProductCategory}
             sx={{
               display: { xs: 'flex', lg: 'none' },
               alignItems: 'center',
               justifyContent: 'space-around',
               // padding: '22px 0',
               width: '100%',
-              marginBottom: '1rem',
+              marginBottom: '1rem'
             }}
           >
             <Select
@@ -481,7 +484,7 @@ function Shop() {
               }
             />
 
-            <Select
+            {/* <Select
               styles={filterSelectStyle}
               options={options}
               classNamePrefix="gooo__input"
@@ -495,7 +498,7 @@ function Shop() {
                   FILTER
                 </div>
               }
-            />
+            /> */}
           </Box>
 
           {/* //////////////////////////////////////////////// end of the filter and categories that only appear on mobile //////////////////////////////////////////////// */}

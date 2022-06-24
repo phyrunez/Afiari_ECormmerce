@@ -496,7 +496,7 @@ const SearchNavbar = ({ setIsLoading }) => {
             
           {/* </Box> */}
         
-          <Paper
+          {/* <Paper
             className={style.smallSizeView}
             component="form"
             sx={{
@@ -525,15 +525,15 @@ const SearchNavbar = ({ setIsLoading }) => {
             {
                 searchFieldLoaded ? <Clear /> : <Search />
             }
-            </IconButton>
+            </IconButton> */}
             {/* <Box className={style.smallSizeView}>
               <Search />
             </Box> */}
-        </Paper>
+        {/* </Paper> */}
 
         {/* ////////////////////////// END OF SEARCH TEXTAREA ////////////////// */}
 
-        <Box 
+        {/* <Box 
             className={style.smallSizeView}
             sx={{
             display: {xs: 'none', sm: 'flex', md: 'none'},
@@ -550,7 +550,7 @@ const SearchNavbar = ({ setIsLoading }) => {
             color="#fff"
             onClick={() => search()}
         />
-        </Box>
+        </Box> */}
         
    
           {!menuIcon && (
