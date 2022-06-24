@@ -99,7 +99,7 @@ const Navbar = () => {
           justifyContent: 'space-between',
           background: '#FFFFFF',
           height: '90px',
-          border: ' 0.259542px solid #B9B9B9',
+          // border: ' 0.259542px solid #B9B9B9',
         }}
       >
         <Box

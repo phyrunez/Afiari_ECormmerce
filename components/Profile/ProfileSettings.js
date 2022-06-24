@@ -13,6 +13,7 @@ import { ButtonSmall } from '../../src/shared-components/Button';
 import { Input, InputSmall } from '../../src/shared-components/InputComponent';
 import styles from '../../styles/Profile.module.css';
 import { useSelector, useDispatch } from 'react-redux';
+import { getSelectedProfileMenu } from '../../src/redux/general/generalAction';
 import { toast } from 'react-toastify';
 
 function ProfileSettings() {
@@ -22,15 +23,24 @@ function ProfileSettings() {
   const [birth_day, setBirth_day] = useState('');
   const [birth_month, setBirth_month] = useState('');
   const [dialCode, setDialCode] = useState('');
-  const [lastName, setLastName] = useState('');
+  const [address, setAddress] = useState('');
   const [firstName, setFirstName] = useState('');
+  const [userCountry, setUserCountry] = useState('')
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [birth_year, setBirth_year] = useState('');
   const [phone_number, setPhone_number] = useState('');
 
+  const {first_name, last_name} =
+    useSelector((state) => state.auth);
+
   console.log(
-    // email,
+    email,
     firstName,
     lastName,
+    address,
+    password,
     dialCode,
     +birth_month,
     +birth_day,
@@ -60,6 +70,7 @@ function ProfileSettings() {
     const data = {
       FirstName: firstName,
       LastName: lastName,
+      Address: address,
       BirthDay: birth_day,
       BirthMonth: birth_month,
       BirthYear: birth_year,
@@ -91,6 +102,7 @@ function ProfileSettings() {
           flexDirection: 'column',
           // alignItems: 'center',
           justifyContent: 'center',
+          marginTop: '30px'
           // width: '50%',
           // border: '1px solid blue',
         }}
@@ -137,7 +149,7 @@ function ProfileSettings() {
                 color: '#000000',
               }}
             >
-              {firstName + ' ' + lastName}
+              {first_name + ' ' + last_name}
             </Typography>
           </Box>
           {/* <input type="file" 
@@ -158,7 +170,7 @@ function ProfileSettings() {
 
             onChange={onChange}
           />
-          <label htmlFor="contained-button-file">
+          <label htmlFor="contained-button-file" className={styles.profile__image__upload__btn__label} style={{ paddingBottom: '27px', paddingLeft: '20px'}}>
             <Button
               variant="contained"
               color="primary"
@@ -177,36 +189,117 @@ function ProfileSettings() {
             flexDirection: 'column',
             //   alignItems: 'center',
             justifyContent: 'center',
+            paddingTop: '62px',
             //   width: '100%',
             // border: '1px solid red',
           }}
         >
           <InputSmall
             type="text"
-            label="first name"
-            placeholder="Michael Adewole"
+            label="full name"
+            placeholder={first_name + ' ' + last_name}
             className={styles.profile__settings__input_wrapper}
             onChange={(e) => {
               setFirstName(e.target.value);
             }}
-            name="firstName"
-            id="firstName"
+            name="fullName"
+            id="fullName"
             value={firstName}
           />
           <InputSmall
             type="text"
-            label="last name"
-            placeholder="kola"
+            label="address"
+            placeholder="No. 45, Ojuelegba Road, Ojuelegba, Lagos"
             className={styles.profile__settings__input_wrapper}
             onChange={(e) => {
-              setLastName(e.target.value);
+              setAddress(e.target.value);
             }}
-            name="lastName"
-            id="lastName"
-            value={lastName}
+            name="address"
+            id="address"
+            value={address}
           />
 
           <InputSmall
+            type="text"
+            label="Email"
+            htmlFor="email"
+            placeholder="somebody@mail.com"
+            className={styles.profile__settings__input_wrapper}
+            icon={<Email fontSize="24px" />}
+            onChange={(e) => {
+              // dispatch(handleUserInput('email', e.target.value));
+              setEmail(e.target.value)
+            }}
+            name="email"
+            id="email"
+            value={email}
+          />
+                              
+          <InputSmall
+            label="Password"
+            placeholder="************"
+            type={visible ? 'text' : 'password'}
+            className={styles.profile__settings__input_wrapper}
+            icon={
+              visible ? (
+                <VisibilityOff fontSize="24px" />
+              ) : (
+                <Visibility fontSize="24px" />
+              )
+            }
+            onClick={() => {
+              setVisible(!visible);
+            }}
+            onChange={(e) => {
+              // dispatch(handleUserInput('password', e.target.value));
+              setPassword(e.target.value)
+            }}
+            name="password"
+            id="password"
+            value={password}
+          />
+          <Box
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(1, 1fr 2fr)',
+              marginBottom: '1rem',
+              width: { xs: '239.93px', md: '350px' },
+              gap: 2,
+            }}
+          >
+            <InputSmall
+              className={styles.profile__settings__input__small}
+              label="Dial code"
+              placeholder="+234"
+              type="text"
+              component="input"
+              onChange={(e) => {
+                dispatch(handleUserInput('dialCode', e.target.value));
+              }}
+              name="dialCode"
+              id="dialCode"
+              value={dialCode}
+            />
+
+            <InputSmall
+              className={styles.profile__settings__input__small__phone}
+              label="Phone number"
+              placeholder="08066655544"
+              type="text"
+              icon={<Phone fontSize="24px" />}
+              // onChange={(e) => {
+              //   dispatch(handleUserInput('phone_number', e.target.value));
+              // }}
+              onChange={(e) => {
+                setPhone_number(e.target.value);
+              }}
+              name="phone_number"
+              id="phone_number"
+              value={phone_number}
+            />
+          </Box>
+
+          {/* <InputSmall
             className={styles.profile__settings__input__small__phone}
             label="Phone number"
             placeholder="08066655544"
@@ -218,7 +311,7 @@ function ProfileSettings() {
             name="phone_number"
             id="phone_number"
             value={phone_number}
-          />
+          /> */}
 
           {/*           
           <InputSmall
@@ -281,7 +374,7 @@ function ProfileSettings() {
               value={phone_number}
             />
           </Box> */}
-          {/* <Box className={styles.profile__settings__input_wrapper}>
+          <Box className={styles.profile__settings__input_wrapper}>
             <label
               htmlFor="country"
               style={{
@@ -293,23 +386,24 @@ function ProfileSettings() {
             <select
               placeholder="Country"
               className={styles.profile__settings__select}
-              onChange={(e) => }
-            
+              onChange={(e) => {
+                setUserCountry(e.target.value)
+              }}
               name="userCountry"
               id="country"
               value={userCountry}
             >
               <option value="Nigeria">Nigeria</option>
             </select>
-          </Box> */}
+          </Box>
 
-          <label htmlFor="dateOfBirth">Date of birth</label>
+          <label htmlFor="dateOfBirth" style={{ paddingTop: '10px', paddingBottom: '5px', fontWeight: '600', fontSize: '15px'}}>Date of birth</label>
           <Box
             sx={{
               display: 'grid',
               gridTemplateColumns: 'repeat(1, 1fr 1fr 1fr)',
               marginBottom: '1rem',
-              width: { xs: '230px', md: '250px' },
+              width: { xs: '230px', md: '350px' },
               gap: 2,
             }}
           >
@@ -366,7 +460,7 @@ function ProfileSettings() {
                 ))}
               </select>
             </Box>
-            <Box className={styles.profile__settings__input__small}>
+            {/* <Box className={styles.profile__settings__input__small}>
               <label
                 htmlFor="birth_year"
                 style={{
@@ -384,7 +478,7 @@ function ProfileSettings() {
                 id="birth_year"
                 value={birth_year}
               >
-                {/* year */}
+                
                 {[
                   2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015, 2014, 2013,
                   2012, 2011, 2010, 2009, 2008, 2007, 2006, 2005, 2004, 2003,
@@ -403,7 +497,7 @@ function ProfileSettings() {
                   </option>
                 ))}
               </select>
-            </Box>
+            </Box> */}
           </Box>
           <ButtonSmall
             text="UPDATE PROFILE"
