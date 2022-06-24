@@ -83,7 +83,7 @@ function Notification() {
             Welcome to the Afiari Market. We are glad to have you here with us
           </Typography>
           <IconButton>
-            <Close fontSize="14px" />
+            <Close fontSize="14px" marginLeft="20px" />
           </IconButton>
         </Box>
       ) : (
@@ -92,7 +92,7 @@ function Notification() {
           sx={{
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'space-evenly',
+            justifyContent: '',
             width: '100%',
             background: ' #BFF0E3',
             padding: { xs: '49px 30px' },
@@ -108,8 +108,7 @@ function Notification() {
           />
           <Typography variant="p" className={styles.profile__paragraph}>
             Welcome to the Afiari Market. We are glad to have you here with us.
-            feel free to reach us through any of our contacts at the footer of
-            our page
+            
           </Typography>
           <IconButton>
             <Close fontSize="14px" />
