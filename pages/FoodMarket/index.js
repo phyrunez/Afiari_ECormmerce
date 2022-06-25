@@ -369,7 +369,7 @@ function Shop() {
           <Box
             className={styles.mobileSearchView}
             sx={{
-              display: { md: 'flex', xs: 'none' },
+              display: { md: 'flex' },
               flexDirection: 'row',
               alignItems: 'center',
               justifyContent: 'flex-start',
