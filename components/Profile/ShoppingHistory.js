@@ -39,15 +39,16 @@ function ShoppingHistory() {
             flexDirection: 'column',
             height: '650px',
             overflowX: 'hidden',
+            marginTop: '30px'
             // border: '1px solid red',
           }}
         >
           <Typography
-            variant="h2"
+            variant="h6"
             sx={{
               fontStyle: 'normal',
-              fontWeight: '400',
-              fontSize: { xs: '16px', md: '31px' },
+              fontWeight: 'bold',
+              fontSize: { xs: '16px', md: '25px' },
               lineHeight: { xs: '22px', md: '42px' },
               //   textAlign: 'center',
               letterSpacing: ' 0.04em',

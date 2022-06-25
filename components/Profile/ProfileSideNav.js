@@ -69,7 +69,7 @@ function ProfileSideNav() {
         border: active ? { xs: 'unset', sm: 'unset', md: '1px solid rgba(0, 0, 0, 0.3)'} : '1px solid rgba(0, 0, 0, 0.3)',
         // marginLeft: '3rem',
         padding: active
-          ? { xs: '24px 30px', sm: '24px 30px', md: '24px 0px' }
+          ? { xs: '24px 30px', sm: '24px 30px', md: '50px 0px' }
           : '24px 0px',
         paddingTop: '20px',
         borderTop: { xs: 'none' },
@@ -77,6 +77,8 @@ function ProfileSideNav() {
         borderTopRightRadius: { md: '15px' },
         borderBottomRightRadius: { md: '15px' },
         zIndex: { xs: '100  ', md: '0' },
+        marginTop: '30px',
+        marginBottom: '-200px',
         boxShadow: active
           ? { xs: '6px 4px 8px #d5d5d54f', sm: '6px 4px 8px #d5d5d54f', md: 'unset' }
           : 'unset',
@@ -103,11 +105,12 @@ function ProfileSideNav() {
           flexDirection: 'column',
           alignItems: 'center',
           width: '100%',
+          marginTop: '28px'
           // marginBottom: '67px',
         }}
       >
         <Typography
-          variant="h4"
+          variant="h5"
           className={styles.profile__header}
           sx={
             {
@@ -148,7 +151,7 @@ function ProfileSideNav() {
         //   setSelectedProfileList(!selectedProfileList);
         // }}
         sx={{
-          marginBottom: '500px',
+          marginBottom: '400px',
         }}
       >
         {profileItems.map((item, i) => (
