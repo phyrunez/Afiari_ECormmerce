@@ -243,7 +243,7 @@ function ProductDetail() {
                   fontWeight: '600',
                   fontSize: { xs: '20px', md: '48px' },
                   lineHeight: { xs: '37px', md: '65px' },
-                  textAlign: { xs: 'center', md: 'justify' },
+                  textAlign: { xs: 'center', md: 'left' },
                   color: { xs: ' #FFFFFF', md: '#3a3a3a' },
                   display: 'flex',
                   flexDirection: 'column',
@@ -291,7 +291,7 @@ function ProductDetail() {
             // marginTop: '29px',
             width: '100%',
 
-            padding: { xs: '47px 61px', sm: '87px 200px', md: '87px 200px' },
+            padding: { xs: '47px 61px', sm: '87px 100px', md: '87px 175px' },
             // border: '1px solid red',
           }}
         >
@@ -481,7 +481,7 @@ function ProductDetail() {
           justifyContent: 'space-between',
           borderBottom: ' 1px solid rgba(0, 0, 0, 0.3)',
 
-          padding: { xs: '0px 20px', md: '0px 180px', lg: '0px 180px' },
+          padding: { xs: '0px 20px', md: '0px 200px', lg: '0px 250px' },
 
           marginBottom: '1rem',
           width: '100%',
@@ -530,9 +530,10 @@ function ProductDetail() {
       <Box
         sx={{
           display: 'flex',
-          justifyContent: 'center',
+          justifyContent: 'left',
+          alignItems: 'left',
           height: '869px',
-          padding: '11px 32px',
+          padding: '11px 42px',
         }}
       >
         {description &&
@@ -611,7 +612,7 @@ function ProductDetail() {
                 </Typography>
 
                 {
-                  shouldReview && (
+                  !shouldReview && (
                     <Box>
                       <Typography
                   sx={{

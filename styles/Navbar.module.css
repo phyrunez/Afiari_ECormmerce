@@ -60,4 +60,10 @@
     margin-left: 0rem;
     color: #29b260;
   }
+
+  .searchField {
+    display: flex;
+    background: white;
+  }
 }
+

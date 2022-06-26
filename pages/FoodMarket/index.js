@@ -20,6 +20,7 @@ import CartComponent from '../../src/page-components/shop/CartComponent';
 import ServiceCard from '../../src/page-components/ServiceCard';
 import { ButtonSmall } from '../../src/shared-components/Button';
 import Navbar from '../../src/shared-components/navbar/Navbar';
+import SearchNavbar from '../../src/shared-components/navbar/SearchNavbar';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -208,12 +209,12 @@ function Shop() {
     dispatch(getAllProducts(countryId?.id, pageNumber));
     dispatch(setUserCountry(countryId?.id));
     console.log(loading);
-    dispatch(getSearchProduct('', country, page_index));
+    // dispatch(getSearchProduct('', country, page_index));
     // dispatch(getProductCategory(item));
   }, [dispatch]);
 
   useEffect(() => {
-    if (val !== '') {
+    if (val.trim() !== '') {
       setSearchFieldLoaded(true);
     } else {
       setSearchFieldLoaded(false);
@@ -239,7 +240,8 @@ function Shop() {
         // border: '1px solid red',
       }}
     >
-      <Navbar />
+      <SearchNavbar setIsLoading={setIsLoading} />
+      {/* <Navbar /> */}
       {show && (
         <DeleteNotification
           id={itemID}
@@ -365,8 +367,9 @@ function Shop() {
           </Typography>
 
           <Box
+            className={styles.mobileSearchView}
             sx={{
-              display: { md: 'flex', xs: 'none' },
+              display: { md: 'flex' },
               flexDirection: 'row',
               alignItems: 'center',
               justifyContent: 'flex-start',
@@ -380,7 +383,7 @@ function Shop() {
                 p: '2px 4px',
                 display: 'flex',
                 alignItems: 'center',
-                width: 400,
+                width: '100%',
                 border: '1.53151px solid rgba(0, 0, 0, 0.3)',
                 borderRadius: '20.6713px',
                 marginRight: '1rem',
@@ -449,16 +452,18 @@ function Shop() {
             alignItems: 'center',
             justifyContent: 'center',
             width: '100%',
+            
           }}
         >
           <Box
+            className={styles.adjustProductCategory}
             sx={{
               display: { xs: 'flex', lg: 'none' },
               alignItems: 'center',
               justifyContent: 'space-around',
               // padding: '22px 0',
               width: '100%',
-              marginBottom: '1rem',
+              marginBottom: '1rem'
             }}
           >
             <Select
@@ -479,7 +484,7 @@ function Shop() {
               }
             />
 
-            <Select
+            {/* <Select
               styles={filterSelectStyle}
               options={options}
               classNamePrefix="gooo__input"
@@ -493,7 +498,7 @@ function Shop() {
                   FILTER
                 </div>
               }
-            />
+            /> */}
           </Box>
 
           {/* //////////////////////////////////////////////// end of the filter and categories that only appear on mobile //////////////////////////////////////////////// */}

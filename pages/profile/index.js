@@ -5,6 +5,7 @@ import ShoppingHistory from '../../components/Profile/ShoppingHistory';
 import Navbar from '../../src/shared-components/navbar/Navbar';
 import Footer from '../../src/page-components/Footer';
 import { useDispatch, useSelector } from 'react-redux';
+import styles from '../../styles/Profile.module.css';
 import ProfileSettings from '../../components/Profile/ProfileSettings';
 import { getShoppingHistory } from '../../src/redux/shopping/shoppingAction';
 import Notification from '../../components/Profile/Notification';
@@ -33,13 +34,13 @@ function Profile() {
         // border: '1px solid red',
       }}
     >
-      <Navbar />
+       <Box className={styles.profile__nav} sx={{ width: '100%'}}><Navbar /></Box>
       <Box
         sx={{
           position: 'relative',
           display: 'flex',
           width: '100%',
-          height: 'auto',
+          height: '100%',
         }}
       >
         <ProfileSideNav />
@@ -47,7 +48,8 @@ function Profile() {
         {selectedProfileMenu === 'Shopping History' ? (
           <ShoppingHistory />
         ) : selectedProfileMenu === 'Notification' ? (
-          <ProfileOpenNotification />
+           <Notification />
+          // <ProfileOpenNotification />
         ) : // <Notification />
         selectedProfileMenu === 'Profile Settings' ? (
           <ProfileSettings />
@@ -57,7 +59,7 @@ function Profile() {
 
         {/* <ProfileOpenNotification /> */}
       </Box>
-      <Footer />
+      <Box className={styles.profile__footer} sx={{ marginTop: '200px', width: '100%'}}><Footer /></Box>
     </Box>
   );
 }
