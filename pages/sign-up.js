@@ -36,6 +36,7 @@ const SignUp = () => {
     firstName,
     lastName,
     agentCode,
+    phoneNumber,
     password,
     loading,
     signup_api_message,
@@ -79,10 +80,11 @@ const SignUp = () => {
     return () => {
       document.removeEventListener("keydown", listener);
     };
-  }, [ email,
+  }, [email,
     firstName,
     lastName,
     agentCode,
+    phoneNumber,
     password]);
 
 
@@ -93,6 +95,7 @@ const SignUp = () => {
       firstName,
       lastName,
       password,
+      phoneNumber,
       agentCode,
     };
     dispatch(signUpUser(userData, router))
@@ -223,7 +226,21 @@ const SignUp = () => {
             }}
             value={email}
           />
-          
+
+          <Input
+            type="text"
+            label="PhoneNumber"
+            htmlFor="phoneNumber"
+            placeholder="08012345678"
+            name="phoneNumber"
+            id="phoneNumber"
+            onChange={(e) => {
+              dispatch(handleUserInput('phoneNumber', e.target.value));
+              setQuery(e.target.value);
+            }}
+            value={phoneNumber}
+          />
+
           <Input
             type="text"
             label="AgentCode"
