@@ -12,3 +12,5 @@ export const ORDER_NUMBER = 'ORDER_NUMBER';
 export const REF_NO = 'REF_NO';
 export const DIAL_CODE = 'DIAL_CODE';
 export const PLACE_ORDER_ERROR = 'PLACE_ORDER_ERROR';
+
+export const ORDER_NUMBER_ERROR = 'ORDER_NUMBER_ERROR'

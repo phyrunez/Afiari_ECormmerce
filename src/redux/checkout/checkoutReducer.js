@@ -26,6 +26,8 @@ const initialState = {
   public_key: '',
   ...emptyUserAddress,
   order_number: [],
+  checkoutStatus: '',
+  checkoutErrorMessage: '',
   selectedAddress: {},
   orderErrorMessage: '',
   orderSuccessMessage: '',
@@ -99,6 +101,12 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         order_number: action.payload,
+      };
+      case CheckoutTypes?.ORDER_NUMBER_ERROR:
+      return {
+        ...state,
+        checkoutStatus: action.payload.status,
+        checkoutErrorMessage: action.payload.error
       };
     case CheckoutTypes?.DIAL_CODE:
       return {

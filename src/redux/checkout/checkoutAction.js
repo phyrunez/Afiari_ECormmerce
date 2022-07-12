@@ -1,4 +1,5 @@
 import { useTransition } from 'react';
+// import { Toast } from 'react-toastify/dist/components';
 import { API_ROUTES, authToken, refreshToken } from '../../../constants/config';
 import { httpRequest } from '../../https/http';
 import * as CheckoutTypes from './checkoutTypes';
@@ -183,6 +184,14 @@ export const getOrderNumber = (country_id) => async (dispatch) => {
       dispatch({
         type: CheckoutTypes?.ORDER_NUMBER,
         payload: result?.result,
+      });
+    }else {
+      dispatch({
+        type: CheckoutTypes?.ORDER_NUMBER_ERROR,
+        payload: {
+          error: response?.error_message,
+          status: response?.status,
+        },
       });
     }
   } catch (error) {
