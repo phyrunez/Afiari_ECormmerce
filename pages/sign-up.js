@@ -189,8 +189,8 @@ const SignUp = () => {
 
           <Input
             type="text"
-            label="First name"
-            htmlFor="First name"
+            label="First Name"
+            htmlFor="First Name"
             placeholder="Anozie"
             onChange={(e) => {
               dispatch(handleUserInput('firstName', e.target.value));
@@ -202,8 +202,8 @@ const SignUp = () => {
 
           <Input
             type="text"
-            label="Last name"
-            htmlFor="last name"
+            label="Last Name"
+            htmlFor="last Name"
             placeholder="Peter"
             onChange={(e) => {
               dispatch(handleUserInput('lastName', e.target.value));
@@ -229,8 +229,8 @@ const SignUp = () => {
 
           <Input
             type="text"
-            label="PhoneNumber"
-            htmlFor="phoneNumber"
+            label="Phone Number"
+            htmlFor="phone Number"
             placeholder="08012345678"
             name="phoneNumber"
             id="phoneNumber"
@@ -243,7 +243,7 @@ const SignUp = () => {
 
           <Input
             type="text"
-            label="AgentCode"
+            label="Agent Code"
             htmlFor="agentCode"
             placeholder="enter your agent code (optional)"
             name="agentCode"
