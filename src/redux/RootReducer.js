@@ -4,6 +4,7 @@ import generalReducer from './general/generalReducer';
 import checkoutReducer from './checkout/checkoutReducer';
 import cartReducer from './cart/cartReducer';
 import shoppingReducer from './shopping/shoppingReducer';
+import storesReducer from './stores/storesReducers'
 
 export default combineReducers({
   auth: authReducer,
@@ -11,4 +12,5 @@ export default combineReducers({
   checkout: checkoutReducer,
   cart: cartReducer,
   history: shoppingReducer,
+  stores: storesReducer,
 });

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { logo } from '../../../assests/images/loginSvg';
 import { Menu, ShoppingCart, Close, Clear, Search } from '@mui/icons-material';
 import {
@@ -28,6 +28,9 @@ import { logout } from '../../redux/auth/authAction';
 import { useCart } from 'react-use-cart';
 import { getCart } from '../../redux/cart/cartAction';
 import { useRouter } from 'next/router';
+import StoresAroundYou from '../../page-components/modal/StoresAroundYou';
+import { toggleModal } from '../../redux/stores/storesActions';
+import Portal from '../../../components/Portal'
 
 const Navbar = () => {
   const [showNav, setShowNav] = useState(false);
@@ -147,6 +150,9 @@ const Navbar = () => {
                   onClick={() => {
                     setActivePage(list?.value);
                     setActive(true);
+                    if (list?.value === 'Stores around you') {
+                      dispatch(toggleModal(true));
+                    }
                   }}
                 >
                   {list?.value}
@@ -521,8 +527,13 @@ const Navbar = () => {
                   <Link href="/FoodMarket"> Food Market </Link>
                 </li>
 
-                <li className={styles.nav__links} onClick={handleClose}>
-                  <Link href="/shops-around-you">Stores around you </Link>
+                <li className={styles.nav__links}>
+                  <span onClick={() => {
+                    dispatch(toggleModal(true));
+                  }}>Stores around you </span>
+                  <Portal elemId='modal'>
+                    <StoresAroundYou />
+                  </Portal>
                 </li>
               </ul>
 
