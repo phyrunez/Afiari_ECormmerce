@@ -12,6 +12,8 @@ function ShoppingHistory() {
     (state) => state.history
   );
 
+  console.log(shoppingHistory)
+
   return (
     <Box
       sx={{
