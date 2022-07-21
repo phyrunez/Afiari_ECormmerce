@@ -142,7 +142,7 @@ export const getSingleProduct =
       const reviewResponse = await httpRequest({
         url: `${API_ROUTES?.shouldReview.route}${product_id}`,
         method: API_ROUTES.shouldReview.method,
-        needToken: false,
+        needToken: true,
       });
 
       if (response?.status === true) {
