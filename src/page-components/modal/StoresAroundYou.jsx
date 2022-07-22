@@ -37,6 +37,8 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
+import { ButtonSmall } from '../../shared-components/Button'
+import Image from 'next/image';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
@@ -48,9 +50,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toggleModal } from '../../redux/stores/storesActions';
 import {
   Paper,
+  Box,
   InputBase,
 } from '@mui/material';
-import { MapIcon } from '../../../public/Marker.svg'
+import MapIcon from '../../../public/Marker.svg'
 
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -77,6 +80,7 @@ export default function StoresAroundYou() {
         <DialogTitle 
           sx={{ 
             m: 5, 
+            mb: 2,
             p: 2, 
             textAlign: 'center', 
             fontWeight: 'bold', 
@@ -98,55 +102,94 @@ export default function StoresAroundYou() {
           </IconButton>
         </DialogTitle>
         <DialogContent>
-          <Paper
-            component="form"
+          <Box
             sx={{
-              p: '2px 4px',
-              display: 'flex',
+              display: { md: 'flex' },
+              // flexDirection: 'row',
               alignItems: 'center',
-              width: '321px',
-              left: '412px',
-              border: '1.53151px solid rgba(0, 0, 0, 0.3)',
-              borderRadius: '10px',
-              marginTop: '0px'
+              justifyContent: 'center',
+              width: '90%',
+              margin: 'auto',
             }}
           >
-            <IconButton
-              type="button"
-              sx={{ p: '10px' }}
-              aria-label="search"
-              onClick={() => clearSearchField()}
+            <Paper
+              component="form"
+              sx={{
+                p: '0px 4px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '321px',
+                height: '40px',
+                left: '412px',
+                border: '1.53151px solid rgba(0, 0, 0, 0.3)',
+                borderRadius: '10px',
+                marginRight: '32px'
+              }}
             >
-              <MapIcon />
-              {/* {
-                searchFieldLoaded ? <Clear /> : <Search />
-              } */}
-            </IconButton>
-            <InputBase
-              sx={{ ml: 1, flex: 1 }}
-              placeholder="You can search for another location"
+              <IconButton
+                type="button"
+                sx={{ p: '10px' }}
+                aria-label="search"
+                onClick={() => clearSearchField()}
+              >
+                <Image
+                  src={MapIcon}
+                  alt="Marker"
+                  width={25}
+                  height={25}
+                />
+                {/* {
+                  searchFieldLoaded ? <Clear /> : <Search />
+                } */}
+              </IconButton>
+              <InputBase
+                sx={{ ml: 0, flex: 1, fontSize: '13px' }}
+                placeholder="You can search for another location"
+              />
+            </Paper>
+            <ButtonSmall
+              width="120px"
+              height="40px"
+              borderRadius="16px"
+              fontSize="12px"
+              backgroundColor=" #0A503D"
+              text="SEARCH"
+              color="#fff"
+              onClick={() => search()}
             />
-          </Paper>
-          <Typography gutterBottom>
-            Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-            dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta
-            ac consectetur ac, vestibulum at eros.
-          </Typography>
-          <Typography gutterBottom>
-            Praesent commodo cursus magna, vel scelerisque nisl consectetur et.
-            Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor
-            auctor.
-          </Typography>
-          <Typography gutterBottom>
-            Aenean lacinia bibendum nulla sed consectetur. Praesent commodo
-            cursus magna, vel scelerisque nisl consectetur et. Donec sed odio
-            dui. Donec ullamcorper nulla non metus auctor fringilla.
-          </Typography>
+          </Box>
+          <Box
+            component="div"
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-evenly',
+              width: { md: '80%', xs: '100%' },
+              height: { md: '150px', xs: '150.06px' },
+              background: '#FFFFFF',
+              boxShadow: '0px 4.16667px 8.33333px rgba(0, 0, 0, 0.08)',
+              borderRadius: ' 5.50833px',
+              padding: '1rem 1rem',
+              margin: 'auto',
+              marginTop: '2rem',
+              // border: '1px solid red',
+            }}
+          >I am The One</Box>
         </DialogContent>
-        <DialogActions>
-          <Button autoFocus onClick={() => dispatch(toggleModal())}>
+        <DialogActions sx={{margin: "auto"}}>
+          {/* <Button autoFocus onClick={() => dispatch(toggleModal())}>
             Save changes
-          </Button>
+          </Button> */}
+          <ButtonSmall
+            width="170px"
+            height="40px"
+            borderRadius="16px"
+            fontSize="12px"
+            backgroundColor=" #0A503D"
+            text="SEARCH NEW STORE"
+            color="#fff"
+            onClick={() => search()}
+          />
         </DialogActions>
       </BootstrapDialog>
     </div>
