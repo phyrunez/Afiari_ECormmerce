@@ -4,9 +4,6 @@ const withPWA = require('next-pwa');
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: false,
-  experimental: {
-    esmExternals: false,
-  },
 };
 // const nextConfig = withPWA({
 //   reactStrictMode: true,

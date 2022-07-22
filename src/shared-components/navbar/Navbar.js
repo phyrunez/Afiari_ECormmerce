@@ -30,7 +30,7 @@ import { getCart } from '../../redux/cart/cartAction';
 import { useRouter } from 'next/router';
 import StoresAroundYou from '../../page-components/modal/StoresAroundYou';
 import { toggleModal } from '../../redux/stores/storesActions';
-import Portal from '../../../components/Portal'
+import Portal from '../../../components/Portal';
 
 const Navbar = () => {
   const [showNav, setShowNav] = useState(false);
@@ -79,13 +79,12 @@ const Navbar = () => {
   };
 
   const changeLogo = () => {
-    setSearchField(true)
-  }
-
-  const clearSearchField = () => {
-    setVal('')
+    setSearchField(true);
   };
 
+  const clearSearchField = () => {
+    setVal('');
+  };
 
   return (
     <AppBar
@@ -138,62 +137,45 @@ const Navbar = () => {
               // border: '1px solid red',
             }}
           >
-            {navList?.map((list) => (
-              <Link href={list.route} key={list.i} passHref>
-                <li
-                  className={styles.nav__list}
-                  style={{
-                    fontWeight: list?.value === activePage ? '600' : '400',
+            {navList?.map((list) => {
+              if (list.value === 'Stores around you')
+                return (
+                  <li
+                    key={list.id}
+                    className={styles.nav__list}
+                    style={{
+                      fontWeight: list?.value === activePage ? '600' : '400',
 
-                    color: list?.value === activePage ? '#000000' : '3a3a3a',
-                  }}
-                  onClick={() => {
-                    setActivePage(list?.value);
-                    setActive(true);
-                    if (list?.value === 'Stores around you') {
-                      dispatch(toggleModal(true));
-                    }
-                  }}
-                >
-                  {list?.value}
-                </li>
-              </Link>
-            ))}
-            {/* <li
-              className={styles.nav__list}
-              style={{
-                fontWeight: active ? '600' : '400',
+                      color: list?.value === activePage ? '#000000' : '3a3a3a',
+                    }}
+                    onClick={() => {
+                      dispatch(toggleModal());
+                      // setActivePage(list?.value);
+                      // setActive(true);
+                    }}
+                  >
+                    {list?.value}
+                  </li>
+                );
+              return (
+                <Link href={list.route} key={list.id} passHref>
+                  <li
+                    className={styles.nav__list}
+                    style={{
+                      fontWeight: list?.value === activePage ? '600' : '400',
 
-                color: active ? '#000000' : '3a3a3a',
-              }}
-              onClick={() => {
-                setActive(true);
-              }}
-            >
-              <Link href="/">Home </Link>
-            </li>
-
-            <li
-              className={styles.nav__list}
-              style={{
-                fontWeight: active ? '600' : '400',
-
-                color: active ? '#000000' : '3a3a3a',
-              }}
-            >
-              <Link href="/FoodMarket">Food Market</Link>
-            </li>
-
-            <li
-              className={styles.nav__list}
-              style={{
-                fontWeight: active ? '600' : '400',
-
-                color: active ? '#000000' : '3a3a3a',
-              }}
-            >
-              <Link href="/">Stores around you </Link>
-            </li> */}
+                      color: list?.value === activePage ? '#000000' : '3a3a3a',
+                    }}
+                    onClick={() => {
+                      setActivePage(list?.value);
+                      setActive(true);
+                    }}
+                  >
+                    {list?.value}
+                  </li>
+                </Link>
+              );
+            })}
           </Box>
         </Toolbar>
         <Box
@@ -447,8 +429,8 @@ const Navbar = () => {
                     : cartItems?.length} */}
               </Box>
             </Box>
-          </Link> 
-            {/* <Box
+          </Link>
+          {/* <Box
             sx={{
               display: { md: 'flex', xs: 'none' },
               flexDirection: 'row',
@@ -457,13 +439,13 @@ const Navbar = () => {
               width: '100%',
             }}
           > */}
-            {/* ////////////////////////// SEARCH TEXTAREA ////////////////// */}
-            {/* {
+          {/* ////////////////////////// SEARCH TEXTAREA ////////////////// */}
+          {/* {
               searchField ? <SearchNavbar /> : <Search />
             } */}
-            
+
           {/* </Box> */}
-        
+
           <Search
             className={styles.searchField}
             sx={{
@@ -528,12 +510,13 @@ const Navbar = () => {
                 </li>
 
                 <li className={styles.nav__links}>
-                  <span onClick={() => {
-                    dispatch(toggleModal(true));
-                  }}>Stores around you </span>
-                  <Portal elemId='modal'>
-                    <StoresAroundYou />
-                  </Portal>
+                  <span
+                    onClick={() => {
+                      dispatch(toggleModal());
+                    }}
+                  >
+                    Stores around you{' '}
+                  </span>
                 </li>
               </ul>
 
@@ -739,6 +722,10 @@ const Navbar = () => {
       {/* ///////////////////////////////////// end of side view for mobile ///////////////////////////////////////////////////////////////////////// */}
 
       {/*///////////////////// service for large screens ////////////////////////////////*/}
+
+      <Portal elemId="modal">
+        <StoresAroundYou />
+      </Portal>
     </AppBar>
   );
 };

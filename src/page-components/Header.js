@@ -16,9 +16,6 @@ const Header = () => {
   const { countries } = useSelector((state) => state?.general);
 
   const dispatch = useDispatch();
-
-  useEffect(() => {}, []);
-
   const myLoader = ({ src }) => {
     return src;
   };
@@ -27,6 +24,26 @@ const Header = () => {
     if (!showCountry) setShowCountry(true);
     else setShowCountry(false);
   };
+
+  useEffect(() => {
+    if (showCountry === false && selectedCountry === '') {
+      countries
+        .filter((country) => country?.item_value === 'Nigeria')
+        .map((country, i) => {
+          setSrc(country?.item_image_url);
+          dispatch(setUserCountry(country.id));
+          setSelectedCountry(country?.item_value);
+
+          localStorage.setItem(
+            'selectedCountry',
+            JSON.stringify({
+              id: country?.id,
+              name: country?.item_value,
+            })
+          );
+        });
+    }
+  });
 
   return (
     <Grid
@@ -113,23 +130,6 @@ const Header = () => {
                 contentEditable="false"
                 suppressContentEditableWarning={true}
               >
-                {showCountry === false &&
-                  selectedCountry === '' &&
-                  countries
-                    .filter((country) => country?.item_value === 'Nigeria')
-                    .map((country, i) => {
-                      setSrc(country?.item_image_url);
-                      dispatch(setUserCountry(country.id));
-                      setSelectedCountry(country?.item_value);
-
-                      localStorage.setItem(
-                        'selectedCountry',
-                        JSON.stringify({
-                          id: country?.id,
-                          name: country?.item_value,
-                        })
-                      );
-                    })}
                 {showCountry === true && (
                   <div
                     className={styles.select_country_list__wrapper}

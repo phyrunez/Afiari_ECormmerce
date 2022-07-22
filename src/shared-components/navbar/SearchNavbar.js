@@ -174,7 +174,7 @@ const SearchNavbar = ({ setIsLoading }) => {
             }}
           >
             {navList?.map((list) => (
-              <Link href={list.route} key={list.i} passHref>
+              <Link href={list.route} key={list.id} passHref>
                 <li
                   className={styles.nav__list}
                   style={{
