@@ -136,7 +136,7 @@ const ShopCard = ({ isLoading, setIsLoading, query }) => {
   }
 
   useEffect(() => {
-    setPageNumber(metaData.page_index);
+    if(metaData.page_index) setPageNumber(metaData.page_index);
   }, [number_of_pages]);
 
   // useEffect(() => {
