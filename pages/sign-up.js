@@ -36,6 +36,7 @@ const SignUp = () => {
     firstName,
     lastName,
     agentCode,
+    phoneNumber,
     password,
     loading,
     signup_api_message,
@@ -79,10 +80,11 @@ const SignUp = () => {
     return () => {
       document.removeEventListener("keydown", listener);
     };
-  }, [ email,
+  }, [email,
     firstName,
     lastName,
     agentCode,
+    phoneNumber,
     password]);
 
 
@@ -93,6 +95,7 @@ const SignUp = () => {
       firstName,
       lastName,
       password,
+      phoneNumber,
       agentCode,
     };
     dispatch(signUpUser(userData, router))
@@ -186,8 +189,8 @@ const SignUp = () => {
 
           <Input
             type="text"
-            label="First name"
-            htmlFor="First name"
+            label="First Name"
+            htmlFor="First Name"
             placeholder="Anozie"
             onChange={(e) => {
               dispatch(handleUserInput('firstName', e.target.value));
@@ -199,8 +202,8 @@ const SignUp = () => {
 
           <Input
             type="text"
-            label="Last name"
-            htmlFor="last name"
+            label="Last Name"
+            htmlFor="last Name"
             placeholder="Peter"
             onChange={(e) => {
               dispatch(handleUserInput('lastName', e.target.value));
@@ -223,10 +226,24 @@ const SignUp = () => {
             }}
             value={email}
           />
-          
+
           <Input
             type="text"
-            label="AgentCode"
+            label="Phone Number"
+            htmlFor="phone Number"
+            placeholder="08012345678"
+            name="phoneNumber"
+            id="phoneNumber"
+            onChange={(e) => {
+              dispatch(handleUserInput('phoneNumber', e.target.value));
+              setQuery(e.target.value);
+            }}
+            value={phoneNumber}
+          />
+
+          <Input
+            type="text"
+            label="Agent Code"
             htmlFor="agentCode"
             placeholder="enter your agent code (optional)"
             name="agentCode"

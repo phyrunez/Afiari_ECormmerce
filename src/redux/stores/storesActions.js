@@ -25,7 +25,7 @@ import { API_ROUTES } from '../../../constants/config';
 //   }
 // };
 
-export const toggleModal = () => (dispatch)  => {
+export const toggleModal = () => (dispatch) => {
   dispatch({
     type: StoreTypes.TOGGLE_MODAL
   });

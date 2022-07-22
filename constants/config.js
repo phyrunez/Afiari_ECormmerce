@@ -157,6 +157,10 @@ const API_ROUTES = {
     route: 'Product/reviews/can-user-post-review?productId=',
     method: 'GET',
   },
+  getStores: {
+    route: 'Store/search/stores/in-location',
+    method: 'GET'
+  }
 };
 
 const authToken = 'Afiari_access';

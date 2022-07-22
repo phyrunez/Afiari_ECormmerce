@@ -210,9 +210,10 @@ function CheckOutPaymentMethod({ handleModal }) {
                     justifyContent: 'center',
                     width: { xs: '100%', sm: ' 120.11px' },
                     height: '80px',
+                    padding: '0 10px 0 10px',
                     background:
                       selectedPayment === item.id ? '#0A503D' : '#fff',
-                    borderRadius: ' 7.74011px',
+                    borderRadius: ' 8px',
                     color: selectedPayment === item.id ? '#fff' : '#000',
                     fontSize: '10px',
                     cursor: 'pointer',
@@ -224,7 +225,13 @@ function CheckOutPaymentMethod({ handleModal }) {
                     // dispatch(initializePayment(orderNumber));
                   }}
                 >
-                  {item.item_value.toUpperCase()}
+                  {/* {item.item_value.toUpperCase()} */}
+                  <img 
+                    src={item.item_image_url}
+                    height="80px"
+                    width="100px"
+                  />
+                  
                 </Box>
               ))}
             </Box>

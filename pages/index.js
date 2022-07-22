@@ -93,7 +93,7 @@ const Home = () => {
         </Box>
       </Box>
       <Testimony />
-      <Footer />
+      {/* <Footer /> */}
     </Box>
   );
 };

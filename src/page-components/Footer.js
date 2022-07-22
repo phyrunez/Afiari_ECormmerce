@@ -28,7 +28,6 @@ const Footer = () => {
         background: '#0A503D',
         padding: '4rem 4rem',
         color: '#fff',
-        // zIndex: '20000000000000000',
       }}
       className={styles.footer}
     >
@@ -128,8 +127,6 @@ const Footer = () => {
           justifyContent: { xs: 'center', md: 'flex-start' },
           paddingTop: '.5rem',
           width: '100%',
-
-          // border: "1px solid red",
         }}
       >
         <Box
@@ -139,8 +136,6 @@ const Footer = () => {
             flexDirection: { sm: 'row', xs: 'column' },
             alignItems: 'flex-start',
             justifyContent: { xs: 'center', md: 'flex-start' },
-            // padding: ".5rem 0 0 -5rem ",
-            // border: "1px solid red",
           }}
         >
           <Box component="ul" className={styles.footer__list}>
@@ -150,12 +145,6 @@ const Footer = () => {
             <Link href="/stores-around-you" passHref>
               <li>Stores Around You</li>
             </Link>
-            {/* <Link href="/help">
-              <li>Get Help</li>
-            </Link>
-            <Link href="/near">
-              <li>Stores near me</li>
-            </Link> */}
           </Box>
           <Box component="ul" className={styles.footer__list}>
             <Link href="https://www.linkedin.com/company/afiari/">
@@ -164,9 +153,6 @@ const Footer = () => {
             <Link href="https://www.afiari.com/blog">
               <li>Blog</li>
             </Link>
-            {/* <Link href="mailto:info@afiari.com">
-              <li>Email</li>
-            </Link> */}
           </Box>
           <Box component="ul" className={styles.footer__list}>
             <Box component="li">
