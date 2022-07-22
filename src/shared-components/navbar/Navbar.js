@@ -32,6 +32,7 @@ import StoresAroundYou from '../../page-components/modal/StoresAroundYou';
 import { toggleModal } from '../../redux/stores/storesActions';
 import Portal from '../../../components/Portal'
 
+
 const Navbar = () => {
   const [showNav, setShowNav] = useState(false);
   const [menuIcon, setMenuIcon] = useState(false);
@@ -60,7 +61,7 @@ const Navbar = () => {
     {
       id: 3,
       value: 'Stores around you',
-      route: '/',
+      route: '/StoresModal',
     },
   ];
 
