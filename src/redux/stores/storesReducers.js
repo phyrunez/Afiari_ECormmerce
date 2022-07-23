@@ -1,9 +1,11 @@
 import {
-  TOGGLE_MODAL
+  TOGGLE_MODAL,
+  GET_STORES
 } from './storeTypes';
 
 const initialState = {
-  toggleModalState: false
+  toggleModalState: false,
+  stores: []
 };
 
 const reducer = (state = initialState, action) => {
@@ -12,6 +14,13 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         toggleModalState: !state.toggleModalState 
+      }
+    }
+    case GET_STORES: {
+      // console.log(action.payload)
+      return {
+        ...state,
+        stores: [...action.payload]
       }
     }
       

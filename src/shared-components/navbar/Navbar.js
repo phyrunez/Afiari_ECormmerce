@@ -61,7 +61,7 @@ const Navbar = () => {
     {
       id: 3,
       value: 'Stores around you',
-      route: '/StoresModal',
+      // route: '/StoresModal',
     },
   ];
 
