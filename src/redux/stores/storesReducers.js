@@ -1,11 +1,9 @@
-import {
-  TOGGLE_MODAL,
-  GET_STORES
-} from './storeTypes';
+import { TOGGLE_MODAL, GET_STORES, STORE_SUGGESTIONS } from './storeTypes';
 
 const initialState = {
   toggleModalState: false,
-  stores: []
+  stores: [],
+  suggestions: [{ label: 'Current location', coords: null }],
 };
 
 const reducer = (state = initialState, action) => {
@@ -23,14 +21,16 @@ const reducer = (state = initialState, action) => {
         stores: [...action.payload],
       };
     }
-    case CLEAR_STORES: {
+    case STORE_SUGGESTIONS: {
       // console.log(action.payload)
       return {
         ...state,
-        stores: [],
+        suggestions: [
+          { label: 'Current location', coords: null },
+          ...action.payload,
+        ],
       };
     }
-
     default:
       return state;
   }

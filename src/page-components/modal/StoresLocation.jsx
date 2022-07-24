@@ -1,62 +1,53 @@
-import {useEffect, useState, useRef} from 'react';
+import { useEffect, useState, useRef } from 'react';
 import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
-import { ButtonSmall } from '../../shared-components/Button'
+import { ButtonSmall } from '../../shared-components/Button';
 import Image from 'next/image';
 import Dialog from '@mui/material/Dialog';
 import Skeleton from '@mui/material/Skeleton';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
-import Autocomplete from '@mui/material/Autocomplete'
-import TextField from '@mui/material/TextField'
-import InputAdornment from '@mui/material/InputAdornment'
+import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
+import InputAdornment from '@mui/material/InputAdornment';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
-import Modal from '@mui/material/Modal'
+import Modal from '@mui/material/Modal';
 import IconButton from '@mui/material/IconButton';
 import { toast } from 'react-toastify';
 import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
 import Spinner from '../../../components/Spinner';
 import { useDispatch, useSelector } from 'react-redux';
-import { getStores, clearStore } from '../../redux/stores/storesActions'
+import { getStores, clearStore } from '../../redux/stores/storesActions';
 import { toggleModal } from '../../redux/stores/storesActions';
-import {
-  Paper,
-  Box,
-  InputBase,
-} from '@mui/material';
-import MapIcon from '../../../public/Marker.svg'
+import { Paper, Box, InputBase } from '@mui/material';
+import MapIcon from '../../../public/Marker.svg';
 
 export default function StoresLocation(props) {
-  const toggleModalState = useSelector(
-    (state) => state.stores.toggleModalState
-  );
   const [coords, setCoords] = useState({
-    longitude: null, 
-    latitude: null
-  })
-  const [loading, setLoading] = useState(false)
-  const [pending, setPending] = useState(false)
-  const [suggestion, setSuggestion] = useState([{label: "Current location", coords: null }])
+    longitude: null,
+    latitude: null,
+  });
+  const [loading, setLoading] = useState(false);
+  const [pending, setPending] = useState(false);
   const dispatch = useDispatch();
-  const { stores } = useSelector(
+  const { stores, suggestions, toggleModalState } = useSelector(
     (state) => state.stores
-  )
+  );
   const [accessInfo, setAccessInfo] = useState({
     browserAccess: null,
     statusMessage: 'Please, click the allow button at the top to continue',
-    userResponse: null
+    userResponse: null,
   });
-
-  
 
   //SHOW TOAST ERROR
   useEffect(() => {
-    if (accessInfo.browserAccess === null && accessInfo.userResponse === null) return 
-    toast.error(accessInfo.statusMessage)
-  }, [accessInfo])
+    if (accessInfo.browserAccess === null && accessInfo.userResponse === null)
+      return;
+    toast.error(accessInfo.statusMessage);
+  }, [accessInfo]);
 
   // HANDLE USER LOCATION RESPONSE
   const handleLocationResponse = (location) => {
@@ -67,7 +58,7 @@ export default function StoresLocation(props) {
           browserAccess: false,
           statusMessage:
             'Location access failed, Please click the button below to retry',
-          userResponse: null
+          userResponse: null,
         },
       });
     } else {
@@ -86,42 +77,48 @@ export default function StoresLocation(props) {
     setAccessInfo({
       ...{
         browserAccess: true,
-        statusMessage:
-        'Please enable geolocation to use this feature.',
-        userResponse: false
+        statusMessage: 'Please enable geolocation to use this feature.',
+        userResponse: false,
       },
     });
     setPending(false);
-  }
+  };
 
   // GET USER LOCATION
   const getUserLocation = () => {
-    if(!toggleModalState) return
+    if (!toggleModalState) return;
     if (navigator.geolocation) {
-      navigator.permissions.query({
-        name: 'geolocation'
-      })
-      .then(function(result) {
-        if (result.state == 'denied') {
-          setAccessInfo({
-            ...{
-              browserAccess: true,
-              statusMessage: 'Enable geolocation to use this feature.',
-              userResponse: false,
-              retryable: false,
-            }
-          })
-          setPending(false)
-        } else {
-          setAccessInfo({...{
-            browserAccess: null,
-            statusMessage: 'Please, click the allow button at the top to continue',
-            userResponse: null
-          }})
-          setPending(true)
-          navigator.geolocation.getCurrentPosition(handleLocationResponse, handleLocationDecline);
-        }    
-      });
+      navigator.permissions
+        .query({
+          name: 'geolocation',
+        })
+        .then(function (result) {
+          if (result.state == 'denied') {
+            setAccessInfo({
+              ...{
+                browserAccess: true,
+                statusMessage: 'Enable geolocation to use this feature.',
+                userResponse: false,
+                retryable: false,
+              },
+            });
+            setPending(false);
+          } else {
+            setAccessInfo({
+              ...{
+                browserAccess: null,
+                statusMessage:
+                  'Please, click the allow button at the top to continue',
+                userResponse: null,
+              },
+            });
+            setPending(true);
+            navigator.geolocation.getCurrentPosition(
+              handleLocationResponse,
+              handleLocationDecline
+            );
+          }
+        });
     } else {
       setAccessInfo({
         ...{
@@ -133,26 +130,36 @@ export default function StoresLocation(props) {
       });
       setPending(false);
     }
-  }
+  };
 
   //SEARCH
   const search = () => {
-    if(!coords ) return 
-    setLoading(true)
-    dispatch(getStores({
-      longitude: location.lon, 
-      latitude: location.lat,
-      useQuery: false
-    })).then(() => {
+    if (!coords) return;
+    setLoading(true);
+    dispatch(
+      getStores({
+        longitude: location.lon,
+        latitude: location.lat,
+        useQuery: false,
+      })
+    ).then(() => {
       setLoading(false);
-    })
-  }
+    });
+  };
 
   // SET LOCATION
   const setSelectedLocation = (coords) => {
-    if (!coords) getUserLocation()
-    else setCoords({...{longitude: coords.longitude, latitude: coords.latitude}})
+    if (!coords) getUserLocation();
+    else
+      setCoords({
+        ...{ longitude: coords.longitude, latitude: coords.latitude },
+      });
   };
+
+  // GET SUGGESTIONS
+  const setSuggestions = (value) => {
+    dispatch(getSuggestions(value));
+  }
 
   return (
     <Modal
@@ -250,6 +257,7 @@ export default function StoresLocation(props) {
                       padding: '5px 40px',
                     }}
                     placeholder="You can search another location"
+                    onChange={e => setSuggestions(e.target.value)}
                   />
                 </Box>
               )}
@@ -311,48 +319,80 @@ export default function StoresLocation(props) {
           ) : (
             <div />
           )}
-          {loading ? (<Spinner />) : stores?.length ?  stores?.map((store, i) => (
+          {loading ? (
+            <Spinner />
+          ) : stores?.length ? (
+            stores?.map((store, i) => (
+              <Box
+                key={store?.id}
+                component="div"
+                sx={{
+                  display: 'grid',
+                  width: { md: '80%', xs: '100%' },
+                  alignItems: 'center',
+                  background: '#FFFFFF',
+                  boxShadow: '0px 4.16667px 8.33333px rgba(0, 0, 0, 0.08)',
+                  borderRadius: ' 5.50833px',
+                  gridTemplateColumns: { md: '110px auto', xs: '60px auto' },
+                  padding: '1rem 1rem',
+                  gridGap: '10px',
+                  margin: 'auto',
+                  marginTop: '2rem',
+                }}
+                onClick={() => router.push(`/store/${store?.id}`)}
+              >
                 <Box
-                  key={store?.id}
-                  component="div"
                   sx={{
-                    display: 'grid',
-                    width: { md: '80%', xs: '100%' },
-                    alignItems: 'center',
-                    background: '#FFFFFF',
+                    background: 'lightgrey',
+                    width: { md: '100px', xs: '50px' },
+                    height: { md: '100px', xs: '50px' },
                     boxShadow: '0px 4.16667px 8.33333px rgba(0, 0, 0, 0.08)',
-                    borderRadius: ' 5.50833px',
-                    gridTemplateColumns: { md: '110px auto', xs: '60px auto'},
-                    padding: '1rem 1rem',
-                    gridGap: '10px',
-                    margin: 'auto',
-                    marginTop: '2rem',
+                    borderRadius: '50%',
+                    marginLeft: '10px',
                   }}
-                  onClick={ () => router.push(`/store/${store?.id}`)}
                 >
-                  <Box
-                    sx={{
-                      background: 'lightgrey',
-                      width: { md: '100px', xs: '50px' },
-                      height: { md: '100px', xs: '50px' },
-                      boxShadow: '0px 4.16667px 8.33333px rgba(0, 0, 0, 0.08)',
-                      borderRadius: '50%',
-                      marginLeft: '10px'
-                    }}
-                  >
-                    {!store?.store_image_url ? (<></>) : (<img src={store?.store_image_url} />)}
-                  </Box>
-                  <Box
-                    sx={{
-                      marginLeft: '1rem',
-                    }}
-                  >
-                    <Typography sx={{ wordBreak: 'break-word', fontWeight: 'bold', fontSize: '13.5px'}}>{store?.name}</Typography>
-                    <Typography sx={{ wordBreak: 'break-word', fontSize: '10px', padding:'.5rem 0'}}>{store?.address}</Typography>
-                    <Typography sx={{ wordBreak: 'break-word', fontSize: '10px'}}>{store?.contact_phone}</Typography>
-                  </Box>
+                  {!store?.store_image_url ? (
+                    <></>
+                  ) : (
+                    <img src={store?.store_image_url} />
+                  )}
                 </Box>
-              )): (<Typography sx={{ textAlign: 'center', color: 'grey', marginTop: '20px'}}></Typography>)}
+                <Box
+                  sx={{
+                    marginLeft: '1rem',
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      wordBreak: 'break-word',
+                      fontWeight: 'bold',
+                      fontSize: '13.5px',
+                    }}
+                  >
+                    {store?.name}
+                  </Typography>
+                  <Typography
+                    sx={{
+                      wordBreak: 'break-word',
+                      fontSize: '10px',
+                      padding: '.5rem 0',
+                    }}
+                  >
+                    {store?.address}
+                  </Typography>
+                  <Typography
+                    sx={{ wordBreak: 'break-word', fontSize: '10px' }}
+                  >
+                    {store?.contact_phone}
+                  </Typography>
+                </Box>
+              </Box>
+            ))
+          ) : (
+            <Typography
+              sx={{ textAlign: 'center', color: 'grey', marginTop: '20px' }}
+            ></Typography>
+          )}
           <Typography
             sx={{ textAlign: 'center', color: 'grey', margin: '50px 0' }}
           ></Typography>

@@ -13,24 +13,26 @@ export default function handler(req, res) {
       if (liList) {
         liList.map((li) => {
           const extract = {
-            long: '',
-            lat: '',
-            address: '',
+            coords: {
+              longitude: 0,
+              latitude: 0,
+            },
+            label: '',
           };
           if (!/^<li.*<\/li>$/.test(li)) return;
           let long = li.match(/data-lon.+data-min-lat=/)[0];
           long = long.replace('data-lon="', '').replace('" data-min-lat=', '');
-          extract.long = long;
+          extract.coords.longitude = long;
 
           let lat = li.match(/data-lat.+data-lon=/)[0];
           lat = lat.replace('data-lat="', '').replace('" data-lon=', '');
-          extract.lat = lat;
+          extract.coords.latitiude = lat;
 
           let address = li.match(/data-name.+data-type=/)[0];
           address = address
             .replace('data-name="', '')
             .replace('" data-type=', '');
-          extract.address = address;
+          extract.label = address;
           results.push(extract);
         });
         res.status(200).json(results);

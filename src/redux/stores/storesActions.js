@@ -39,3 +39,17 @@ export const clearStores = () => (dispatch) => {
     type: StoreTypes.CLEAR_STORES,
   });
 };
+
+export const getSuggestions = (query) => async (dispatch) => {
+  const result = await httpRequest({
+    url: `/api/place/suggestions?query=${query}`,
+    // url: `${API_ROUTES?.getStores?.route}?storeName=a`,
+    method: 'GET',
+    needToken: false,
+  });
+  
+  dispatch({
+    type: StoreTypes.STORE_SUGGESTIONS,
+    payload: result
+  });
+};
