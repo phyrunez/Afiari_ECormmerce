@@ -1,11 +1,13 @@
 import {
   TOGGLE_MODAL,
-  GET_STORES
+  GET_STORES,
+  GET_SUGGESTIONS,
 } from './storeTypes';
 
 const initialState = {
   toggleModalState: false,
-  stores: []
+  stores: [],
+  suggestions: [{ label: 'Current location', coords: null }],
 };
 
 const reducer = (state = initialState, action) => {
@@ -28,6 +30,15 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         stores: [],
+      };
+    }
+    case GET_SUGGESTIONS: {
+      return {
+        ...state,
+        suggestions: [
+          { label: 'Current location', coords: null },
+          ...action.payload
+        ],
       };
     }
 

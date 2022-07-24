@@ -1,16 +1,12 @@
 import {useEffect, useState, useRef} from 'react';
 import Button from '@mui/material/Button';
-import { styled } from '@mui/material/styles';
 import { ButtonSmall } from '../../shared-components/Button'
 import Image from 'next/image';
 import Dialog from '@mui/material/Dialog';
-import Skeleton from '@mui/material/Skeleton';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import Autocomplete from '@mui/material/Autocomplete'
-import TextField from '@mui/material/TextField'
-import InputAdornment from '@mui/material/InputAdornment'
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import Modal from '@mui/material/Modal'
@@ -30,25 +26,22 @@ import {
 import MapIcon from '../../../public/Marker.svg'
 
 export default function StoresLocation(props) {
-  const toggleModalState = useSelector(
-    (state) => state.stores.toggleModalState
-  );
   const [coords, setCoords] = useState({
     longitude: null, 
     latitude: null
   })
   const [loading, setLoading] = useState(false)
   const [pending, setPending] = useState(false)
-  const [suggestion, setSuggestion] = useState([{label: "Current location", coords: null }])
-  const dispatch = useDispatch();
-  const { stores } = useSelector(
+  
+  const { stores, suggestions, toggleModalState } = useSelector(
     (state) => state.stores
-  )
+  );
   const [accessInfo, setAccessInfo] = useState({
     browserAccess: null,
     statusMessage: 'Please, click the allow button at the top to continue',
     userResponse: null
   });
+  const dispatch = useDispatch();
 
   
 
@@ -154,6 +147,10 @@ export default function StoresLocation(props) {
     else setCoords({...{longitude: coords.longitude, latitude: coords.latitude}})
   };
 
+  const getSuggestions = () => {
+    dispatch(getSuggestions)
+  }
+
   return (
     <Modal
       onClose={() => dispatch(toggleModal())}
@@ -250,6 +247,7 @@ export default function StoresLocation(props) {
                       padding: '5px 40px',
                     }}
                     placeholder="You can search another location"
+                    onChange={() => getSuggestions(e.target.value)}
                   />
                 </Box>
               )}
