@@ -13,17 +13,24 @@ const reducer = (state = initialState, action) => {
     case TOGGLE_MODAL: {
       return {
         ...state,
-        toggleModalState: !state.toggleModalState 
-      }
+        toggleModalState: !state.toggleModalState,
+      };
     }
     case GET_STORES: {
       // console.log(action.payload)
       return {
         ...state,
-        stores: [...action.payload]
-      }
+        stores: [...action.payload],
+      };
     }
-      
+    case CLEAR_STORES: {
+      // console.log(action.payload)
+      return {
+        ...state,
+        stores: [],
+      };
+    }
+
     default:
       return state;
   }

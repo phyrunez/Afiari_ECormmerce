@@ -96,7 +96,8 @@ export default function StoresAroundYou(props) {
       dispatch(getStores({
         longitude: location.coords.longitude,
         latitude: location.coords.latitude,
-        query
+        query,
+        useQuery: true
       })).then(
         setIsLoading(false)
       )
@@ -166,7 +167,8 @@ export default function StoresAroundYou(props) {
     dispatch(getStores({
       longitude: location.lon, 
       latitude: location.lat,
-      query
+      query,
+      useQuery: true
     })).then(() => {
       setIsLoading(false);
       setQuery('');
@@ -178,7 +180,8 @@ export default function StoresAroundYou(props) {
     dispatch(getStores({
       longitude: location.lon, 
       latitude: location.lat,
-      query
+      query,
+      useQuery: true
     }))
   }, [query])
 

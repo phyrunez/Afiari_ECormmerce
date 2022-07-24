@@ -4,10 +4,10 @@ import { toast } from 'react-toastify';
 import { API_ROUTES } from '../../../constants/config';
 
 
-export const getStores = ({ longitude, latitude, query }) => async (dispatch) => {
+export const getStores = ({ longitude, latitude, query, useQuery }) => async (dispatch) => {
   try {
     const result = await httpRequest({
-      url: `${API_ROUTES?.getStores?.route}?storeName=${query}&longitude=${longitude}&latitude=${latitude}`,
+      url: `${API_ROUTES?.getStores?.route}?longitude=${longitude}&latitude=${latitude}${useQuery ? 'storeName='+query :''}`,
       // url: `${API_ROUTES?.getStores?.route}?storeName=a`,
       method: API_ROUTES?.getStores?.method,
       needToken: false,
@@ -33,3 +33,9 @@ export const toggleModal = () => (dispatch) => {
     type: StoreTypes.TOGGLE_MODAL
   });
 }
+
+export const clearStores = () => (dispatch) => {
+  dispatch({
+    type: StoreTypes.CLEAR_STORES,
+  });
+};
