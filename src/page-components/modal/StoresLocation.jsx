@@ -8,10 +8,12 @@ import Skeleton from '@mui/material/Skeleton';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
+import Autocomplete from '@mui/material/Autocomplete'
+import TextField from '@mui/material/TextField'
+import InputAdornment from '@mui/material/InputAdornment'
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import Modal from '@mui/material/Modal'
-import StoresLocation from './StoresLocation'
 import IconButton from '@mui/material/IconButton';
 import { toast } from 'react-toastify';
 import CloseIcon from '@mui/icons-material/Close';
@@ -38,7 +40,7 @@ import MapIcon from '../../../public/Marker.svg'
 //   },
 // }));
 
-export default function StoresAroundYou(props) {
+export default function StoresLocation(props) {
   const [location, setLocation] = useState({
     lon: 0,
     lat: 0,
@@ -46,8 +48,7 @@ export default function StoresAroundYou(props) {
   const [query, setQuery] = useState('');
   const [pending, setPending] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [storeState, setStoreState] = useState(false);
-  const [displayNewStore, setDisplayNewStore] = useState("")
+  const [displayLocation, setDisplayLocation] = useState([{label: "use current location"}])
   const searchFieldRef = useRef();
   const dispatch = useDispatch();
   const toggleModalState = useSelector(
@@ -62,9 +63,9 @@ export default function StoresAroundYou(props) {
     userResponse: null
   });
 
-  useEffect(() => {
-    console.log(stores)
-  })
+//   useEffect(() => {
+//     console.log(stores)
+//   })
 
 
   //SHOW TOAST ERROR
@@ -195,8 +196,7 @@ export default function StoresAroundYou(props) {
         alignItems: 'center',
       }}
     >
-      {!storeState && (
-        <Box
+      <Box
         sx={{
           width: { lg: '600px', md: '600px', sm: '500px', xs: '90%'},
           position: 'relative',
@@ -215,7 +215,7 @@ export default function StoresAroundYou(props) {
             // width: { md: '400px', xs: 'auto', sm: '400px'}
           }}
         >
-          Stores Around You
+          Local Stores Around You
           <IconButton
             aria-label="close"
             onClick={() => dispatch(toggleModal())}
@@ -229,95 +229,114 @@ export default function StoresAroundYou(props) {
             <CloseIcon />
           </IconButton>
         </DialogTitle>
-        {pending || accessInfo.userResponse === false || accessInfo.browserAccess === false ?
-         (
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'center',
-              marginBottom: '40px'
-            }}
-          >
-            <Alert severity="info">
-              <AlertTitle>Info</AlertTitle>
-              {accessInfo.statusMessage}
-            </Alert>
-          </Box>
-         ) 
-         : (
-          <>
             <DialogContent>
+
               <Box
-                sx={{
-                  display: 'flex',
-                  // flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  width: '100%',
-                  margin: 'auto',
+                component="div"
+                style={{
+                  display: "flex",
+                  width: "100%",
+                  justifyContent: "center",
                 }}
               >
-                <Paper
-                  component="form"
+                <Autocomplete
+                  disablePortal
+                  id="combo-box-demo"
+                  options={displayLocation}
+                  sx={{ width: 300 }}
+                  renderInput={(params) => (
+                    <Box
+                      component="div"
+                      sx={{
+                        boxSizing: "border-box",
+                        border: "1px solid #9f9f9f",
+                        borderRadius: "15px",
+                        display: "flex",
+                        alignItems: "center",
+                        position: "relative",
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          position: "absolute",
+                          width: "40px",
+                          height: "100%",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <Image
+                          src={MapIcon}
+                          alt="Marker"
+                          width={25}
+                          height={25}
+                        />
+                      </Box>
+
+                      <InputBase
+                        ref={params.InputProps.ref}
+                        inputProps={params.inputProps}
+                        autoFocus
+                        sx={{
+                          paddingLeft: "10px",
+                          fontSize: "12px",
+                          width: "100%",
+                          padding: "5px 40px",
+                        }}
+                        placeholder="You can search another location"
+                      />
+                    </Box>
+                  )}
+                  renderOption={(props, option) => (
+                    <Box
+                      component="li"
+                      {...props}
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        marginLeft: '0px',
+                      }}
+                    >
+                      <div>
+                        <Image
+                            src={MapIcon}
+                            alt="Marker"
+                            width={25}
+                            height={25}
+                          />
+                      </div>
+                      <div
+                        style={{
+                          paddingLeft: "15px",
+                          overflow: "hidden", 
+                          textOverflow: "ellipsis", 
+                          width: '11rem'
+                        }}
+                      >
+                        {option.label}
+                      </div>
+                    </Box>
+                  )}
+                />
+                <Button
+                  variant="contained"
                   sx={{
-                    p: '0px 4px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    width: '100%',
-                    height: '40px',
-                    left: '412px',
-                    border: '1.53151px solid rgba(0, 0, 0, 0.3)',
-                    borderRadius: '10px',
-                    marginRight: '10px'
+                    borderRadius: "50px",
+                    background: "#0a503d",
+                    marginLeft: "5px"
                   }}
                 >
-                  {/* <IconButton
-                    type="button"
-                    sx={{ p: '10px' }}
-                    aria-label="search"
-                    onClick={() => clearSearchField()}
-                  >
-                    <Image
-                      src={MapIcon}
-                      alt="Marker"
-                      width={25}
-                      height={25}
-                    />
-                    {
-                      searchFieldLoaded ? <Clear /> : <Search />
-                    }
-                  </IconButton> */}
-                  <InputBase
-                    sx={{ ml: 0, flex: 1, fontSize: '13px' }}
-                    placeholder="Search store by name"
-                    value={query}
-                    onChange={(e) => {
-                      setQuery(e.target.value)
-                    }}
-                  />
-                </Paper>
-                <ButtonSmall
-                  // width="120px"
-                  height="40px"
-                  borderRadius="16px"
-                  padding="0 10px"
-                  fontSize="12px"
-                  backgroundColor=" #0A503D"
-                  text="SEARCH"
-                  color="#fff"
-                  onClick={() => search()}
-                />
+                  SEARCH
+                </Button>
               </Box>
-              {isLoading ? (<Spinner />) : stores?.length ?  stores?.map((store, i) => (
+              {/* {isLoading ? (<Spinner />) : stores?.length ?  stores?.map((store, i) => (
                 <Box
                   key={store?.id}
                   component="div"
                   sx={{
                     display: 'grid',
-                    // justifyContent: 'space-evenly',
                     width: { md: '80%', xs: '100%' },
-                    // height: { md: 'auto', xs: 'auto' },
                     alignItems: 'center',
                     background: '#FFFFFF',
                     boxShadow: '0px 4.16667px 8.33333px rgba(0, 0, 0, 0.08)',
@@ -327,7 +346,6 @@ export default function StoresAroundYou(props) {
                     gridGap: '10px',
                     margin: 'auto',
                     marginTop: '2rem',
-                    // border: '1px solid red',
                   }}
                 >
                   <Box
@@ -337,14 +355,10 @@ export default function StoresAroundYou(props) {
                       height: { md: '100px', xs: '50px' },
                       boxShadow: '0px 4.16667px 8.33333px rgba(0, 0, 0, 0.08)',
                       borderRadius: '50%',
-                      // border: '1px solid black',
                       marginLeft: '10px'
                     }}
                   >
                     {!store?.store_image_url ? (<></>) : (<img src={store?.store_image_url} />)}
-                    {/* <Image
-                      src={store?.store_image_url} 
-                    /> */}
                   </Box>
                   <Box
                     sx={{
@@ -356,34 +370,25 @@ export default function StoresAroundYou(props) {
                     <Typography sx={{ wordBreak: 'break-word', fontSize: '10px'}}>{store?.contact_phone}</Typography>
                   </Box>
                 </Box>
-              )): (
-                <Typography 
-                  sx={{ 
-                    textAlign: 'center', 
-                    color: 'grey', 
-                    marginTop: '20px'
-                  }}
-                >
-                  No Stores Found!
-                </Typography>)}
+              )): (<Typography sx={{ textAlign: 'center', color: 'grey', marginTop: '20px'}}></Typography>)} */}
+              <Typography sx={{ textAlign: 'center', color: 'grey', margin: '50px 0'}}></Typography>
             </DialogContent>
-            <DialogActions sx={{ justifyContent: "center"}}>
+            <DialogActions sx={{ justifyContent: "center", margin: "0 0 20px 0"}}>
               <ButtonSmall
                 width="170px"
                 height="40px"
                 borderRadius="16px"
                 fontSize="12px"
                 backgroundColor=" #0A503D"
-                text="SEARCH NEW STORE"
+                text="GO BACK"
                 color="#fff"
-                onClick={props.newStore}
+                onClick={props.storesAround}
               />
             </DialogActions>
-          </>
-         )
-        }
+          {/* </>
+         )} */}
+        
       </Box>
-      )}
     </Modal>
   );
 }
