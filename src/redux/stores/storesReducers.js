@@ -1,6 +1,7 @@
 import {
   TOGGLE_MODAL,
-  GET_STORES
+  GET_STORES,
+  CLEAR_STORES
 } from './storeTypes';
 
 const initialState = {
