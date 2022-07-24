@@ -16,7 +16,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
 import Spinner from '../../../components/Spinner';
 import { useDispatch, useSelector } from 'react-redux';
-import { getStores, clearStore } from '../../redux/stores/storesActions'
+import { getStores } from '../../redux/stores/storesActions'
 import { toggleModal } from '../../redux/stores/storesActions';
 import {
   Paper,
@@ -24,6 +24,17 @@ import {
   InputBase,
 } from '@mui/material';
 import MapIcon from '../../../public/Marker.svg'
+
+
+// const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+//   '& .MuiDialogContent-root': {
+//     padding: theme.spacing(2),
+//     width: '400px'
+//   },
+//   '& .MuiDialogActions-root': {
+//     padding: theme.spacing(1),
+//   },
+// }));
 
 export default function StoresLocation(props) {
   const [coords, setCoords] = useState({
@@ -43,7 +54,10 @@ export default function StoresLocation(props) {
   });
   const dispatch = useDispatch();
 
-  
+//   useEffect(() => {
+//     console.log(stores)
+//   })
+
 
   //SHOW TOAST ERROR
   useEffect(() => {
@@ -64,12 +78,20 @@ export default function StoresLocation(props) {
         },
       });
     } else {
-      setCoords({
+      setLocation({
         ...{
-          longitude: location.coords.longitude,
-          latitude: location.coords.latitude,
+          lon: location.coords.longitude,
+          lat: location.coords.latitude,
         },
       });
+      setIsLoading(true);
+      dispatch(getStores({
+        longitude: location.coords.longitude,
+        latitude: location.coords.latitude,
+        query
+      })).then(
+        setIsLoading(false)
+      )
     }
     setPending(false);
   };
@@ -87,8 +109,9 @@ export default function StoresLocation(props) {
     setPending(false);
   }
 
-  // GET USER LOCATION
-  const getUserLocation = () => {
+  // GET INITIAL USER LOCATION
+  useEffect(() => {
+
     if(!toggleModalState) return
     if (navigator.geolocation) {
       navigator.permissions.query({
@@ -126,26 +149,30 @@ export default function StoresLocation(props) {
       });
       setPending(false);
     }
-  }
+  }, [toggleModalState]);
 
-  //SEARCH
+  //
   const search = () => {
-    if(!coords ) return 
-    setLoading(true)
+    if(query === "") return 
+    setIsLoading(true)
     dispatch(getStores({
       longitude: location.lon, 
       latitude: location.lat,
-      useQuery: false
+      query
     })).then(() => {
-      setLoading(false);
+      setIsLoading(false);
+      setQuery('');
     })
   }
 
-  // SET LOCATION
-  const setSelectedLocation = (coords) => {
-    if (!coords) getUserLocation()
-    else setCoords({...{longitude: coords.longitude, latitude: coords.latitude}})
-  };
+  useEffect(() => {
+    if(query !== "") return 
+    dispatch(getStores({
+      longitude: location.lon, 
+      latitude: location.lat,
+      query
+    }))
+  }, [query])
 
   const getSuggestions = () => {
     dispatch(getSuggestions)
@@ -166,19 +193,19 @@ export default function StoresLocation(props) {
     >
       <Box
         sx={{
-          width: { lg: '600px', md: '600px', sm: '500px', xs: '90%' },
+          width: { lg: '600px', md: '600px', sm: '500px', xs: '90%'},
           position: 'relative',
           background: 'white',
-          borderRadius: '20px',
+          borderRadius: '20px'
         }}
       >
-        <DialogTitle
-          sx={{
-            m: 5,
+        <DialogTitle 
+          sx={{ 
+            m: 5, 
             mb: 2,
-            p: 2,
-            textAlign: 'center',
-            fontWeight: 'bold',
+            p: 2, 
+            textAlign: 'center', 
+            fontWeight: 'bold', 
             color: 'black',
             // width: { md: '400px', xs: 'auto', sm: '400px'}
           }}
@@ -197,119 +224,107 @@ export default function StoresLocation(props) {
             <CloseIcon />
           </IconButton>
         </DialogTitle>
-        <DialogContent>
-          <Box
-            component="div"
-            style={{
-              display: 'flex',
-              width: '100%',
-              justifyContent: 'center',
-            }}
-          >
-            <Autocomplete
-              disablePortal
-              id="combo-box-demo"
-              options={displayLocation}
-              sx={{ width: 300 }}
-              renderInput={(params) => (
-                <Box
-                  component="div"
-                  sx={{
-                    boxSizing: 'border-box',
-                    border: '1px solid #9f9f9f',
-                    borderRadius: '15px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    position: 'relative',
-                  }}
-                >
-                  <Box
-                    sx={{
-                      position: 'absolute',
-                      width: '40px',
-                      height: '100%',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}
-                  >
-                    <Image src={MapIcon} alt="Marker" width={25} height={25} />
-                  </Box>
+            <DialogContent>
+              <Box
+                component="div"
+                style={{
+                  display: "flex",
+                  width: "100%",
+                  justifyContent: "center",
+                }}
+              >
+                <Autocomplete
+                  disablePortal
+                  id="combo-box-demo"
+                  options={displayLocation}
+                  sx={{ width: 300 }}
+                  renderInput={(params) => (
+                    <Box
+                      component="div"
+                      sx={{
+                        boxSizing: "border-box",
+                        border: "1px solid #9f9f9f",
+                        borderRadius: "15px",
+                        display: "flex",
+                        alignItems: "center",
+                        position: "relative",
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          position: "absolute",
+                          width: "40px",
+                          height: "100%",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <Image
+                          src={MapIcon}
+                          alt="Marker"
+                          width={25}
+                          height={25}
+                        />
+                      </Box>
 
-                  <InputBase
-                    ref={params.InputProps.ref}
-                    inputProps={params.inputProps}
-                    autoFocus
-                    sx={{
-                      paddingLeft: '10px',
-                      fontSize: '12px',
-                      width: '100%',
-                      padding: '5px 40px',
-                    }}
-                    placeholder="You can search another location"
-                    onChange={() => getSuggestions(e.target.value)}
-                  />
-                </Box>
-              )}
-              renderOption={(props, option) => (
-                <Box
-                  component="li"
-                  {...props}
+                      <InputBase
+                        ref={params.InputProps.ref}
+                        inputProps={params.inputProps}
+                        autoFocus
+                        sx={{
+                          paddingLeft: "10px",
+                          fontSize: "12px",
+                          width: "100%",
+                          padding: "5px 40px",
+                        }}
+                        placeholder="You can search another location"
+                      />
+                    </Box>
+                  )}
+                  renderOption={(props, option) => (
+                    <Box
+                      component="li"
+                      {...props}
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        marginLeft: '0px',
+                      }}
+                    >
+                      <div>
+                        <Image
+                            src={MapIcon}
+                            alt="Marker"
+                            width={25}
+                            height={25}
+                          />
+                      </div>
+                      <div
+                        style={{
+                          paddingLeft: "15px",
+                          overflow: "hidden", 
+                          textOverflow: "ellipsis", 
+                          width: '11rem'
+                        }}
+                      >
+                        {option.label}
+                      </div>
+                    </Box>
+                  )}
+                />
+                <Button
+                  variant="contained"
                   sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    marginLeft: '0px',
+                    borderRadius: "50px",
+                    background: "#0a503d",
+                    marginLeft: "5px"
                   }}
-                  onClick={() => setSelectedLocation(options.coords)}
                 >
-                  <div>
-                    <Image src={MapIcon} alt="Marker" width={25} height={25} />
-                  </div>
-                  <div
-                    style={{
-                      paddingLeft: '15px',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      width: '11rem',
-                    }}
-                  >
-                    {option.label}
-                  </div>
-                </Box>
-              )}
-            />
-            <Button
-              variant="contained"
-              sx={{
-                borderRadius: '50px',
-                background: '#0a503d',
-                marginLeft: '5px',
-              }}
-              disabled={!location || (location && loading)}
-              onClick={search}
-            >
-              SEARCH
-            </Button>
-          </Box>
-          {pending ||
-          accessInfo.userResponse === false ||
-          accessInfo.browserAccess === false ? (
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                marginBottom: '40px',
-              }}
-            >
-              <Alert severity="info">
-                <AlertTitle>Info</AlertTitle>
-                {accessInfo.statusMessage}
-              </Alert>
-            </Box>
-          ) : (
-            <div />
-          )}
-          {loading ? (<Spinner />) : stores?.length ?  stores?.map((store, i) => (
+                  SEARCH
+                </Button>
+              </Box>
+              {/* {isLoading ? (<Spinner />) : stores?.length ?  stores?.map((store, i) => (
                 <Box
                   key={store?.id}
                   component="div"
@@ -326,7 +341,6 @@ export default function StoresLocation(props) {
                     margin: 'auto',
                     marginTop: '2rem',
                   }}
-                  onClick={ () => router.push(`/store/${store?.id}`)}
                 >
                   <Box
                     sx={{
@@ -350,25 +364,24 @@ export default function StoresLocation(props) {
                     <Typography sx={{ wordBreak: 'break-word', fontSize: '10px'}}>{store?.contact_phone}</Typography>
                   </Box>
                 </Box>
-              )): (<Typography sx={{ textAlign: 'center', color: 'grey', marginTop: '20px'}}></Typography>)}
-          <Typography
-            sx={{ textAlign: 'center', color: 'grey', margin: '50px 0' }}
-          ></Typography>
-        </DialogContent>
-        <DialogActions sx={{ justifyContent: 'center', margin: '0 0 20px 0' }}>
-          <ButtonSmall
-            width="170px"
-            height="40px"
-            borderRadius="16px"
-            fontSize="12px"
-            backgroundColor=" #0A503D"
-            text="GO BACK"
-            color="#fff"
-            onClick={props.storesAround}
-          />
-        </DialogActions>
-        {/* </>
+              )): (<Typography sx={{ textAlign: 'center', color: 'grey', marginTop: '20px'}}></Typography>)} */}
+              <Typography sx={{ textAlign: 'center', color: 'grey', margin: '50px 0'}}></Typography>
+            </DialogContent>
+            <DialogActions sx={{ justifyContent: "center", margin: "0 0 20px 0"}}>
+              <ButtonSmall
+                width="170px"
+                height="40px"
+                borderRadius="16px"
+                fontSize="12px"
+                backgroundColor=" #0A503D"
+                text="GO BACK"
+                color="#fff"
+                onClick={props.storesAround}
+              />
+            </DialogActions>
+          {/* </>
          )} */}
+        
       </Box>
     </Modal>
   );

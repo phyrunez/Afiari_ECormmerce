@@ -2,6 +2,7 @@ import {
   TOGGLE_MODAL,
   GET_STORES,
   GET_SUGGESTIONS,
+  CLEAR_STORES,
 } from './storeTypes';
 
 const initialState = {
