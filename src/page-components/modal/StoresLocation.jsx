@@ -328,6 +328,7 @@ export default function StoresLocation(props) {
                     margin: 'auto',
                     marginTop: '2rem',
                   }}
+                  onClick={ () => router.push(`/store/${store?.id}`)}
                 >
                   <Box
                     sx={{

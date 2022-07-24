@@ -200,192 +200,210 @@ export default function StoresAroundYou(props) {
     >
       {!storeState && (
         <Box
-        sx={{
-          width: { lg: '600px', md: '600px', sm: '500px', xs: '90%'},
-          position: 'relative',
-          background: 'white',
-          borderRadius: '20px'
-        }}
-      >
-        <DialogTitle 
-          sx={{ 
-            m: 5, 
-            mb: 2,
-            p: 2, 
-            textAlign: 'center', 
-            fontWeight: 'bold', 
-            color: 'black',
-            // width: { md: '400px', xs: 'auto', sm: '400px'}
+          sx={{
+            width: { lg: '600px', md: '600px', sm: '500px', xs: '90%' },
+            position: 'relative',
+            background: 'white',
+            borderRadius: '20px',
           }}
         >
-          Stores Around You
-          <IconButton
-            aria-label="close"
-            onClick={() => dispatch(toggleModal())}
+          <DialogTitle
             sx={{
-              position: 'absolute',
-              right: 8,
-              top: 8,
-              color: (theme) => theme.palette.grey[500],
+              m: 5,
+              mb: 2,
+              p: 2,
+              textAlign: 'center',
+              fontWeight: 'bold',
+              color: 'black',
+              // width: { md: '400px', xs: 'auto', sm: '400px'}
             }}
           >
-            <CloseIcon />
-          </IconButton>
-        </DialogTitle>
-        {pending || accessInfo.userResponse === false || accessInfo.browserAccess === false ?
-         (
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'center',
-              marginBottom: '40px'
-            }}
-          >
-            <Alert severity="info">
-              <AlertTitle>Info</AlertTitle>
-              {accessInfo.statusMessage}
-            </Alert>
-          </Box>
-         ) 
-         : (
-          <>
-            <DialogContent>
-              <Box
-                sx={{
-                  display: 'flex',
-                  // flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  width: '100%',
-                  margin: 'auto',
-                }}
-              >
-                <Paper
-                  component="form"
+            Stores Around You
+            <IconButton
+              aria-label="close"
+              onClick={() => dispatch(toggleModal())}
+              sx={{
+                position: 'absolute',
+                right: 8,
+                top: 8,
+                color: (theme) => theme.palette.grey[500],
+              }}
+            >
+              <CloseIcon />
+            </IconButton>
+          </DialogTitle>
+          {pending ||
+          accessInfo.userResponse === false ||
+          accessInfo.browserAccess === false ? (
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                marginBottom: '40px',
+              }}
+            >
+              <Alert severity="info">
+                <AlertTitle>Info</AlertTitle>
+                {accessInfo.statusMessage}
+              </Alert>
+            </Box>
+          ) : (
+            <>
+              <DialogContent>
+                <Box
                   sx={{
-                    p: '0px 4px',
                     display: 'flex',
+                    // flexDirection: 'row',
                     alignItems: 'center',
                     justifyContent: 'center',
                     width: '100%',
-                    height: '40px',
-                    left: '412px',
-                    border: '1.53151px solid rgba(0, 0, 0, 0.3)',
-                    borderRadius: '10px',
-                    marginRight: '10px'
-                  }}
-                >
-                  {/* <IconButton
-                    type="button"
-                    sx={{ p: '10px' }}
-                    aria-label="search"
-                    onClick={() => clearSearchField()}
-                  >
-                    <Image
-                      src={MapIcon}
-                      alt="Marker"
-                      width={25}
-                      height={25}
-                    />
-                    {
-                      searchFieldLoaded ? <Clear /> : <Search />
-                    }
-                  </IconButton> */}
-                  <InputBase
-                    sx={{ ml: 0, flex: 1, fontSize: '13px' }}
-                    placeholder="Search store by name"
-                    value={query}
-                    onChange={(e) => {
-                      setQuery(e.target.value)
-                    }}
-                  />
-                </Paper>
-                <ButtonSmall
-                  // width="120px"
-                  height="40px"
-                  borderRadius="16px"
-                  padding="0 10px"
-                  fontSize="12px"
-                  backgroundColor=" #0A503D"
-                  text="SEARCH"
-                  color="#fff"
-                  onClick={() => search()}
-                />
-              </Box>
-              {isLoading ? (<Spinner />) : stores?.length ?  stores?.map((store, i) => (
-                <Box
-                  key={store?.id}
-                  component="div"
-                  sx={{
-                    display: 'grid',
-                    // justifyContent: 'space-evenly',
-                    width: { md: '80%', xs: '100%' },
-                    // height: { md: 'auto', xs: 'auto' },
-                    alignItems: 'center',
-                    background: '#FFFFFF',
-                    boxShadow: '0px 4.16667px 8.33333px rgba(0, 0, 0, 0.08)',
-                    borderRadius: ' 5.50833px',
-                    gridTemplateColumns: { md: '110px auto', xs: '60px auto'},
-                    padding: '1rem 1rem',
-                    gridGap: '10px',
                     margin: 'auto',
-                    marginTop: '2rem',
-                    // border: '1px solid red',
                   }}
                 >
-                  <Box
+                  <Paper
+                    component="form"
                     sx={{
-                      background: 'lightgrey',
-                      width: { md: '100px', xs: '50px' },
-                      height: { md: '100px', xs: '50px' },
-                      boxShadow: '0px 4.16667px 8.33333px rgba(0, 0, 0, 0.08)',
-                      borderRadius: '50%',
-                      // border: '1px solid black',
-                      marginLeft: '10px'
+                      p: '0px 4px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      width: '100%',
+                      height: '40px',
+                      left: '412px',
+                      border: '1.53151px solid rgba(0, 0, 0, 0.3)',
+                      borderRadius: '10px',
+                      marginRight: '10px',
                     }}
                   >
-                    {!store?.store_image_url ? (<></>) : (<img src={store?.store_image_url} />)}
-                    {/* <Image
+                    <InputBase
+                      sx={{ ml: 0, flex: 1, fontSize: '13px' }}
+                      placeholder="Search store by name"
+                      value={query}
+                      onChange={(e) => {
+                        setQuery(e.target.value);
+                      }}
+                    />
+                  </Paper>
+                  <ButtonSmall
+                    // width="120px"
+                    height="40px"
+                    borderRadius="16px"
+                    padding="0 10px"
+                    fontSize="12px"
+                    backgroundColor=" #0A503D"
+                    text="SEARCH"
+                    color="#fff"
+                    onClick={() => search()}
+                  />
+                </Box>
+                {isLoading ? (
+                  <Spinner />
+                ) : stores?.length ? (
+                  stores?.map((store, i) => (
+                    <Box
+                      key={store?.id}
+                      component="div"
+                      sx={{
+                        display: 'grid',
+                        // justifyContent: 'space-evenly',
+                        width: { md: '80%', xs: '100%' },
+                        // height: { md: 'auto', xs: 'auto' },
+                        alignItems: 'center',
+                        background: '#FFFFFF',
+                        boxShadow:
+                          '0px 4.16667px 8.33333px rgba(0, 0, 0, 0.08)',
+                        borderRadius: ' 5.50833px',
+                        gridTemplateColumns: {
+                          md: '110px auto',
+                          xs: '60px auto',
+                        },
+                        padding: '1rem 1rem',
+                        gridGap: '10px',
+                        margin: 'auto',
+                        marginTop: '2rem',
+                        // border: '1px solid red',
+                      }}
+                      onClick={() => router.push(`/store/${store?.id}`)}
+                    >
+                      <Box
+                        sx={{
+                          background: 'lightgrey',
+                          width: { md: '100px', xs: '50px' },
+                          height: { md: '100px', xs: '50px' },
+                          boxShadow:
+                            '0px 4.16667px 8.33333px rgba(0, 0, 0, 0.08)',
+                          borderRadius: '50%',
+                          // border: '1px solid black',
+                          marginLeft: '10px',
+                        }}
+                      >
+                        {!store?.store_image_url ? (
+                          <></>
+                        ) : (
+                          <img src={store?.store_image_url} />
+                        )}
+                        {/* <Image
                       src={store?.store_image_url} 
                     /> */}
-                  </Box>
-                  <Box
+                      </Box>
+                      <Box
+                        sx={{
+                          marginLeft: '1rem',
+                        }}
+                      >
+                        <Typography
+                          sx={{
+                            wordBreak: 'break-word',
+                            fontWeight: 'bold',
+                            fontSize: '13.5px',
+                          }}
+                        >
+                          {store?.name}
+                        </Typography>
+                        <Typography
+                          sx={{
+                            wordBreak: 'break-word',
+                            fontSize: '10px',
+                            padding: '.5rem 0',
+                          }}
+                        >
+                          {store?.address}
+                        </Typography>
+                        <Typography
+                          sx={{ wordBreak: 'break-word', fontSize: '10px' }}
+                        >
+                          {store?.contact_phone}
+                        </Typography>
+                      </Box>
+                    </Box>
+                  ))
+                ) : (
+                  <Typography
                     sx={{
-                      marginLeft: '1rem',
+                      textAlign: 'center',
+                      color: 'grey',
+                      marginTop: '20px',
                     }}
                   >
-                    <Typography sx={{ wordBreak: 'break-word', fontWeight: 'bold', fontSize: '13.5px'}}>{store?.name}</Typography>
-                    <Typography sx={{ wordBreak: 'break-word', fontSize: '10px', padding:'.5rem 0'}}>{store?.address}</Typography>
-                    <Typography sx={{ wordBreak: 'break-word', fontSize: '10px'}}>{store?.contact_phone}</Typography>
-                  </Box>
-                </Box>
-              )): (
-                <Typography 
-                  sx={{ 
-                    textAlign: 'center', 
-                    color: 'grey', 
-                    marginTop: '20px'
-                  }}
-                >
-                  No Stores Found!
-                </Typography>)}
-            </DialogContent>
-            <DialogActions sx={{ justifyContent: "center"}}>
-              <ButtonSmall
-                width="170px"
-                height="40px"
-                borderRadius="16px"
-                fontSize="12px"
-                backgroundColor=" #0A503D"
-                text="SEARCH NEW STORE"
-                color="#fff"
-                onClick={props.newStore}
-              />
-            </DialogActions>
-          </>
-         )
-        }
-      </Box>
+                    No Stores Found!
+                  </Typography>
+                )}
+              </DialogContent>
+              <DialogActions sx={{ justifyContent: 'center' }}>
+                <ButtonSmall
+                  width="170px"
+                  height="40px"
+                  borderRadius="16px"
+                  fontSize="12px"
+                  backgroundColor=" #0A503D"
+                  text="SEARCH NEW STORE"
+                  color="#fff"
+                  onClick={props.newStore}
+                />
+              </DialogActions>
+            </>
+          )}
+        </Box>
       )}
     </Modal>
   );
