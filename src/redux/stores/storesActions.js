@@ -4,11 +4,11 @@ import { toast } from 'react-toastify';
 import { API_ROUTES } from '../../../constants/config';
 
 
-export const getStores = ({ longitude, latitude }) => async (dispatch) => {
+export const getStores = ({ longitude, latitude, query }) => async (dispatch) => {
   try {
     const result = await httpRequest({
-      // url: `${API_ROUTES?.getStores?.route}?storeName=&longitude=${longitude}&latitude=${latitude}`,
-      url: `${API_ROUTES?.getStores?.route}?storeName=a`,
+      url: `${API_ROUTES?.getStores?.route}?storeName=${query}&longitude=${longitude}&latitude=${latitude}`,
+      // url: `${API_ROUTES?.getStores?.route}?storeName=a`,
       method: API_ROUTES?.getStores?.method,
       needToken: false,
     });

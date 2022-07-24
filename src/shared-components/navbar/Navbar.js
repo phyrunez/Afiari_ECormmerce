@@ -29,6 +29,7 @@ import { useCart } from 'react-use-cart';
 import { getCart } from '../../redux/cart/cartAction';
 import { useRouter } from 'next/router';
 import StoresAroundYou from '../../page-components/modal/StoresAroundYou';
+import StoresLocation from '../../page-components/modal/StoresLocation';
 import { toggleModal } from '../../redux/stores/storesActions';
 import Portal from '../../../components/Portal';
 
@@ -86,6 +87,15 @@ const Navbar = () => {
   const clearSearchField = () => {
     setVal('');
   };
+
+  const searchNewStore = () => {
+    setShowNav(current => !current)
+  }
+
+  const storesAround = () => {
+    setShowNav(current => !current)
+  }
+
 
   return (
     <AppBar
@@ -725,7 +735,7 @@ const Navbar = () => {
       {/*///////////////////// service for large screens ////////////////////////////////*/}
 
       <Portal elemId="modal">
-        <StoresAroundYou />
+        {showNav ?  (<StoresLocation storesAround={storesAround} />) : (<StoresAroundYou newStore={searchNewStore} />)}
       </Portal>
     </AppBar>
   );
