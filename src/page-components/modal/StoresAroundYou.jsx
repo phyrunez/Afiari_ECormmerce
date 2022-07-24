@@ -11,6 +11,7 @@ import DialogActions from '@mui/material/DialogActions';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import Modal from '@mui/material/Modal'
+import StoresLocation from './StoresLocation'
 import IconButton from '@mui/material/IconButton';
 import { toast } from 'react-toastify';
 import CloseIcon from '@mui/icons-material/Close';
@@ -37,7 +38,7 @@ import MapIcon from '../../../public/Marker.svg'
 //   },
 // }));
 
-export default function StoresAroundYou() {
+export default function StoresAroundYou(props) {
   const [location, setLocation] = useState({
     lon: 0,
     lat: 0,
@@ -45,6 +46,8 @@ export default function StoresAroundYou() {
   const [query, setQuery] = useState('');
   const [pending, setPending] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [storeState, setStoreState] = useState(false);
+  const [displayNewStore, setDisplayNewStore] = useState("")
   const searchFieldRef = useRef();
   const dispatch = useDispatch();
   const toggleModalState = useSelector(
@@ -192,7 +195,8 @@ export default function StoresAroundYou() {
         alignItems: 'center',
       }}
     >
-      <Box
+      {!storeState && (
+        <Box
         sx={{
           width: { lg: '600px', md: '600px', sm: '500px', xs: '90%'},
           position: 'relative',
@@ -352,7 +356,16 @@ export default function StoresAroundYou() {
                     <Typography sx={{ wordBreak: 'break-word', fontSize: '10px'}}>{store?.contact_phone}</Typography>
                   </Box>
                 </Box>
-              )): (<Typography sx={{ textAlign: 'center', color: 'grey', marginTop: '20px'}}>No Stores Found!</Typography>)}
+              )): (
+                <Typography 
+                  sx={{ 
+                    textAlign: 'center', 
+                    color: 'grey', 
+                    marginTop: '20px'
+                  }}
+                >
+                  No Stores Found!
+                </Typography>)}
             </DialogContent>
             <DialogActions sx={{ justifyContent: "center"}}>
               <ButtonSmall
@@ -363,13 +376,14 @@ export default function StoresAroundYou() {
                 backgroundColor=" #0A503D"
                 text="SEARCH NEW STORE"
                 color="#fff"
-                onClick={() => search()}
+                onClick={props.newStore}
               />
             </DialogActions>
           </>
          )
         }
       </Box>
+      )}
     </Modal>
   );
 }
