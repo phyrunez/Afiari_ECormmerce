@@ -34,23 +34,16 @@ export const toggleModal = () => (dispatch) => {
   });
 }
 
-export const clearStores = () => (dispatch) => {
-  dispatch({
-    type: StoreTypes.CLEAR_STORES,
-  });
-};
-
 export const getSuggestions = (query) => async (dispatch) => {
   const result = await httpRequest({
     url: `/api/place/suggestions?query=${query}`,
+    // url: `${API_ROUTES?.getStores?.route}?storeName=a`,
     method: 'GET',
     needToken: false,
   });
-
-  if (!result) return
   
   dispatch({
-    type: StoreTypes.GET_SUGGESTIONS,
+    type: StoreTypes.STORE_SUGGESTIONS,
     payload: result
   });
 };
