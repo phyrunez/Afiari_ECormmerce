@@ -7,8 +7,8 @@ import { API_ROUTES } from '../../../constants/config';
 export const getStores = ({ longitude, latitude, query, useQuery }) => async (dispatch) => {
   try {
     const result = await httpRequest({
-      url: `${API_ROUTES?.getStores?.route}?longitude=${longitude}&latitude=${latitude}${useQuery ? 'storeName='+query :''}`,
-      // url: `${API_ROUTES?.getStores?.route}?storeName=a`,
+      // url: `${API_ROUTES?.getStores?.route}?longitude=${longitude}&latitude=${latitude}${useQuery ? 'storeName='+query :''}`,
+      url: `${API_ROUTES?.getStores?.route}?storeName=a`,
       method: API_ROUTES?.getStores?.method,
       needToken: false,
     });
@@ -35,12 +35,9 @@ export const toggleModal = () => (dispatch) => {
 }
 
 export const getSuggestions = (query) => async (dispatch) => {
-  const result = await httpRequest({
-    url: `/api/place/suggestions?query=${query}`,
-    // url: `${API_ROUTES?.getStores?.route}?storeName=a`,
-    method: 'GET',
-    needToken: false,
-  });
+  let result = await fetch(`${`/api/places/suggestions?query=${query}`}`);
+  result = await result.json()
+  // console.log(result)
   
   dispatch({
     type: StoreTypes.STORE_SUGGESTIONS,

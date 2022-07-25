@@ -15,12 +15,13 @@ import AlertTitle from '@mui/material/AlertTitle';
 import Modal from '@mui/material/Modal';
 import IconButton from '@mui/material/IconButton';
 import { toast } from 'react-toastify';
+import { useRouter } from 'next/router';
 import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
 import Spinner from '../../../components/Spinner';
 import { useDispatch, useSelector } from 'react-redux';
 import { getStores, clearStore } from '../../redux/stores/storesActions';
-import { toggleModal } from '../../redux/stores/storesActions';
+import { toggleModal, getSuggestions } from '../../redux/stores/storesActions';
 import { Paper, Box, InputBase } from '@mui/material';
 import MapIcon from '../../../public/Marker.svg';
 
@@ -42,6 +43,8 @@ export default function StoresLocation(props) {
   });
   const [loading, setLoading] = useState(false);
   const [pending, setPending] = useState(false);
+  const selectedRef = useRef()
+  const router = useRouter()
   
   const { stores, suggestions, toggleModalState } = useSelector(
     (state) => state.stores
@@ -76,19 +79,20 @@ export default function StoresLocation(props) {
         },
       });
     } else {
-      setLocation({
+      setCoords({
         ...{
-          lon: location.coords.longitude,
-          lat: location.coords.latitude,
+          longitude: location.coords.longitude,
+          latitude: location.coords.latitude,
         },
       });
-      setIsLoading(true);
+      setLoading(true);
       dispatch(getStores({
         longitude: location.coords.longitude,
         latitude: location.coords.latitude,
-        query
+        query: "",
+        useQuery: false
       })).then(
-        setIsLoading(false)
+        setLoading(false)
       )
     }
     setPending(false);
@@ -126,6 +130,7 @@ export default function StoresLocation(props) {
             });
             setPending(false);
           } else {
+            console.log('dddd')
             setAccessInfo({
               ...{
                 browserAccess: null,
@@ -156,30 +161,43 @@ export default function StoresLocation(props) {
 
   //
   const search = () => {
-    if (!coords) return;
+    if (!coords || !selectedRef.current) return;
     setLoading(true);
     dispatch(
       getStores({
-        longitude: location.lon,
-        latitude: location.lat,
+        longitude: coords.longitude,
+        latitude: coords.latitude,
+        query: "",
         useQuery: false,
       })
     ).then(() => {
       setLoading(false);
     });
   };
+  
 
   // SET LOCATION
-  const setSelectedLocation = (coords) => {
+  const setSelectedLocation = async(e) => {
+    await new Promise((resolve) => {
+      setTimeout(() => {resolve()}, 1000)
+    })
+    if(!suggestions.length || !selectedRef.current) return
+    console.log(suggestions, selectedRef.current.value)
+    const result = suggestions.find((suggestion) => suggestion.label === selectedRef.current.value)
+    if(!result) return
+    const { coords } = result
+    console.log(coords)
     if (!coords) getUserLocation();
     else
       setCoords({
         ...{ longitude: coords.longitude, latitude: coords.latitude },
       });
+      
   };
 
   // GET SUGGESTIONS
   const setSuggestions = (value) => {
+    console.log('ddddd')
     dispatch(getSuggestions(value));
   }
 
@@ -241,9 +259,13 @@ export default function StoresLocation(props) {
             <Autocomplete
               disablePortal
               id="combo-box-demo"
-              options={displayLocation}
+              options={suggestions}
               sx={{ width: 300 }}
-              renderInput={(params) => (
+              onClose={(e) => setSelectedLocation(e)}
+              // getOptionLabel={}
+              renderInput={(params) => {
+                // selectedRef.current = params.InputProps.ref
+                return (
                 <Box
                   component="div"
                   sx={{
@@ -270,9 +292,10 @@ export default function StoresLocation(props) {
 
                   <InputBase
                     ref={params.InputProps.ref}
+                    inputRef={selectedRef}
                     inputProps={params.inputProps}
                     autoFocus
-                    sx={{
+                    style={{
                       paddingLeft: '10px',
                       fontSize: '12px',
                       width: '100%',
@@ -282,17 +305,16 @@ export default function StoresLocation(props) {
                     onChange={(e) => setSuggestions(e.target.value)}
                   />
                 </Box>
-              )}
+              )}}
               renderOption={(props, option) => (
                 <Box
                   component="li"
                   {...props}
                   sx={{
-                    borderRadius: '50px',
-                    background: '#0a503d',
-                    marginLeft: '5px',
+              
+                    marginLeft: '0px',
                   }}
-                  onClick={() => setSelectedLocation(option.coords)}
+                  // onClick={() => setSelectedLocation(option.coords)}
                 >
                   <div>
                     <Image src={MapIcon} alt="Marker" width={25} height={25} />
@@ -316,6 +338,7 @@ export default function StoresLocation(props) {
                 borderRadius: '50px',
                 background: '#0a503d',
                 marginLeft: '5px',
+                '&:hover, &:active': { background: '#0a503d'}
               }}
               disabled={!location || (location && loading)}
               onClick={search}
@@ -350,6 +373,7 @@ export default function StoresLocation(props) {
                 component="div"
                 sx={{
                   display: 'grid',
+                  cursor: 'pointer',
                   width: { md: '80%', xs: '100%' },
                   alignItems: 'center',
                   background: '#FFFFFF',
@@ -361,7 +385,10 @@ export default function StoresLocation(props) {
                   margin: 'auto',
                   marginTop: '2rem',
                 }}
-                onClick={() => router.push(`/store/${store?.id}`)}
+                onClick={() => {
+                  router.push(`/store/${store?.id}`)
+                  dispatch(toggleModal())
+                }}
               >
                 <Box
                   sx={{
@@ -413,11 +440,9 @@ export default function StoresLocation(props) {
           ) : (
             <Typography
               sx={{ textAlign: 'center', color: 'grey', marginTop: '20px' }}
-            ></Typography>
+            > No Stores Found!</Typography>
           )}
-          <Typography
-            sx={{ textAlign: 'center', color: 'grey', margin: '50px 0' }}
-          ></Typography>
+          
         </DialogContent>
         <DialogActions sx={{ justifyContent: 'center', margin: '0 0 20px 0' }}>
           <ButtonSmall

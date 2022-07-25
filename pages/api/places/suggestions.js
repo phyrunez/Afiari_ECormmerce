@@ -26,16 +26,24 @@ export default function handler(req, res) {
 
           let lat = li.match(/data-lat.+data-lon=/)[0];
           lat = lat.replace('data-lat="', '').replace('" data-lon=', '');
-          extract.coords.latitiude = lat;
+          extract.coords.latitude = lat;
 
           let address = li.match(/data-name.+data-type=/)[0];
           address = address
             .replace('data-name="', '')
             .replace('" data-type=', '');
           extract.label = address;
+          const exist = results.find((result) => result.label === extract.label)
+          if(exist) return
           results.push(extract);
         });
         res.status(200).json(results);
+        
+      }else{
+        res.status(200).json(results);
       }
-    });
+    })
+    .catch(() => {
+      res.status(200).json(results);
+    })
 }

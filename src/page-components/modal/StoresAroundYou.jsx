@@ -13,6 +13,7 @@ import AlertTitle from '@mui/material/AlertTitle';
 import Modal from '@mui/material/Modal'
 import StoresLocation from './StoresLocation'
 import IconButton from '@mui/material/IconButton';
+import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
 import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
@@ -50,6 +51,7 @@ export default function StoresAroundYou(props) {
   const [displayNewStore, setDisplayNewStore] = useState("")
   const searchFieldRef = useRef();
   const dispatch = useDispatch();
+  const router = useRouter()
   const toggleModalState = useSelector(
     (state) => state.stores.toggleModalState
   );
@@ -305,6 +307,7 @@ export default function StoresAroundYou(props) {
                       component="div"
                       sx={{
                         display: 'grid',
+                        cursor: 'pointer',
                         // justifyContent: 'space-evenly',
                         width: { md: '80%', xs: '100%' },
                         // height: { md: 'auto', xs: 'auto' },
@@ -323,7 +326,10 @@ export default function StoresAroundYou(props) {
                         marginTop: '2rem',
                         // border: '1px solid red',
                       }}
-                      onClick={() => router.push(`/store/${store?.id}`)}
+                      onClick={() => {
+                        router.push(`/store/${store?.id}`)
+                        dispatch(toggleModal())
+                      }}
                     >
                       <Box
                         sx={{
@@ -389,20 +395,20 @@ export default function StoresAroundYou(props) {
                   </Typography>
                 )}
               </DialogContent>
-              <DialogActions sx={{ justifyContent: 'center' }}>
-                <ButtonSmall
-                  width="170px"
-                  height="40px"
-                  borderRadius="16px"
-                  fontSize="12px"
-                  backgroundColor=" #0A503D"
-                  text="SEARCH NEW STORE"
-                  color="#fff"
-                  onClick={props.newStore}
-                />
-              </DialogActions>
             </>
           )}
+          <DialogActions sx={{ justifyContent: 'center' }}>
+            <ButtonSmall
+              width="170px"
+              height="40px"
+              borderRadius="16px"
+              fontSize="12px"
+              backgroundColor=" #0A503D"
+              text="SEARCH NEW STORE"
+              color="#fff"
+              onClick={props.newStore}
+            />
+          </DialogActions>
         </Box>
       )}
     </Modal>
