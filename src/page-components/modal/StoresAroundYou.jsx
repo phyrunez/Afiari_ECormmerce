@@ -8,6 +8,7 @@ import Skeleton from '@mui/material/Skeleton';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
+import { Search, Clear } from '@mui/icons-material';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import Modal from '@mui/material/Modal'
@@ -47,8 +48,10 @@ export default function StoresAroundYou(props) {
   const [query, setQuery] = useState('');
   const [pending, setPending] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [val, setVal] = useState('');
   const [storeState, setStoreState] = useState(false);
-  const [displayNewStore, setDisplayNewStore] = useState("")
+  const [displayNewStore, setDisplayNewStore] = useState("");
+  const [searchFieldLoaded, setSearchFieldLoaded] = useState(false);
   const searchFieldRef = useRef();
   const dispatch = useDispatch();
   const router = useRouter()
@@ -64,9 +67,37 @@ export default function StoresAroundYou(props) {
     userResponse: null
   });
 
+  // useEffect(() => {
+  //   console.log(stores)
+  // })
+
+  //HANDLING SEARCH STORE
   useEffect(() => {
-    console.log(stores)
-  })
+    const listener = event => {
+      if (event.code === "Enter" || event.code === "NumpadEnter") {
+        console.log("Enter key was pressed. Run your function.");
+        event.preventDefault();
+        // callMyFunction();
+        onSubmit(event)
+      }
+    };
+    document.addEventListener("keydown", listener);
+    return () => {
+      document.removeEventListener("keydown", listener);
+    };
+  }, [stores]);
+
+  const onSubmit = (location) => {
+    console.log('Tesstig kdk')
+    dispatch(getStores({
+      longitude: location.coords.longitude,
+      latitude: location.coords.latitude,
+      query,
+      useQuery: true
+    })).then(
+      setIsLoading(false)
+    )
+  }
 
 
   //SHOW TOAST ERROR
@@ -119,6 +150,11 @@ export default function StoresAroundYou(props) {
     });
     setPending(false);
   }
+
+  const clearSearchField = () => {
+    setVal('')
+  };
+
 
   // GET INITIAL USER LOCATION
   useEffect(() => {
@@ -269,24 +305,35 @@ export default function StoresAroundYou(props) {
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      width: '100%',
+                      width: '80%',
                       height: '40px',
                       left: '412px',
                       border: '1.53151px solid rgba(0, 0, 0, 0.3)',
-                      borderRadius: '10px',
+                      borderRadius: '15px',
                       marginRight: '10px',
                     }}
                   >
+                    <IconButton
+                      type="button"
+                      sx={{ p: '10px' }}
+                      aria-label="search"
+                      onClick={() => clearSearchField()}
+                    >
+                      {
+                        searchFieldLoaded ? <Clear /> : <Search />
+                      }
+                    </IconButton>
+
                     <InputBase
                       sx={{ ml: 0, flex: 1, fontSize: '13px' }}
-                      placeholder="Search store by name"
+                      placeholder="Enter name of store"
                       value={query}
                       onChange={(e) => {
                         setQuery(e.target.value);
                       }}
                     />
                   </Paper>
-                  <ButtonSmall
+                  {/* <ButtonSmall
                     // width="120px"
                     height="40px"
                     borderRadius="16px"
@@ -296,7 +343,7 @@ export default function StoresAroundYou(props) {
                     text="SEARCH"
                     color="#fff"
                     onClick={() => search()}
-                  />
+                  /> */}
                 </Box>
                 {isLoading ? (
                   <Spinner />
