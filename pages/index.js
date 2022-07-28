@@ -2,7 +2,9 @@ import { Box, Typography, Skeleton } from '@mui/material';
 import Image from 'next/image';
 import Card from '../src/page-components/Card';
 import Categories from '../src/page-components/Categories';
+import Tooltip from "@material-ui/core/Tooltip";
 import Footer from '../src/page-components/Footer';
+import ReactTooltip from 'react-tooltip';
 import Header from '../src/page-components/Header';
 import Navbar from '../src/shared-components/navbar/Navbar';
 import ServicesNavbar from '../src/shared-components/navbar/ServicesNavbar';
@@ -93,6 +95,7 @@ const Home = () => {
         </Box>
       </Box>
       <Testimony />
+      {/* <Tooltip title="oshe" placement="bottom-start"><Typography sx={{ cursor: 'pointer'}}>Hey Dear,</Typography></Tooltip> */}
       <Footer />
     </Box>
   );

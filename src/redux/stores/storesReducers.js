@@ -31,6 +31,14 @@ const reducer = (state = initialState, action) => {
         ],
       };
     }
+    case GET_STORE_PRODUCTS_BY_ID: {
+      return {
+        ...state,
+        product: action?.payload?.products,
+        meta_data: action?.payload?.data,
+        initial_meta_data: action?.payload?.data
+      };
+    } 
     default:
       return state;
   }

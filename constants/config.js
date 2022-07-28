@@ -158,7 +158,11 @@ const API_ROUTES = {
     method: 'GET',
   },
   getStores: {
-    route: 'Store/search/stores/in-location',
+    route: 'Store/get/afiari-store',
+    method: 'GET'
+  },
+  getStoreProductsById: {
+    route: 'store/products-from-store',
     method: 'GET'
   }
 };

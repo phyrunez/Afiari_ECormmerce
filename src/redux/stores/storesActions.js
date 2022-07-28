@@ -8,12 +8,12 @@ export const getStores = ({ longitude, latitude, query, useQuery }) => async (di
   try {
     const result = await httpRequest({
       // url: `${API_ROUTES?.getStores?.route}?longitude=${longitude}&latitude=${latitude}${useQuery ? 'storeName='+query :''}`,
-      url: `${API_ROUTES?.getStores?.route}?storeName=a`,
+      url: `${API_ROUTES?.getStores?.route}?longitude=""&latitude=""`,
       method: API_ROUTES?.getStores?.method,
       needToken: false,
     });
 
-    // console.log(result);
+    console.log(result);
 
     if (result && result?.status == true) {
       dispatch({
@@ -44,3 +44,28 @@ export const getSuggestions = (query) => async (dispatch) => {
     payload: result
   });
 };
+
+export const getAllProducts =
+  (store_id) =>
+  async (dispatch) => {
+    try {
+      dispatch(setIsLoading(true));
+      const response = await httpRequest({
+        url: `${API_ROUTES?.getStoreProductsById.route}/${store_id}`,
+        method: API_ROUTES.getStoreProductsById.method,
+        needToken: false,
+      });
+
+      if (response?.status === true) {
+        dispatch({
+          type: StoreTypes?.GET_STORE_PRODUCTS_BY_ID,
+          payload: {
+            products: response.result,
+            data: response?.meta_data,
+          },
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };

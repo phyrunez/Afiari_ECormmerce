@@ -1,5 +1,5 @@
 import {useEffect, useState, useRef} from 'react';
-import Button from '@mui/material/Button';
+// import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 import { ButtonSmall } from '../../shared-components/Button'
 import Image from 'next/image';
@@ -22,6 +22,7 @@ import Spinner from '../../../components/Spinner';
 import { useDispatch, useSelector } from 'react-redux';
 import { getStores } from '../../redux/stores/storesActions'
 import { toggleModal } from '../../redux/stores/storesActions';
+import { ButtonSmall as Button } from '../../shared-components/Button';
 import {
   Paper,
   Box,
@@ -78,25 +79,49 @@ export default function StoresAroundYou(props) {
         console.log("Enter key was pressed. Run your function.");
         event.preventDefault();
         // callMyFunction();
-        onSubmit(event)
+        search(event)
       }
     };
     document.addEventListener("keydown", listener);
     return () => {
       document.removeEventListener("keydown", listener);
     };
-  }, [stores]);
+  }, [query]);
 
-  const onSubmit = (location) => {
-    console.log('Tesstig kdk')
+   //
+  const search = (event) => {
+    if(query === "") return 
+    setIsLoading(true)
     dispatch(getStores({
-      longitude: location.coords.longitude,
-      latitude: location.coords.latitude,
+      longitude: location.lon, 
+      latitude: location.lat,
       query,
       useQuery: true
-    })).then(
-      setIsLoading(false)
-    )
+    }))
+    .then(() => {
+      setIsLoading(false);
+      setQuery('');
+    })
+    // if (query !== "a") {
+    //   setQuery(event.target.value)
+    //   setStoreState(current => !current)
+    //   // setIsLoading(current => !current)
+    // }
+  }
+
+  // const onSubmit = () => {
+  //   console.log('Tesstig kdk')
+  //   stores?.filter(post => {
+  //     if (query === '') {
+  //       return post;
+  //     } else if (post.name.toLowerCase().includes(query.toLowerCase())) {
+  //       return post;
+  //     }
+  //   })
+  // }
+
+  const searchAgain = () => {
+    setStoreState(true)
   }
 
 
@@ -198,30 +223,17 @@ export default function StoresAroundYou(props) {
     }
   }, [toggleModalState]);
 
-  //
-  const search = () => {
-    if(query === "") return 
-    setIsLoading(true)
-    dispatch(getStores({
-      longitude: location.lon, 
-      latitude: location.lat,
-      query,
-      useQuery: true
-    })).then(() => {
-      setIsLoading(false);
-      setQuery('');
-    })
-  }
+ 
 
-  useEffect(() => {
-    if(query !== "") return 
-    dispatch(getStores({
-      longitude: location.lon, 
-      latitude: location.lat,
-      query,
-      useQuery: true
-    }))
-  }, [query])
+  // useEffect(() => {
+  //   if(query !== "") return 
+  //   dispatch(getStores({
+  //     longitude: location.lon, 
+  //     latitude: location.lat,
+  //     query,
+  //     useQuery: true
+  //   }))
+  // }, [query])
 
   return (
     <Modal
@@ -271,7 +283,7 @@ export default function StoresAroundYou(props) {
             </IconButton>
           </DialogTitle>
           {pending ||
-          accessInfo.userResponse === false ||
+          accessInfo.userResponse === true ||
           accessInfo.browserAccess === false ? (
             <Box
               sx={{
@@ -329,6 +341,7 @@ export default function StoresAroundYou(props) {
                       placeholder="Enter name of store"
                       value={query}
                       onChange={(e) => {
+                        // setVal(e.target.value);
                         setQuery(e.target.value);
                       }}
                     />
@@ -393,7 +406,7 @@ export default function StoresAroundYou(props) {
                         {!store?.store_image_url ? (
                           <></>
                         ) : (
-                          <img src={store?.store_image_url} />
+                          <img src={store?.store_image_url} height="100" width="100" style={{ borderRadius: '50%'}} />
                         )}
                         {/* <Image
                       src={store?.store_image_url} 
@@ -440,11 +453,12 @@ export default function StoresAroundYou(props) {
                   >
                     No Stores Found!
                   </Typography>
-                )}
+                )
+                }
               </DialogContent>
             </>
           )}
-          <DialogActions sx={{ justifyContent: 'center' }}>
+          {/* <DialogActions sx={{ justifyContent: 'center' }}>
             <ButtonSmall
               width="170px"
               height="40px"
@@ -455,9 +469,94 @@ export default function StoresAroundYou(props) {
               color="#fff"
               onClick={props.newStore}
             />
-          </DialogActions>
+          </DialogActions> */}
         </Box>
-      )}
+      ) 
+      // && (
+      //   <Box
+      //     sx={{
+      //       width: { lg: '600px', md: '600px', sm: '500px', xs: '90%' },
+      //       position: 'relative',
+      //       background: 'white',
+      //       borderRadius: '20px',
+      //     }}
+      //   >
+      //     <DialogTitle
+      //       sx={{
+      //         m: 5,
+      //         mb: 2,
+      //         p: 2,
+      //         textAlign: 'center',
+      //         fontWeight: 'bold',
+      //         color: 'black',
+      //         // width: { md: '400px', xs: 'auto', sm: '400px'}
+      //       }}
+      //     >
+      //       Stores Around You
+      //       <IconButton
+      //         aria-label="close"
+      //         onClick={() => dispatch(toggleModal())}
+      //         sx={{
+      //           position: 'absolute',
+      //           right: 8,
+      //           top: 8,
+      //           color: (theme) => theme.palette.grey[500],
+      //         }}
+      //       >
+      //         <CloseIcon />
+      //       </IconButton>
+      //     </DialogTitle>
+      //     <DialogContent>
+      //       <Box
+      //         sx={{
+      //           textAlign: 'center',
+      //         }}
+      //       >
+      //         <Typography sx={{ color: 'red', paddingBottom: '20px'}}>Oops!!!</Typography>
+      //         <Typography sx={{ color: 'red', paddingBottom: '20px'}}>Seems the store is not registered with us.</Typography>
+      //         <Typography sx={{color: 'black', fontSize: '13px'}}>Please search for another option.</Typography>
+      //       </Box>
+      //       <Box
+      //         component="div"
+      //         sx={{
+      //           width: '350px',
+      //           display: 'flex',
+      //           justifyContent: 'space-between',
+      //           alignItems: 'center',
+      //           margin: 'auto',
+      //           marginTop: '30px'
+      //         }}
+      //       >
+      //         <Button
+      //           text="SEARCH AGAIN"
+      //           color="#fff"
+      //           width="140px"
+      //           fontSize="10px"
+      //           borderRadius="12.9771px"
+      //           backgroundColor="#0A503D"
+      //           fontWeight="600"
+      //           lineHeight="8px"
+      //           height="30px"
+      //           onClick={() => searchAgain()}
+      //         />
+      //         <Button
+      //           text="GO BACK"
+      //           color="#0A503D"
+      //           width="140px"
+      //           fontSize="10px"
+      //           borderRadius="12.9771px"
+      //           backgroundColor="#fff"
+      //           fontWeight="600"
+      //           lineHeight="8px"
+      //           height="30px"
+      //           border=" 1px solid #0A503D"
+      //           onClick={() => dispatch(toggleModal())}
+      //         />
+      //       </Box>
+      //     </DialogContent>
+      //   </Box>
+      // )}
+        }
     </Modal>
   );
 }

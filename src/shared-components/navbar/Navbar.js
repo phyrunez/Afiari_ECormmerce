@@ -13,6 +13,7 @@ import {
 } from '@mui/material';
 import { ButtonSmall as Button } from '../Button';
 import styles from '../../../styles/Navbar.module.css';
+import ReactTooltip from 'react-tooltip';
 import style from '../../../styles/Shop.module.css';
 import { ButtonSmall } from '../Button';
 import Image from 'next/image';
@@ -32,6 +33,8 @@ import StoresAroundYou from '../../page-components/modal/StoresAroundYou';
 import StoresLocation from '../../page-components/modal/StoresLocation';
 import { toggleModal } from '../../redux/stores/storesActions';
 import Portal from '../../../components/Portal';
+import { styled } from '@mui/material/styles';
+import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip';
 
 
 const Navbar = () => {
@@ -96,6 +99,19 @@ const Navbar = () => {
     setShowNav(current => !current)
   }
 
+  const LightTooltip = styled(({ className, ...props }) => (
+    <Tooltip {...props} classes={{ popper: className }} />
+  ))(({ theme }) => ({
+    [`& .${tooltipClasses.tooltip}`]: {
+      backgroundColor: theme.palette.common.white,
+      color: 'rgba(0, 0, 0, 0.87)',
+      boxShadow: theme.shadows[1],
+      width: '200px',
+      fontWeight: 'bold',
+      fontSize: 11,
+    },
+  }));
+
 
   return (
     <AppBar
@@ -148,45 +164,51 @@ const Navbar = () => {
               // border: '1px solid red',
             }}
           >
-            {navList?.map((list) => {
-              if (list.value === 'Stores around you')
+              {navList?.map((list) => {
+                if (list.value === 'Stores around you')
+                  return (
+                    <LightTooltip
+                      title="Allow Afiari Help you locate and shop from Stores close to your location" 
+                      placement='bottom-start'
+                    >
+                      <li
+                        key={list.id}
+                        className={styles.nav__list}
+                        style={{
+                          fontWeight: list?.value === activePage ? '600' : '400',
+
+                          color: list?.value === activePage ? '#000000' : '3a3a3a',
+                        }}
+                        onClick={() => {
+                          dispatch(toggleModal());
+                          // setActivePage(list?.value);
+                          // setActive(true);
+                        }}
+                      >
+                        {list?.value}
+                      </li>
+                    </LightTooltip>
+                  );
                 return (
-                  <li
-                    key={list.id}
-                    className={styles.nav__list}
-                    style={{
-                      fontWeight: list?.value === activePage ? '600' : '400',
+                  <Link href={list.route} key={list.id} passHref>
+                    <li
+                      className={styles.nav__list}
+                      style={{
+                        fontWeight: list?.value === activePage ? '600' : '400',
 
-                      color: list?.value === activePage ? '#000000' : '3a3a3a',
-                    }}
-                    onClick={() => {
-                      dispatch(toggleModal());
-                      // setActivePage(list?.value);
-                      // setActive(true);
-                    }}
-                  >
-                    {list?.value}
-                  </li>
+                        color: list?.value === activePage ? '#000000' : '3a3a3a',
+                      }}
+                      onClick={() => {
+                        setActivePage(list?.value);
+                        setActive(true);
+                      }}
+                    >
+                      {list?.value}
+                    </li>
+                  </Link>
                 );
-              return (
-                <Link href={list.route} key={list.id} passHref>
-                  <li
-                    className={styles.nav__list}
-                    style={{
-                      fontWeight: list?.value === activePage ? '600' : '400',
-
-                      color: list?.value === activePage ? '#000000' : '3a3a3a',
-                    }}
-                    onClick={() => {
-                      setActivePage(list?.value);
-                      setActive(true);
-                    }}
-                  >
-                    {list?.value}
-                  </li>
-                </Link>
-              );
-            })}
+              })}
+           
           </Box>
         </Toolbar>
         <Box
@@ -520,15 +542,17 @@ const Navbar = () => {
                   <Link href="/FoodMarket"> Food Market </Link>
                 </li>
 
-                <li className={styles.nav__links}>
-                  <span
-                    onClick={() => {
-                      dispatch(toggleModal());
-                    }}
-                  >
-                    Stores around you{' '}
-                  </span>
-                </li>
+                <Tooltip title="Hello Stores" placement="bottom-start">
+                  <li className={styles.nav__links}>
+                    <span
+                      onClick={() => {
+                        dispatch(toggleModal());
+                      }}
+                    >
+                      Stores around you{' '}
+                    </span>
+                  </li>
+                </Tooltip>
               </ul>
 
               <Box
