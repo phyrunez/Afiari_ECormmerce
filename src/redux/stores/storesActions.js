@@ -46,12 +46,12 @@ export const getSuggestions = (query) => async (dispatch) => {
 };
 
 export const getAllProducts =
-  (store_id) =>
+  (storeId) =>
   async (dispatch) => {
     try {
       dispatch(setIsLoading(true));
       const response = await httpRequest({
-        url: `${API_ROUTES?.getStoreProductsById.route}/${store_id}`,
+        url: `${API_ROUTES?.getStoreProductsById.route}/${storeId}`,
         method: API_ROUTES.getStoreProductsById.method,
         needToken: false,
       });
@@ -63,6 +63,57 @@ export const getAllProducts =
             products: response.result,
             data: response?.meta_data,
           },
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+export const getStoreProductsByCategory =
+  (country_id, category_id, PageNumber = 1, storeId) =>
+  async (dispatch) => {
+    try {
+      dispatch(setIsLoading(true));
+      const response = await httpRequest({
+        url: `${API_ROUTES?.categoryMarket?.route}/${category_id}/${storeId}`,
+        method: API_ROUTES?.categoryMarket?.method,
+        needToken: false,
+      });
+
+      if (response?.status === true) {
+        dispatch({
+          type: StoreTypes?.GET_STORE_PRODUCTS_BY_CATEGORY,
+          payload: {
+            productCategory: response?.result,
+            data: response?.meta_data,
+            categoryId: category_id,
+          },
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  export const getSearchProduct =
+  (text, country, page_number) => async (dispatch) => {
+    try {
+      dispatch(setIsLoading(true));
+      const response = await httpRequest({
+        url: `${
+          API_ROUTES?.searchProduct?.route + text
+        }&service_country=${country}&page_number=${page_number}`,
+        method: API_ROUTES?.searchProduct.method,
+      });
+
+      if (response?.status === true) {
+        dispatch({
+          type: StoreTypes?.SEARCH_PRODUCT,
+          payload: {
+            product: response.result,
+            data: response?.meta_data,
+          }
         });
       }
     } catch (error) {

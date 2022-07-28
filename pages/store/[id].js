@@ -10,7 +10,7 @@ import { Search, Clear } from '@mui/icons-material';
 import { useEffect, useState } from 'react';
 import Select from 'react-select';
 import Footer from '../../src/page-components/Footer';
-import ShopCard from '../../src/page-components/shop/ShopCard';
+import ShopStoreCard from '../../src/page-components/shop/ShopStoreCard';
 import ShopSideBoxComponent from '../../src/page-components/shop/ShopSideBoxComponent';
 // import styles from '../../../styles/Shop.module.css';
 import styles from '../../styles/Shop.module.css';
@@ -521,7 +521,7 @@ function Shop() {
             }}
          ></Divider>
 
-          <ShopCard isLoading={isLoading} query={query} setIsLoading={setIsLoading} />
+          <ShopStoreCard isLoading={isLoading} query={query} setIsLoading={setIsLoading} />
 
           {/* //////////////////////////////////////////////// the next and prev arrows //////////////////////////////////////////////// */}
 

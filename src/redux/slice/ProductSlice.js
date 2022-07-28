@@ -62,6 +62,24 @@ export const getGeneralMarket = createAsyncThunk(
   }
 );
 
+export const getAllProducts = createAsyncThunk(
+  'country/getAllProducts',
+  async (pageNumber, thunkAPI) => {
+    try {
+      return await productService.getProducts(pageNumber);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 /////////////////////// END OF GETTING ALL GENERAL PRODUCT FROM THE SERVICE ///////////////////////////////////////////////
 
 /////////////////////// GETTING SINGLE PRODUCT FROM THE SERVICE ///////////////////////////////////////////////
