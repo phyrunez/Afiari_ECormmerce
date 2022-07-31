@@ -38,7 +38,7 @@ import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip';
 
 
 const Navbar = () => {
-  const [showNav, setShowNav] = useState(false);
+  const [showNav, setShowNav] = useState(false)
   const [menuIcon, setMenuIcon] = useState(false);
   const [show, setShow] = useState(false);
   const { totalItems, emptyCart } = useCart();
@@ -758,9 +758,7 @@ const Navbar = () => {
 
       {/*///////////////////// service for large screens ////////////////////////////////*/}
 
-      <Portal elemId="modal">
-        {showNav ?  (<StoresLocation storesAround={storesAround} />) : (<StoresAroundYou newStore={searchNewStore} />)}
-      </Portal>
+      
     </AppBar>
   );
 };

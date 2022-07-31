@@ -12,23 +12,29 @@ import {
 } from '../../redux/slice/ProductSlice';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import {
+  getAllStoreProducts,
+  getStoreProductsByCategory,
+  getSearchProduct,
+} from '../../redux/stores/storesActions';
 import { addCart } from '../../redux/cart/cartAction';
 
 import { useCart } from 'react-use-cart';
 import { formatCurrency, getNumber } from '../../utils/utils';
 import { toast } from 'react-toastify';
 import { PAGE_SCENERIOS } from '../../../constants/constants';
-import { getAllProducts, getStoreProductsByCategory, getSearchProduct, } from '../../redux/stores/storesActions'
 
 const ShopStoreCard = ({ isLoading, setIsLoading, query }) => {
   const {
     storeProducts,
-    meta_data: metaData, 
-    selectedCategory, 
+    storeProductCategory,
+    selectedCategory,
+    meta_data: metaData,
     searched,
-    hasSearched
-   } = useSelector((state) => state.stores);
-   
+    hasSearched,
+    currentPaginationType,
+    currentCategory
+  } = useSelector((state) => state?.stores);
   console.log('searched');
 
   const { country, isLogged_in } = useSelector((state) => state?.auth);
@@ -55,14 +61,16 @@ const ShopStoreCard = ({ isLoading, setIsLoading, query }) => {
   let displayedProduct = storeProducts;
 
   if (selectedCategory !== '') {
-    displayedProduct = productCategory;
+    displayedProduct = storeProductCategory;
   }
+
+  console.log(selectedCategory)
 
   // if(query){
   //   displayedProduct = searched
   // }
 
-  const storeProductsData = () => {
+  const displayStoreProducts = () => {
     const newData = displayedProduct.map((prod, index) => {
       return {
         id: prod.id,
@@ -83,6 +91,8 @@ const ShopStoreCard = ({ isLoading, setIsLoading, query }) => {
     });
     return newData;
   };
+
+  console.log(displayStoreProducts())
 
   const searchedItems = () => {
     const newData = searched.map((prod, index) => {
@@ -124,7 +134,7 @@ const ShopStoreCard = ({ isLoading, setIsLoading, query }) => {
     } else if (currentPaginationType === PAGE_SCENERIOS.CATEGORY) {
       dispatch(getStoreProductsByCategory(country, currentCategory, page));
     } else {
-      dispatch(getAllProducts(country, page));
+      dispatch(getAllStoreProducts(country, page));
     }
     setIsLoading(true)
   }
@@ -422,7 +432,7 @@ const ShopStoreCard = ({ isLoading, setIsLoading, query }) => {
                 </Box>
               )
             })
-          ) : storeProductsData().length === 0 ? (
+          ) : displayStoreProducts().length === 0 ? (
             <Box
               sx={{
                 display: 'flex',
@@ -436,7 +446,7 @@ const ShopStoreCard = ({ isLoading, setIsLoading, query }) => {
             >
               <Typography variant="p">items not available</Typography>
             </Box>
-          ) : storeProductsData()?.map((item, i) => (
+          ) : displayStoreProducts()?.map((item, i) => (
             <Box
               key={item.id}
               sx={{

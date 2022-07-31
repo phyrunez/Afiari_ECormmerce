@@ -5,6 +5,8 @@ import Head from 'next/head';
 import configureStore from '../src/redux/store';
 import { Provider, useDispatch, useSelector } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
+import StoresAroundYou from '../src/page-components/modal/StoresAroundYou';
+import Portal from '../components/Portal';
 import 'react-toastify/dist/ReactToastify.css';
 import { persistStore } from 'redux-persist';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -19,6 +21,7 @@ const store = configureStore();
 // const persistor = persistStore(store);
 
 function MyApp({ Component, pageProps, router }) {
+  
   return (
     <>
       <Head>
@@ -46,6 +49,11 @@ Foodstuff market in Lagos"
           <AuthProvider>
             <ProtectedRoutes router={router}>
               <Component {...pageProps} />
+
+              <Portal elemId="modal">
+                {/* {(<StoresAroundYou newStore={searchNewStore} />)} */}
+                {(<StoresAroundYou />)}
+              </Portal>
             </ProtectedRoutes>
           </AuthProvider>
         </CartProvider>

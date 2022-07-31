@@ -19,6 +19,7 @@ export const setSelectedCategory = (value) => ({
   type: GeneralTypes.GET_SELECTED_CATEGORY,
   payload: value,
 });
+
 export const getSelectedProfileMenu = (value) => ({
   type: GeneralTypes.GET_SELECTED_PROFILE_MENU,
   payload: value,
@@ -113,6 +114,8 @@ export const getProductsByCategory =
         method: API_ROUTES?.categoryMarket?.method,
         needToken: false,
       });
+
+      console.log("het Dear", response, category_id)
 
       if (response?.status === true) {
         dispatch({

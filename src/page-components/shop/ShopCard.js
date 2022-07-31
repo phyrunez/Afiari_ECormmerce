@@ -112,6 +112,8 @@ const ShopCard = ({ isLoading, setIsLoading, query }) => {
     return newData;
   };
 
+  
+
   // const search = products()?.filter((item) =>
   //   item?.name?.toLowerCase().includes(query?.toLowerCase())
   // );

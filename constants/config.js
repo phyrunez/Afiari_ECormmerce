@@ -1,3 +1,4 @@
+// const BASE_URL = 'https://afiari-api-production.centralus.cloudapp.azure.com:444/api';
 const BASE_URL = 'https://afiariwebapi.centralus.cloudapp.azure.com:444/api';
 
 const ETERNAL_URL =
@@ -158,13 +159,21 @@ const API_ROUTES = {
     method: 'GET',
   },
   getStores: {
-    route: 'Store/get/afiari-store',
+    route: 'Store/get/stores-in-location',
     method: 'GET'
   },
   getStoreProductsById: {
-    route: 'store/products-from-store',
+    route: 'Store/products-from-store',
+    method: 'GET'
+  },
+  searchStore: {
+    route: 'Store/search/stores/in-location',
     method: 'GET'
   }
+  // storeCategory: {
+  //   route: 'Product/category',
+  //   method: 'GET'
+  // }
 };
 
 const authToken = 'Afiari_access';

@@ -20,7 +20,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
 import Spinner from '../../../components/Spinner';
 import { useDispatch, useSelector } from 'react-redux';
-import { getStores, toggleModal, getAllProducts } from '../../redux/stores/storesActions'
+import { getStores, toggleModal, getAllStoreProducts } from '../../redux/stores/storesActions'
 import { ButtonSmall as Button } from '../../shared-components/Button';
 import {
   Paper,
@@ -42,17 +42,23 @@ import MapIcon from '../../../public/Marker.svg'
 
 export default function StoresAroundYou(props) {
   const [location, setLocation] = useState({
-    lon: 0,
-    lat: 0,
+    lon: null,
+    lat: null,
+  });
+  const [coords, setCoords] = useState({
+    longitude: null,
+    latitude: null,
   });
   const [query, setQuery] = useState('');
   const [pending, setPending] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [val, setVal] = useState('');
   const [storeState, setStoreState] = useState(false);
+  const [hasSearch, setHasSearch] = useState(false);
   const [displayNewStore, setDisplayNewStore] = useState("");
   const [searchFieldLoaded, setSearchFieldLoaded] = useState(false);
   const searchFieldRef = useRef();
+  const selectedRef = useRef()
   const dispatch = useDispatch();
   const router = useRouter()
   const toggleModalState = useSelector(
@@ -72,40 +78,73 @@ export default function StoresAroundYou(props) {
   // })
 
   //HANDLING SEARCH STORE
+  // useEffect(() => {
+  //   const listener = event => {
+  //     if (event.code === "Enter" || event.code === "NumpadEnter") {
+  //       console.log("Enter key was pressed. Run your function.");
+  //       event.preventDefault();
+  //       // callMyFunction();
+  //       search(event)
+  //     }
+  //   };
+  //   document.addEventListener("keydown", listener);
+  //   return () => {
+  //     document.removeEventListener("keydown", listener);
+  //   };
+  // }, [query]);
+
+  // useEffect(() => {
+  //   dispatch(getAllStoreProducts())
+  //   console.log('Because am happy')
+  // })
+
   useEffect(() => {
-    const listener = event => {
-      if (event.code === "Enter" || event.code === "NumpadEnter") {
-        console.log("Enter key was pressed. Run your function.");
-        event.preventDefault();
-        // callMyFunction();
-        search(event)
-      }
-    };
-    document.addEventListener("keydown", listener);
-    return () => {
-      document.removeEventListener("keydown", listener);
-    };
-  }, [query]);
+    if (stores.length === 0 && hasSearch) {
+      setStoreState(true)
+      setHasSearch(false)
+    }
+  }, [stores, hasSearch])
 
    //
-  const search = (event) => {
-    if(query === "") return 
-    setIsLoading(true)
-    dispatch(getStores({
-      longitude: location.lon, 
-      latitude: location.lat,
-      query,
-      useQuery: true
-    }))
-    .then(() => {
-      setIsLoading(false);
-      setQuery('');
-    })
-    if (query !== "") {
-      setIsLoading(true)
-      dispatch(getAllProducts())
-      setStoreState(current => !current)
+  const search = (event) => { 
+    // event.preventDefault()
+    console.log(typeof event.keyCode)
+    console.log(location.coords)
+    if (event.keyCode === 13 && location.lon && location.lat) {
+      setIsLoading(true);
+      setHasSearch(false)
+      dispatch(
+        getStores({
+          longitude: location.lon,
+          latitude: location.lat,
+          query: event.target.value,
+          useQuery: true,
+        })
+      ).then(() => {
+        setIsLoading(false);
+        setQuery('');
+        setHasSearch(true)
+      })
+      
     }
+    
+    // if(query === "") return 
+    // setIsLoading(true)
+    // dispatch(getStores({
+    //   longitude: location.lon, 
+    //   latitude: location.lat,
+    //   query,
+    //   useQuery: true
+    // }))
+    // .then(() => {
+    //   setIsLoading(false);
+    //   setQuery('');
+    // })
+    // if (query === event.target.value) {
+    //   setIsLoading(true)
+    //   dispatch(getAllStoreProducts())
+    //   setStoreState(current => !current)
+    // }
   }
 
   // const onSubmit = () => {
@@ -154,7 +193,7 @@ export default function StoresAroundYou(props) {
         longitude: location.coords.longitude,
         latitude: location.coords.latitude,
         query,
-        useQuery: true
+        useQuery: false
       })).then(
         setIsLoading(false)
       )
@@ -310,7 +349,7 @@ export default function StoresAroundYou(props) {
                   }}
                 >
                   <Paper
-                    component="form"
+                    component="div"
                     sx={{
                       p: '0px 4px',
                       display: 'flex',
@@ -335,14 +374,18 @@ export default function StoresAroundYou(props) {
                       }
                     </IconButton>
 
-                    <InputBase
-                      sx={{ ml: 0, flex: 1, fontSize: '13px' }}
+                    <input
+                      style={{ marginLeft: 0, flex: 1, fontSize: '13px', border: '0px', outline: 'none' }}
                       placeholder="Enter name of store"
-                      value={query}
-                      onChange={(e) => {
-                        // setVal(e.target.value);
-                        setQuery(e.target.value);
+                      
+                      onKeyDown={(e) => {
+                        search(e)
+                      
                       }}
+                      // onChange={(e) => {
+                      //   // setVal(e.target.value);
+                      //   setQuery(e.target.value);
+                      // }}
                     />
                   </Paper>
                   {/* <ButtonSmall
@@ -405,7 +448,8 @@ export default function StoresAroundYou(props) {
                         {!store?.store_image_url ? (
                           <></>
                         ) : (
-                          <img src={store?.store_image_url} height="100" width="100" style={{ borderRadius: '50%'}} />
+                          <img src={store?.store_image_url} style={{ borderRadius: '50%', width: { md: '100px', xs: '50px' },
+                          height: { md: '100px', xs: '50px' }}} />
                         )}
                         {/* <Image
                       src={store?.store_image_url} 

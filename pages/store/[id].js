@@ -11,7 +11,7 @@ import { useEffect, useState } from 'react';
 import Select from 'react-select';
 import Footer from '../../src/page-components/Footer';
 import ShopStoreCard from '../../src/page-components/shop/ShopStoreCard';
-import ShopSideBoxComponent from '../../src/page-components/shop/ShopSideBoxComponent';
+import StoreSideBoxComponent from '../../src/page-components/shop/StoreSideBoxComponent';
 // import styles from '../../../styles/Shop.module.css';
 import styles from '../../styles/Shop.module.css';
 import storeImg from '../../public/storeImg.svg';
@@ -25,14 +25,14 @@ import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import { getStores } from '../../src/redux/stores/storesActions'
 import {
-  getProductsByCategory,
+  getStoreProductsByCategory,
   setSelectedCategory,
-  getAllProducts,
+  getAllStoreProducts,
   getAllCountries,
   getSearchProduct,
   setSearched,
   setInitialMetaData,
-} from '../../src/redux/general/generalAction';
+} from '../../src/redux/stores/storesActions';
 import Spinner from '../../components/Spinner';
 import { handleDelete, setIsLoading } from '../../src/redux/cart/cartAction';
 import DeleteNotification from '../../src/page-components/shop/DeleteNotification';
@@ -44,10 +44,10 @@ function Shop() {
     categories,
     countries,
     meta_data: metaData,
-    product, 
-    productCategory,
+    storeProducts, 
+    storeProductCategory,
     searched
-  } = useSelector((state) => state.general);
+  } = useSelector((state) => state.stores);
 
   const { country, loading } = useSelector((state) => state.auth);
 
@@ -179,16 +179,19 @@ function Shop() {
   const onChange = (selectedOption) => {  
     setIsLoading(true)
     const countryId = JSON.parse(localStorage.getItem('selectedCountry'));
+    const storeId = router.query.id;
+    const categoryId = router.query.id;
     setSelectedOption(selectedOption);
     if(selectedOption.id === ALL_PRODUCT_ID){
       dispatch(setSelectedCategory(''));
       dispatch(setSearched(false));
-      dispatch(getAllProducts(country, 1));
+      dispatch(getAllStoreProducts(storeId, 1));
     } else {
       dispatch(
-        getProductsByCategory(
-          country ? country : countryId?.id,
-          selectedOption.id
+        getStoreProductsByCategory(
+          categoryId,
+          storeId,
+          // selectedOption.id
         )
       );
       dispatch(setSelectedCategory(selectedOption.value));
@@ -208,15 +211,21 @@ function Shop() {
     dispatch(getSearchProduct(query, country, pageNumber))
   }
 
+  
+
   useEffect(() => {
-    const countryId = JSON.parse(localStorage.getItem('selectedCountry'));
-    const pageNumber = 1;
-    dispatch(getAllProducts(countryId?.id, pageNumber));
-    dispatch(setUserCountry(countryId?.id));
-    console.log(loading);
-    // dispatch(getSearchProduct('', country, page_index));
-    // dispatch(getProductCategory(item));
-  }, [dispatch]);
+    if (router.asPath !== router.route) {
+      const pageNumber = 1;
+      const storeId = router.query.id;
+      // const categoryId = router.query.id;
+      dispatch(getAllStoreProducts(storeId, pageNumber));
+      dispatch(getStoreProductsByCategory(storeId))
+      console.log(loading);
+      // dispatch(getSearchProduct('', country, page_index));
+      // dispatch(getProductCategory(item));
+    }
+    
+  }, [router]);
 
   useEffect(() => {
     if (val.trim() !== '') {
@@ -225,13 +234,14 @@ function Shop() {
       setSearchFieldLoaded(false);
       dispatch(setSearched(false));
       const pageNumber = 1;
-      dispatch(getAllProducts(country, pageNumber));
+      const storeId = router.query.id;
+      dispatch(getAllStoreProducts(storeId, pageNumber));
     }
   }, [val]);
 
    useEffect(() => {
      setIsLoading(false)
-   }, [product, searched, productCategory]);
+   }, [storeProducts, searched, storeProductCategory]);
 
   return (
     <Box
@@ -450,7 +460,7 @@ function Shop() {
           marginBottom: '3rem',
         }}
       >
-        <ShopSideBoxComponent setIsLoading={setIsLoading} />
+        <StoreSideBoxComponent setIsLoading={setIsLoading} />
 
         {/* //////////////////////////////////////////////// the filter and categories that only appear on mobile //////////////////////////////////////////////// */}
         <Box

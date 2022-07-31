@@ -33,6 +33,9 @@ import { logout } from '../../redux/auth/authAction';
 import { useCart } from 'react-use-cart';
 import { getCart } from '../../redux/cart/cartAction';
 import { useRouter } from 'next/router';
+import { styled } from '@mui/material/styles';
+import { toggleModal } from '../../redux/stores/storesActions';
+import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip';
 
 
 const SearchNavbar = ({ setIsLoading }) => {
@@ -90,6 +93,19 @@ const SearchNavbar = ({ setIsLoading }) => {
   const clearSearchField = () => {
     setQuery('')
   };
+
+  const LightTooltip = styled(({ className, ...props }) => (
+    <Tooltip {...props} classes={{ popper: className }} />
+  ))(({ theme }) => ({
+    [`& .${tooltipClasses.tooltip}`]: {
+      backgroundColor: theme.palette.common.white,
+      color: 'rgba(0, 0, 0, 0.87)',
+      boxShadow: theme.shadows[1],
+      width: '200px',
+      fontWeight: 'bold',
+      fontSize: 11,
+    },
+  }));
 
   // SEARCH
   const search = () => {
@@ -173,24 +189,52 @@ const SearchNavbar = ({ setIsLoading }) => {
               // border: '1px solid red',
             }}
           >
-            {navList?.map((list) => (
-              <Link href={list.route} key={list.id} passHref>
-                <li
-                  className={styles.nav__list}
-                  style={{
-                    fontWeight: list?.value === activePage ? '600' : '400',
+            {navList?.map((list) => {
+                if (list.value === 'Stores around you')
+                  return (
+                    <>
+                      <LightTooltip
+                        title="Allow Afiari Help you locate and shop from Stores close to your location" 
+                        placement='bottom-start'
+                      >
+                        <li
+                          key={list.id}
+                          className={styles.nav__list}
+                          style={{
+                            fontWeight: list?.value === activePage ? '600' : '400',
 
-                    color: list?.value === activePage ? '#000000' : '3a3a3a',
-                  }}
-                  onClick={() => {
-                    setActivePage(list?.value);
-                    setActive(true);
-                  }}
-                >
-                  {list?.value}
-                </li>
-              </Link>
-            ))}
+                            color: list?.value === activePage ? '#000000' : '3a3a3a',
+                          }}
+                          onClick={() => {
+                            dispatch(toggleModal());
+                            // setActivePage(list?.value);
+                            // setActive(true);
+                          }}
+                        >
+                          {list?.value}
+                        </li>
+                      </LightTooltip>
+                    </>
+                  );
+                return (
+                  <Link href={list.route} key={list.id} passHref>
+                    <li
+                      className={styles.nav__list}
+                      style={{
+                        fontWeight: list?.value === activePage ? '600' : '400',
+
+                        color: list?.value === activePage ? '#000000' : '3a3a3a',
+                      }}
+                      onClick={() => {
+                        setActivePage(list?.value);
+                        setActive(true);
+                      }}
+                    >
+                      {list?.value}
+                    </li>
+                  </Link>
+                );
+              })}
             {/* <li
               className={styles.nav__list}
               style={{
