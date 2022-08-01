@@ -18,7 +18,7 @@ import {
     getAllStoreProducts,
   } from '../../redux/stores/storesActions';
   
-  const ProductCategory = ({setIsLoading}) => {
+  const StoreProductCategory = ({setIsLoading}) => {
     const { categories } = useSelector((state) => state.stores);
   
     const { country } = useSelector((state) => state.auth);
@@ -132,7 +132,7 @@ import {
               dispatch(setSelectedCategory(""));
               dispatch(setSearched(false));
               setIsLoading(true);
-              dispatch(getAllStoreProducts(storeId, pageNumber))
+              dispatch(getAllStoreProducts(storeId, 1))
             }}
           >
             <ListItemText
@@ -196,5 +196,5 @@ import {
     );
   };
   
-  export default ProductCategory;
+  export default StoreProductCategory;
   

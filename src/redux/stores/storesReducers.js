@@ -47,14 +47,14 @@ const reducer = (state = initialState, action) => {
         initial_meta_data: action?.payload?.data,
         currentPaginationType: PAGE_SCENERIOS.GENERAL,
       };
-    case StoreTypes.GET_PRODUCTS_BY_CATEGORY:
-      return {
-        ...state,
-        productCategory: action?.payload?.productCategory,
-        meta_data: action?.payload?.data,
-        currentPaginationType: PAGE_SCENERIOS.CATEGORY,
-        currentCategory: action?.payload?.categoryId,
-      };
+    // case StoreTypes.GET_PRODUCTS_BY_CATEGORY:
+    //   return {
+    //     ...state,
+    //     productCategory: action?.payload?.productCategory,
+    //     meta_data: action?.payload?.data,
+    //     currentPaginationType: PAGE_SCENERIOS.CATEGORY,
+    //     currentCategory: action?.payload?.categoryId,
+    //   };
     case StoreTypes.GET_SINGLE_PRODUCT:
       return {
         ...state,

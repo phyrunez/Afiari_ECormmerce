@@ -180,7 +180,6 @@ function Shop() {
     setIsLoading(true)
     const countryId = JSON.parse(localStorage.getItem('selectedCountry'));
     const storeId = router.query.id;
-    const categoryId = router.query.id;
     setSelectedOption(selectedOption);
     if(selectedOption.id === ALL_PRODUCT_ID){
       dispatch(setSelectedCategory(''));
@@ -189,9 +188,9 @@ function Shop() {
     } else {
       dispatch(
         getStoreProductsByCategory(
-          categoryId,
+          countryId.id,
+          selectedOption.id,
           storeId,
-          // selectedOption.id
         )
       );
       dispatch(setSelectedCategory(selectedOption.value));

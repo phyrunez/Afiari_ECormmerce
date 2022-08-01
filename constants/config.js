@@ -169,11 +169,11 @@ const API_ROUTES = {
   searchStore: {
     route: 'Store/search/stores/in-location',
     method: 'GET'
+  },
+  storeCategory: {
+    route: 'Product/category',
+    method: 'GET'
   }
-  // storeCategory: {
-  //   route: 'Product/category',
-  //   method: 'GET'
-  // }
 };
 
 const authToken = 'Afiari_access';

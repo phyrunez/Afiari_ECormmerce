@@ -301,8 +301,8 @@ export const getStoreProductsByCategory =
     try {
       dispatch(setIsLoading(true));
       const response = await httpRequest({
-        url: `${API_ROUTES?.categoryMarket?.route}/${category_id}/${storeId}?service_country=${country_id}&page_number=${pageNumber}`,
-        method: API_ROUTES?.categoryMarket?.method,
+        url: `${API_ROUTES?.storeCategory?.route}/${category_id}/${storeId}?service_country=${country_id}&page_number=${pageNumber}`,
+        method: API_ROUTES?.storeCategory?.method,
         needToken: false,
       });
 
